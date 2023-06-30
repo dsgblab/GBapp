@@ -2,9 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class ReportController extends Controller
 {
-    //
+    /**
+     * @return Response
+     */
+    public function index()
+    {
+        return Inertia::render('Report');
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
@@ -31,6 +32,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::resource('permissions',  PermissionController::class);
     Route::resource('roles',  RoleController::class);
     Route::resource('users',  UserController::class);
+    Route::resource('report', ReportController::class);
 });
 
 
