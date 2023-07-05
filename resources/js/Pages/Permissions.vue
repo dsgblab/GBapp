@@ -5,7 +5,7 @@
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                     Permisos
                 </h2>
-                <PrimaryButton type="button" class="ml-auto" @click="create">
+                <PrimaryButton type="button" class="ml-auto" @click="create" v-permission="'permission.destroy'">
                     Crear
                 </PrimaryButton>
             </div>
@@ -64,10 +64,10 @@
                                         {{ permission.updated_at }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                                        <SecondaryButton class="mr-2" @click="edit(permission)">
+                                        <SecondaryButton class="mr-2" @click="edit(permission)" v-permission="'permission.edit'">
                                             Editar
                                         </SecondaryButton>
-                                        <DangerButton @click="destroy(permission.id)">
+                                        <DangerButton @click="destroy(permission.id)" v-permission="'permission.destroy'">
                                             Eliminar
                                         </DangerButton>
                                     </td>

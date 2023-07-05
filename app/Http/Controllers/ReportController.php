@@ -19,10 +19,15 @@ class ReportController extends Controller
     private string $userAccessToken = '';
 
     /**
+     * Verifies that the user has sufficient permissions to access the methods
      * @throws GuzzleException
      */
     public function __construct()
     {
+        $this->middleware(['role_or_permission:super-administrador|report.create'])->only('index', 'store');
+        $this->middleware(['role_or_permission:super-administrador|report.edit'])->only('index', 'update');
+        $this->middleware(['role_or_permission:super-administrador|report.destroy'])->only('index', 'destroy');
+
         if ($this->userAccessToken === '') {
             $this->userAccessToken = $this->getUserAccessToken();
         }

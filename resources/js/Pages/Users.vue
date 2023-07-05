@@ -5,7 +5,7 @@
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                     Usuarios del sistema
                 </h2>
-                <PrimaryButton type="button" class="ml-auto" @click="create">
+                <PrimaryButton type="button" class="ml-auto" @click="create" v-permission="'user.create'">
                     Crear
                 </PrimaryButton>
             </div>
@@ -107,10 +107,10 @@
                                         {{ user.updated_at }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                                        <SecondaryButton class="mr-2" @click="edit(user)">
+                                        <SecondaryButton class="mr-2" @click="edit(user)" v-permission="'user.edit'">
                                             Editar
                                         </SecondaryButton>
-                                        <DangerButton @click="destroy(user.id)">
+                                        <DangerButton @click="destroy(user.id)" v-permission="'user.destroy'">
                                             Eliminar
                                         </DangerButton>
                                     </td>

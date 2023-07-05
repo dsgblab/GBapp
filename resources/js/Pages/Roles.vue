@@ -5,7 +5,7 @@
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                     Roles
                 </h2>
-                <PrimaryButton type="button" class="ml-auto" @click="create">
+                <PrimaryButton type="button" class="ml-auto" @click="create" v-permission="'role.create'">
                     Crear
                 </PrimaryButton>
             </div>
@@ -60,10 +60,10 @@
                                         {{ role.updated_at }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                                        <SecondaryButton class="mr-2" @click="edit(role)">
+                                        <SecondaryButton class="mr-2" @click="edit(role)" v-permission="'role.edit'">
                                             Editar
                                         </SecondaryButton>
-                                        <DangerButton @click="destroy(role.id)">
+                                        <DangerButton @click="destroy(role.id)" v-permission="'role.destroy'">
                                             Eliminar
                                         </DangerButton>
                                     </td>

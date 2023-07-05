@@ -12,9 +12,14 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
+    /**
+     * verifies that the user has sufficient permissions to access the methods
+     */
     public function __construct()
     {
-        //
+        $this->middleware(['role_or_permission:super-administrador|role.create'])->only('index', 'store');
+        $this->middleware(['role_or_permission:super-administrador|role.edit'])->only('index', 'update');
+        $this->middleware(['role_or_permission:super-administrador|role.destroy'])->only('index', 'destroy');
     }
 
     /**

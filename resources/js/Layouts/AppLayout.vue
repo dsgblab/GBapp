@@ -56,15 +56,21 @@ const logout = () => {
                                     Reportes
                                 </NavLink>
 
-                                <NavLink :href="route('roles.index')" :active="route().current('roles.index')">
+                                <NavLink :href="route('roles.index')"
+                                         :active="route().current('roles.index')"
+                                         v-permission:any="'role.create|role.edit|role.destroy'">
                                     Roles
                                 </NavLink>
 
-                                <NavLink :href="route('permissions.index')" :active="route().current('permissions.index')">
+                                <NavLink :href="route('permissions.index')"
+                                         :active="route().current('permissions.index')"
+                                         v-permission:any="'permission.create|permission.edit|permission.destroy'">
                                     Permisos
                                 </NavLink>
 
-                                <NavLink :href="route('users.index')" :active="route().current('users.index')">
+                                <NavLink :href="route('users.index')"
+                                         :active="route().current('users.index')"
+                                         v-permission:any="'user.create|user.edit|user.destroy'">
                                     Usuarios
                                 </NavLink>
                             </div>

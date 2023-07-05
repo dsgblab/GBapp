@@ -12,6 +12,16 @@ use Spatie\Permission\Models\Permission;
 class PermissionController extends Controller
 {
     /**
+     * verifies that the user has sufficient permissions to access the methods
+     */
+    public function __construct()
+    {
+        $this->middleware(['role_or_permission:super-administrador|permission.create'])->only('index', 'store');
+        $this->middleware(['role_or_permission:super-administrador|permission.edit'])->only('index', 'update');
+        $this->middleware(['role_or_permission:super-administrador|permission.destroy'])->only('index', 'destroy');
+    }
+
+    /**
      * @return Response
      */
     public function index()
