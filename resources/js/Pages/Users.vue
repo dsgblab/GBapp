@@ -9,7 +9,6 @@
                     Crear
                 </PrimaryButton>
             </div>
-
         </template>
 
         <div class="py-12">

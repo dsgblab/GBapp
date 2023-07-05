@@ -13,6 +13,9 @@ use Inertia\Response;
 
 class ReportController extends Controller
 {
+    /**
+     * @var string|mixed
+     */
     private string $userAccessToken = '';
 
     /**
@@ -49,6 +52,7 @@ class ReportController extends Controller
             ->where('groupId', '=', $groupId)
             ->where('reportId', '=', $reportId)
             ->first();
+
         $report->token = $this->getReportAccessToken($this->userAccessToken, $report);
         $report->userAccessToken = $this->userAccessToken;
 
@@ -71,9 +75,19 @@ class ReportController extends Controller
         return response()->json($reports, 200);
     }
 
+    /**
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
     public function update(Request $request, $id)
     {
+        $report = Report::find($id);
+        $report->update($request->all());
+        $report->save();
 
+        $reports = Report::with('user')->get();
+        return response()->json($reports, 200);
     }
 
     /**
