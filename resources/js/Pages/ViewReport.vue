@@ -1,5 +1,5 @@
 <template>
-    <AppLayout title="Reportes">
+    <AppLayout :title="report.name">
         <template #header>
             <div class="flex flex-row">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
