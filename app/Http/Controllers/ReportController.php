@@ -55,6 +55,7 @@ class ReportController extends Controller
 
         $report->token = $this->getReportAccessToken($this->userAccessToken, $report);
         $report->userAccessToken = $this->userAccessToken;
+        $report->embedUrl = "https://app.powerbi.com/reportEmbed?reportId=$reportId&groupId=$groupId";
 
         return Inertia::render('ViewReport', [
             'report' => $report

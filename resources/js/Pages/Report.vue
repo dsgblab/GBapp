@@ -26,17 +26,17 @@
                                     </th>
                                     <th scope="col"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        ID Grupo
+                                        Grupo
                                     </th>
 
                                     <th scope="col"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        ID Reporte
+                                        Reporte
                                     </th>
 
                                     <th scope="col"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        ID Dataset
+                                        Dataset
                                     </th>
 
                                     <th scope="col"
@@ -143,7 +143,7 @@
                         class="mt-1 block w-full"
                         :class="{'border-red-500': v$.modal.form.groupId.$error}"
                         required
-                        autocomplete="Dataset"
+                        autocomplete="Grupo"
                     />
                     <template v-if="v$.modal.form.groupId.$error">
                         <ul class="mt-1">
@@ -163,7 +163,7 @@
                         class="mt-1 block w-full"
                         :class="{'border-red-500': v$.modal.form.reportId.$error}"
                         required
-                        autocomplete="Dataset"
+                        autocomplete="Reporte"
                     />
                     <template v-if="v$.modal.form.reportId.$error">
                         <ul class="mt-1">
@@ -203,12 +203,32 @@
                         class="mt-1 block w-full"
                         :class="{'border-red-500': v$.modal.form.accessLevel.$error}"
                         required
-                        autocomplete="Dataset"
+                        autocomplete="Nivel de acceso"
                     />
                     <template v-if="v$.modal.form.accessLevel.$error">
                         <ul class="mt-1">
                             <li class="text-red-500"
                                 v-for="(error, index) of v$.modal.form.accessLevel.$errors" :key="index">
+                                {{ error.$message }}
+                            </li>
+                        </ul>
+                    </template>
+                </div>
+
+                <div class="mt-4">
+                    <InputLabel value="Permiso" />
+                    <TextInput
+                        v-model="modal.form.permission"
+                        type="text"
+                        class="mt-1 block w-full"
+                        :class="{'border-red-500': v$.modal.form.permission.$error}"
+                        required
+                        autocomplete="Permiso"
+                    />
+                    <template v-if="v$.modal.form.permission.$error">
+                        <ul class="mt-1">
+                            <li class="text-red-500"
+                                v-for="(error, index) of v$.modal.form.permission.$errors" :key="index">
                                 {{ error.$message }}
                             </li>
                         </ul>
@@ -243,7 +263,7 @@ import DialogModal from "@/Components/DialogModal.vue";
 import Checkbox from "@/Components/Checkbox.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import {required, requiredIf} from "@vuelidate/validators";
+import {required, requiredIf, alpha} from "@vuelidate/validators";
 import {useVuelidate} from "@vuelidate/core";
 import { Link } from '@inertiajs/vue3';
 
@@ -290,6 +310,10 @@ export default {
                     datasetId: {
                         required,
                     },
+                    permission: {
+                        required,
+                        alpha
+                    }
                 }
             }
         }
@@ -308,7 +332,8 @@ export default {
                     groupId: '',
                     reportId: '',
                     accessLevel: '',
-                    datasetId: ''
+                    datasetId: '',
+                    permission: ''
                 }
             }
         }
@@ -331,7 +356,8 @@ export default {
                     groupId: row.groupId,
                     reportId: row.reportId,
                     accessLevel: row.accessLevel,
-                    datasetId: row.datasetId
+                    datasetId: row.datasetId,
+                    permission: row.permission
                 },
             }
         },
@@ -415,7 +441,8 @@ export default {
                     groupId: '',
                     reportId: '',
                     accessLevel: '',
-                    datasetId: ''
+                    datasetId: '',
+                    permission: ''
                 },
             }
 
