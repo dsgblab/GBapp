@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import {onBeforeMount, onMounted, ref} from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Banner from '@/Components/Banner.vue';
@@ -25,6 +25,7 @@ const switchToTeam = (team) => {
 const logout = () => {
     router.post(route('logout'));
 };
+
 </script>
 
 <template>

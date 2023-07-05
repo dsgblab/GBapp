@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
@@ -62,5 +64,32 @@ class User extends Authenticatable
      */
     protected $appends = [
         'profile_photo_url',
+        'role_names',
+        'permission_names'
     ];
+
+    /**
+     * @return BelongsToMany
+     */
+    public function reports(): BelongsToMany
+    {
+        return $this->belongsToMany(Report::class)
+            ->withPivot('user_id', 'report_id');
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getRoleNamesAttribute(): Collection
+    {
+        return $this->getRoleNames();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getPermissionNamesAttribute(): Collection
+    {
+        return $this->getAllPermissions()->pluck('name');
+    }
 }

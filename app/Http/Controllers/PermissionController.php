@@ -16,9 +16,9 @@ class PermissionController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['role_or_permission:super-administrador|permission.create'])->only('index', 'store');
-        $this->middleware(['role_or_permission:super-administrador|permission.edit'])->only('index', 'update');
-        $this->middleware(['role_or_permission:super-administrador|permission.destroy'])->only('index', 'destroy');
+        $this->middleware(['role_or_permission:super-administrador|permission.create'])->except('update', 'destroy');
+        $this->middleware(['role_or_permission:super-administrador|permission.edit'])->except('store', 'destroy');
+        $this->middleware(['role_or_permission:super-administrador|permission.destroy'])->only('update', 'store');
     }
 
     /**
@@ -46,7 +46,7 @@ class PermissionController extends Controller
 
             $permissions = Permission::with('roles')->get();
             return response()->json($permissions, 200);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             DB::rollBack();
             return response()->json($e->getMessage(), 500);
         }
@@ -69,7 +69,7 @@ class PermissionController extends Controller
 
             $permissions = Permission::with('roles')->get();
             return response()->json($permissions, 200);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             DB::rollBack();
             return response()->json($e->getMessage(), 500);
         }
@@ -88,9 +88,10 @@ class PermissionController extends Controller
 
             $permissions = Permission::with('roles')->get();
             return response()->json($permissions, 200);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             DB::rollBack();
             return response()->json($e->getMessage(), 500);
         }
     }
+
 }

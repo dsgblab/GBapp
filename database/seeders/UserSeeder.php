@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -13,11 +12,14 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
+        $user = new User([
             'name' => 'Super Administrador',
             'username' => 'super-admin',
             'email' => 'super-admin@bg-app.com',
             'password' => bcrypt('password'),
         ]);
+
+        $user->save();
+        $user->syncRoles(['super-administrador']);
     }
 }

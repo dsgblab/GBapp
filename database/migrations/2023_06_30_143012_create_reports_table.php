@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('datasetId');
             $table->unique(['groupId', 'reportId', 'datasetId'], 'report_unique_group_report_fk');
             $table->foreignId('user_id')->constrained('users');
-            $table->string('permission')->unique();
             $table->timestamps();
         });
     }

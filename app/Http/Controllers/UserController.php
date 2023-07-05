@@ -18,9 +18,9 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['role_or_permission:super-administrador|user.create'])->only('index', 'store');
-        $this->middleware(['role_or_permission:super-administrador|user.edit'])->only('index', 'update');
-        $this->middleware(['role_or_permission:super-administrador|user.destroy'])->only('index', 'destroy');
+        $this->middleware(['role_or_permission:super-administrador|user.create'])->except('update', 'destroy');
+        $this->middleware(['role_or_permission:super-administrador|user.edit'])->except('store', 'destroy');
+        $this->middleware(['role_or_permission:super-administrador|user.destroy'])->only('update', 'store');
     }
 
     /**
@@ -79,6 +79,12 @@ class UserController extends Controller
                 'username' => $request->username,
                 'email' => $request->email,
             ]);
+
+            if ($request->change_password){
+                $user->password = $request->password;
+            }
+
+            $user->save();
 
             $user->syncPermissions($request->permissions);
             $user->syncRoles($request->roles);

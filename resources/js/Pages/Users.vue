@@ -96,7 +96,7 @@
                                         <span
                                             class="text-xs font-semibold inline-block py-1 px-2 rounded text-red-600 bg-red-200 uppercase last:mr-0 mr-1"
                                             v-else>
-                                          sin roles asociados
+                                          sin permisos asociados
                                         </span>
                                     </td>
 
@@ -137,7 +137,7 @@
                         class="mt-1 block w-full"
                         :class="{'border-red-500': v$.modal.form.name.$error}"
                         required
-                        autocomplete="Nombre"
+                        autocomplete="off"
                     />
                     <template v-if="v$.modal.form.name.$error">
                         <ul class="mt-1">
@@ -157,7 +157,7 @@
                         class="mt-1 block w-full"
                         :class="{'border-red-500': v$.modal.form.username.$error}"
                         required
-                        autocomplete="Usuario"
+                        autocomplete="off"
                     />
                     <template v-if="v$.modal.form.username.$error">
                         <ul class="mt-1">
@@ -170,14 +170,14 @@
                 </div>
 
                 <div class="mt-4">
-                    <InputLabel value="Correo electronico"/>
+                    <InputLabel value="Correo electrónico"/>
                     <TextInput
                         v-model="modal.form.email"
                         type="email"
                         class="mt-1 block w-full"
                         :class="{'border-red-500': v$.modal.form.email.$error}"
                         required
-                        autocomplete="Correo electronico"
+                        autocomplete="off"
                     />
                     <template v-if="v$.modal.form.email.$error">
                         <ul class="mt-1">
@@ -189,45 +189,55 @@
                     </template>
                 </div>
 
-                <div class="mt-4">
-                    <InputLabel value="Contraseña"/>
-                    <TextInput
-                        v-model="modal.form.password"
-                        type="password"
-                        class="mt-1 block w-full"
-                        :class="{'border-red-500': v$.modal.form.password.$error}"
-                        required
-                        autocomplete="Contraseña"
-                    />
-                    <template v-if="v$.modal.form.password.$error">
-                        <ul class="mt-1">
-                            <li class="text-red-500"
-                                v-for="(error, index) of v$.modal.form.password.$errors" :key="index">
-                                {{ error.$message }}
-                            </li>
-                        </ul>
-                    </template>
+                <div class="block mt-4" v-if="modal.editMode">
+                    <label class="flex items-center">
+                        <Checkbox v-model:checked="modal.form.change_password" name="change_password" />
+                        <span class="ml-2 text-sm text-gray-600">Cambiar contraseña</span>
+                    </label>
                 </div>
 
-                <div class="mt-4">
-                    <InputLabel value="Confirmar Contraseña"/>
-                    <TextInput
-                        v-model="modal.form.confirm_password"
-                        type="password"
-                        class="mt-1 block w-full"
-                        :class="{'border-red-500': v$.modal.form.confirm_password.$error}"
-                        required
-                        autocomplete="Confirmar Contraseña"
-                    />
-                    <template v-if="v$.modal.form.confirm_password.$error">
-                        <ul class="mt-1">
-                            <li class="text-red-500"
-                                v-for="(error, index) of v$.modal.form.confirm_password.$errors" :key="index">
-                                {{ error.$message }}
-                            </li>
-                        </ul>
-                    </template>
-                </div>
+                <template v-if="modal.form.change_password || !modal.editMode ">
+                    <div class="mt-4">
+                        <InputLabel value="Contraseña"/>
+                        <TextInput
+                            v-model="modal.form.password"
+                            type="password"
+                            class="mt-1 block w-full"
+                            :class="{'border-red-500': v$.modal.form.password.$error}"
+                            required
+                            autocomplete="off"
+                        />
+                        <template v-if="v$.modal.form.password.$error">
+                            <ul class="mt-1">
+                                <li class="text-red-500"
+                                    v-for="(error, index) of v$.modal.form.password.$errors" :key="index">
+                                    {{ error.$message }}
+                                </li>
+                            </ul>
+                        </template>
+                    </div>
+
+                    <div class="mt-4">
+                        <InputLabel value="Confirmar Contraseña"/>
+                        <TextInput
+                            v-model="modal.form.confirm_password"
+                            type="password"
+                            class="mt-1 block w-full"
+                            :class="{'border-red-500': v$.modal.form.confirm_password.$error}"
+                            required
+                            autocomplete="off"
+                        />
+                        <template v-if="v$.modal.form.confirm_password.$error">
+                            <ul class="mt-1">
+                                <li class="text-red-500"
+                                    v-for="(error, index) of v$.modal.form.confirm_password.$errors" :key="index">
+                                    {{ error.$message }}
+                                </li>
+                            </ul>
+                        </template>
+                    </div>
+                </template>
+
 
                 <div class="mt-4">
                     <InputLabel value="Roles Disponibles" />
@@ -344,20 +354,20 @@ export default {
                         email
                     },
                     password:  {
-                        required,
+                        requiredIf: requiredIf(this.modal.form.change_password || !this.modal.editMode),
                         minLength: minLength(8)
                     },
                     confirm_password: {
-                        required,
+                        requiredIf: requiredIf(this.modal.form.change_password || !this.modal.editMode),
                         sameAs: sameAs(this.modal.form.password),
                         minLength: minLength(8)
                     },
                     permissions:  {
-                        required,
+                        requiredIf: requiredIf(this.modal.form.roles.length < 1),
                         minLength: minLength(1)
                     },
                     roles:  {
-                        required,
+                        requiredIf: requiredIf(this.modal.form.permissions.length < 1),
                         minLength: minLength(1)
                     },
                 }
@@ -377,6 +387,7 @@ export default {
                     name: '',
                     username: '',
                     email: '',
+                    change_password: false,
                     password: '',
                     confirm_password: '',
                     permissions: [],
@@ -402,6 +413,7 @@ export default {
                     name: row.name,
                     username: row.username,
                     email: row.email,
+                    change_password: false,
                     password: '',
                     confirm_password: '',
                     permissions: row.permissions.map(row => row.name),
@@ -488,6 +500,7 @@ export default {
                     name: '',
                     username: '',
                     email: '',
+                    change_password: false,
                     password: '',
                     confirm_password: '',
                     permissions: [],

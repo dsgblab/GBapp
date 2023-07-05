@@ -17,9 +17,9 @@ class RoleController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['role_or_permission:super-administrador|role.create'])->only('index', 'store');
-        $this->middleware(['role_or_permission:super-administrador|role.edit'])->only('index', 'update');
-        $this->middleware(['role_or_permission:super-administrador|role.destroy'])->only('index', 'destroy');
+        $this->middleware(['role_or_permission:super-administrador|role.create'])->except('update', 'destroy');
+        $this->middleware(['role_or_permission:super-administrador|role.edit'])->except('store', 'destroy');
+        $this->middleware(['role_or_permission:super-administrador|role.destroy'])->only('update', 'store');
     }
 
     /**

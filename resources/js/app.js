@@ -8,18 +8,21 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import VueGates from 'vue-gates'
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import UserAbilities from "@/Plugins/UserAbilities.js";
 
-const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
+const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'GB App';
 
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
+    title: (title) => `${title} | ${appName}`,
     resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
     setup({ el, App, props, plugin }) {
         return createApp({ render: () => h(App, props) })
             .use(plugin)
+            .use(UserAbilities)
             .use(ZiggyVue, Ziggy)
             .use(VueGates, {
-                superRole: 'super-admin',
+                superRole: 'super-administrador',
+                persistent: false
             })
             .use(VueSweetalert2, {
                 confirmButtonText: 'Aceptar',

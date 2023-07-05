@@ -24,9 +24,9 @@ class ReportController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['role_or_permission:super-administrador|report.create'])->only('index', 'store');
-        $this->middleware(['role_or_permission:super-administrador|report.edit'])->only('index', 'update');
-        $this->middleware(['role_or_permission:super-administrador|report.destroy'])->only('index', 'destroy');
+        $this->middleware(['role_or_permission:super-administrador|report.create'])->except('update', 'destroy');
+        $this->middleware(['role_or_permission:super-administrador|report.edit'])->except('store', 'destroy');
+        $this->middleware(['role_or_permission:super-administrador|report.destroy'])->only('update', 'store');
 
         if ($this->userAccessToken === '') {
             $this->userAccessToken = $this->getUserAccessToken();

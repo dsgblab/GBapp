@@ -5,7 +5,7 @@
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                     Permisos
                 </h2>
-                <PrimaryButton type="button" class="ml-auto" @click="create" v-permission="'permission.destroy'">
+                <PrimaryButton type="button" class="ml-auto" @click="create" v-permission="'permission.create'">
                     Crear
                 </PrimaryButton>
             </div>

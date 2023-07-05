@@ -14,7 +14,7 @@ class Report extends Model
      * @var string[]
      */
     protected $fillable = [
-        'name', 'groupId', 'reportId', 'accessLevel', 'datasetId', 'user_id', 'permission'
+        'name', 'groupId', 'reportId', 'accessLevel', 'datasetId', 'user_id'
     ];
 
     /**

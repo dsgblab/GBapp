@@ -29,8 +29,14 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     })->name('dashboard');
 
     Route::resource('permissions',  PermissionController::class);
+    Route::get('permissions-list', [PermissionController::class, 'list'])->name('permissions.list');
+
     Route::resource('roles',  RoleController::class);
+    Route::get('roles-list', [RoleController::class, 'list'])->name('roles.list');
+
+
     Route::resource('users',  UserController::class);
+
     Route::resource('report', ReportController::class)->only('index', 'store', 'destroy', 'update');
     Route::get('report/view/{groupId}/{reportId}', [ReportController::class, 'view'])->name('report.view');
 });
