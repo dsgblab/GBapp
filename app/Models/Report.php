@@ -14,13 +14,13 @@ class Report extends Model
      * @var string[]
      */
     protected $fillable = [
-        'url', 'user_id'
+        'name', 'groupId', 'reportId', 'accessLevel', 'datasetId', 'user_id', 'permission'
     ];
 
     /**
      * @return HasOne
      */
-    public function user()
+    public function user(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }

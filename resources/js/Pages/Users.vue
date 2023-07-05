@@ -13,7 +13,7 @@
         </template>
 
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="max-w-8xl mx-6 sm:px-6 lg:px-8">
 
                 <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div class="py-2 align-middle inline-block min-w-full">
@@ -195,11 +195,11 @@
                     <InputLabel value="Contraseña"/>
                     <TextInput
                         v-model="modal.form.password"
-                        type="email"
+                        type="password"
                         class="mt-1 block w-full"
                         :class="{'border-red-500': v$.modal.form.password.$error}"
                         required
-                        autocomplete="Correo electronico"
+                        autocomplete="Contraseña"
                     />
                     <template v-if="v$.modal.form.password.$error">
                         <ul class="mt-1">
@@ -214,17 +214,17 @@
                 <div class="mt-4">
                     <InputLabel value="Confirmar Contraseña"/>
                     <TextInput
-                        v-model="modal.form.password"
-                        type="email"
+                        v-model="modal.form.confirm_password"
+                        type="password"
                         class="mt-1 block w-full"
-                        :class="{'border-red-500': v$.modal.form.password.$error}"
+                        :class="{'border-red-500': v$.modal.form.confirm_password.$error}"
                         required
-                        autocomplete="Correo electronico"
+                        autocomplete="Confirmar Contraseña"
                     />
-                    <template v-if="v$.modal.form.password.$error">
+                    <template v-if="v$.modal.form.confirm_password.$error">
                         <ul class="mt-1">
                             <li class="text-red-500"
-                                v-for="(error, index) of v$.modal.form.password.$errors" :key="index">
+                                v-for="(error, index) of v$.modal.form.confirm_password.$errors" :key="index">
                                 {{ error.$message }}
                             </li>
                         </ul>
@@ -346,11 +346,13 @@ export default {
                         email
                     },
                     password:  {
-                        required
+                        required,
+                        minLength: minLength(8)
                     },
                     confirm_password: {
                         required,
-                        sameAs: sameAs(this.modal.form.password)
+                        sameAs: sameAs(this.modal.form.password),
+                        minLength: minLength(8)
                     },
                     permissions:  {
                         required,
