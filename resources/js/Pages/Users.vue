@@ -260,6 +260,26 @@
                     </div>
                 </template>
 
+                <div class="mt-4">
+                    <InputLabel value="Reportes disponibles" />
+                    <div class="grid grid-cols-3 gap-5 mt-2">
+                        <div class="flex items-center" v-for="report in reports">
+                            <Checkbox v-model:checked="modal.form.reports" :value="report.id"/>
+                            <div class="ml-2">
+                                {{ report.name }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <template v-if="v$.modal.form.reports.$error">
+                        <ul class="mt-1">
+                            <li class="text-red-500"
+                                v-for="(error, index) of v$.modal.form.reports.$errors" :key="index">
+                                {{ error.$message }}
+                            </li>
+                        </ul>
+                    </template>
+                </div>
 
                 <div class="mt-4">
                     <InputLabel value="Roles Disponibles" />
@@ -387,6 +407,9 @@ export default {
                         sameAs: sameAs(this.modal.form.password),
                         minLength: minLength(8)
                     },
+                    reports:  {
+                        minLength: minLength(1)
+                    },
                     permissions:  {
                         requiredIf: requiredIf(this.modal.form.roles.length < 1),
                         minLength: minLength(1)
@@ -415,6 +438,7 @@ export default {
                     change_password: false,
                     password: '',
                     confirm_password: '',
+                    reports: [],
                     permissions: [],
                     roles: []
                 },
@@ -441,6 +465,7 @@ export default {
                     change_password: false,
                     password: '',
                     confirm_password: '',
+                    reports: row.reports.map(row => row.id),
                     permissions: row.permissions.map(row => row.name),
                     roles: row.roles.map(row => row.name),
                 },
@@ -528,6 +553,7 @@ export default {
                     change_password: false,
                     password: '',
                     confirm_password: '',
+                    reports: [],
                     permissions: [],
                     roles: []
                 },

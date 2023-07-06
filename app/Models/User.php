@@ -73,7 +73,7 @@ class User extends Authenticatable
      */
     public function reports(): BelongsToMany
     {
-        return $this->belongsToMany(Report::class)
+        return $this->belongsToMany(Report::class, 'user_reports')
             ->withPivot('user_id', 'report_id');
     }
 

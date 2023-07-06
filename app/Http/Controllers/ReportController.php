@@ -38,7 +38,11 @@ class ReportController extends Controller
      */
     public function index()
     {
-        $reports = Report::with('user')->get();
+        if (auth()->user()->can('super-administrador')){
+            $reports = Report::with('user')->get();
+        }else {
+            $reports = auth()->user()->reports;
+        }
 
         return Inertia::render('Report', [
             'reports' => $reports
@@ -53,10 +57,21 @@ class ReportController extends Controller
      */
     public function view($groupId, $reportId)
     {
-        $report = Report::with('user')
-            ->where('groupId', '=', $groupId)
-            ->where('reportId', '=', $reportId)
-            ->first();
+        if (auth()->user()->can('super-administrador')){
+            $report = Report::with('user')
+                ->where('groupId', '=', $groupId)
+                ->where('reportId', '=', $reportId)
+                ->first();
+        }else {
+            $report = auth()->user()->reports
+                ->where('groupId', '=', $groupId)
+                ->where('reportId', '=', $reportId)
+                ->first();
+
+            if (!$report){
+                abort(403);
+            }
+        }
 
         $report->token = $this->getReportAccessToken($this->userAccessToken, $report);
         $report->userAccessToken = $this->userAccessToken;
@@ -77,7 +92,12 @@ class ReportController extends Controller
         $report->user_id = Auth::id();
         $report->save();
 
-        $reports = Report::with('user')->get();
+        if (\auth()->user()->can('super-administrador')){
+            $reports = Report::with('user')->get();
+        }else {
+            $reports = \auth()->user()->reports;
+        }
+
         return response()->json($reports, 200);
     }
 
@@ -92,7 +112,12 @@ class ReportController extends Controller
         $report->update($request->all());
         $report->save();
 
-        $reports = Report::with('user')->get();
+        if (\auth()->user()->can('super-administrador')){
+            $reports = Report::with('user')->get();
+        }else {
+            $reports = \auth()->user()->reports;
+        }
+
         return response()->json($reports, 200);
     }
 

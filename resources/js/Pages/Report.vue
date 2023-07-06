@@ -61,7 +61,7 @@
                                 </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-                                <tr v-for="report in records">
+                                <tr v-for="report in records" v-if="records.length > 0">
                                     <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
                                         {{ report.name }}
                                     </td>
@@ -100,6 +100,12 @@
                                         <DangerButton @click="destroy(report.id)" v-permission="'report.destroy'">
                                             <font-awesome-icon :icon="['far', 'trash-can']" />
                                         </DangerButton>
+                                    </td>
+                                </tr>
+
+                                <tr v-else>
+                                    <td colspan="9" class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-red-500">
+                                        No se encontraron registros…
                                     </td>
                                 </tr>
                                 </tbody>

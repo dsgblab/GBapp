@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Report;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -28,14 +29,16 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('roles', 'permissions')->get();
+        $users = User::with('roles', 'permissions', 'reports')->get();
         $roles = Role::all();
         $permissions = Permission::all();
+        $reports = Report::all();
 
         return Inertia::render('Users', [
             'users' => $users,
             'roles' => $roles,
-            'permissions' => $permissions
+            'permissions' => $permissions,
+            'reports' => $reports
         ]);
     }
 
@@ -47,15 +50,16 @@ class UserController extends Controller
     {
         DB::beginTransaction();
         try {
-            $user = new User($request->except('permissions', 'roles', 'password', 'confirm_password'));
+            $user = new User($request->except('reports', 'permissions', 'roles', 'password', 'confirm_password'));
             $user->password = bcrypt($request->password);
             $user->save();
+            $user->reports()->sync($request->reports);
             $user->syncPermissions($request->permissions);
             $user->syncRoles($request->roles);
 
             DB::commit();
 
-            $users = User::with('roles', 'permissions')->get();
+            $users = User::with('roles', 'permissions', 'reports')->get();
             return response()->json($users, 200);
         }catch (\Exception $e){
             DB::rollBack();
@@ -86,12 +90,13 @@ class UserController extends Controller
 
             $user->save();
 
+            $user->reports()->sync($request->reports);
             $user->syncPermissions($request->permissions);
             $user->syncRoles($request->roles);
 
             DB::commit();
 
-            $users = User::with('roles', 'permissions')->get();
+            $users = User::with('roles', 'permissions', 'reports')->get();
             return response()->json($users, 200);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -107,7 +112,7 @@ class UserController extends Controller
     {
          User::destroy($id);
 
-        $users = User::with('roles', 'permissions')->get();
+        $users = User::with('roles', 'permissions', 'reports')->get();
         return response()->json($users, 200);
     }
 }
