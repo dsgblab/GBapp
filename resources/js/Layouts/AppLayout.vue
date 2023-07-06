@@ -7,6 +7,7 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
 defineProps({
     title: String,
@@ -50,28 +51,33 @@ const logout = () => {
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                                    <font-awesome-icon icon="house" class="mr-2"/>
                                     Dashboard
                                 </NavLink>
 
                                 <NavLink :href="route('report.index')" :active="route().current('report.index')">
+                                    <font-awesome-icon icon="chart-simple" class="mr-2"/>
                                     Reportes
                                 </NavLink>
 
                                 <NavLink :href="route('roles.index')"
                                          :active="route().current('roles.index')"
                                          v-permission:any="'role.create|role.edit|role.destroy'">
+                                    <font-awesome-icon icon="lock" class="mr-2"/>
                                     Roles
                                 </NavLink>
 
                                 <NavLink :href="route('permissions.index')"
                                          :active="route().current('permissions.index')"
                                          v-permission:any="'permission.create|permission.edit|permission.destroy'">
+                                    <font-awesome-icon icon="user-lock" class="mr-2"/>
                                     Permisos
                                 </NavLink>
 
                                 <NavLink :href="route('users.index')"
                                          :active="route().current('users.index')"
                                          v-permission:any="'user.create|user.edit|user.destroy'">
+                                    <font-awesome-icon icon="users" class="mr-2"/>
                                     Usuarios
                                 </NavLink>
                             </div>
@@ -164,10 +170,12 @@ const logout = () => {
                                         </div>
 
                                         <DropdownLink :href="route('profile.show')">
+                                            <font-awesome-icon icon="user" class="mr-2"/>
                                             Perfil
                                         </DropdownLink>
 
                                         <DropdownLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')">
+                                            <font-awesome-icon icon="lock" class="mr-2"/>
                                             API Tokens
                                         </DropdownLink>
 
@@ -176,6 +184,7 @@ const logout = () => {
                                         <!-- Authentication -->
                                         <form @submit.prevent="logout">
                                             <DropdownLink as="button">
+                                                <font-awesome-icon icon="right-from-bracket" class="mr-2"/>
                                                 Cerrar Sesión
                                             </DropdownLink>
                                         </form>

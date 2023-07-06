@@ -6,6 +6,7 @@
                     Usuarios del sistema
                 </h2>
                 <PrimaryButton type="button" class="ml-auto" @click="create" v-permission="'user.create'">
+                    <font-awesome-icon icon="plus" class="mr-2"/>
                     Crear
                 </PrimaryButton>
             </div>
@@ -44,6 +45,11 @@
 
                                     <th scope="col"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Reportes asociados
+                                    </th>
+
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Creado el
                                     </th>
                                     <th scope="col"
@@ -58,22 +64,22 @@
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                 <tr v-for="user in records">
-                                    <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
+                                    <td class="px-6 py-4 text-left text-sm font-medium">
                                         {{ user.name }}
                                     </td>
 
-                                    <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
+                                    <td class="px-6 py-4 text-left text-sm font-medium">
                                         {{ user.username }}
                                     </td>
 
-                                    <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
+                                    <td class="px-6 py-4 text-left text-sm font-medium">
                                         {{ user.email }}
                                     </td>
 
-                                    <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
+                                    <td class="px-6 py-4 text-left text-sm font-medium">
                                         <span
                                             class="text-xs font-semibold inline-block py-1 px-2 rounded text-indigo-600 bg-indigo-200 uppercase last:mr-0 mr-1"
-                                            v-for="(role, index) in user.roles"
+                                            v-for="role in user.roles"
                                             v-if="user.roles.length > 0">
                                           {{ role.name }}
                                         </span>
@@ -85,10 +91,10 @@
                                         </span>
                                     </td>
 
-                                    <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
+                                    <td class="px-6 py-4 text-left text-sm font-medium">
                                         <span
                                             class="text-xs font-semibold inline-block py-1 px-2 rounded text-indigo-600 bg-indigo-200 uppercase last:mr-0 mr-1"
-                                            v-for="(permission, index) in user.permissions"
+                                            v-for="permission in user.permissions"
                                             v-if="user.permissions.length > 0">
                                           {{ permission.name }}
                                         </span>
@@ -100,18 +106,34 @@
                                         </span>
                                     </td>
 
-                                    <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
+                                    <td class="px-6 py-4 text-left text-sm font-medium">
+                                        <span
+                                            class="text-xs font-semibold inline-block py-1 px-2 rounded text-indigo-600 bg-indigo-200 uppercase last:mr-0 mr-1"
+                                            v-for="report in user.reports"
+                                            v-if="user.reports.length > 0">
+                                          {{ report.name }}
+                                        </span>
+
+                                        <span
+                                            class="text-xs font-semibold inline-block py-1 px-2 rounded text-red-600 bg-red-200 uppercase last:mr-0 mr-1"
+                                            v-else>
+                                          sin reportes asociados
+                                        </span>
+                                    </td>
+
+
+                                    <td class="px-6 py-4 text-left text-sm font-medium">
                                         {{ user.created_at }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
+                                    <td class="px-6 py-4 text-left text-sm font-medium">
                                         {{ user.updated_at }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                                    <td class="px-6 py-4 text-center text-sm font-medium">
                                         <SecondaryButton class="mr-2" @click="edit(user)" v-permission="'user.edit'">
-                                            Editar
+                                            <font-awesome-icon :icon="['far', 'pen-to-square']" />
                                         </SecondaryButton>
                                         <DangerButton @click="destroy(user.id)" v-permission="'user.destroy'">
-                                            Eliminar
+                                            <font-awesome-icon :icon="['far', 'trash-can']" />
                                         </DangerButton>
                                     </td>
                                 </tr>
@@ -313,6 +335,7 @@ import {required, requiredIf, email, sameAs, minLength} from '@vuelidate/validat
 import InputLabel from "@/Components/InputLabel.vue";
 import Checkbox from "@/Components/Checkbox.vue";
 import DangerButton from "@/Components/DangerButton.vue";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
 export default {
     setup() {
@@ -320,6 +343,7 @@ export default {
     },
 
     components: {
+        FontAwesomeIcon,
         DangerButton,
         Checkbox,
         InputLabel,
@@ -333,7 +357,8 @@ export default {
     props: {
         users: Array,
         roles: Array,
-        permissions: Array
+        permissions: Array,
+        reports: Array
     },
 
     validations() {

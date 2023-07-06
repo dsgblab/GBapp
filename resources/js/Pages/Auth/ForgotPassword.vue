@@ -6,6 +6,7 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
 defineProps({
     status: String,
@@ -54,7 +55,8 @@ const submit = () => {
 
             <div class="flex items-center justify-end mt-4">
                 <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Enlace de restablecimiento de contraseña de correo electrónico
+                    <font-awesome-icon icon="paper-plane" class="mr-2"/>
+                    Enviar enlace
                 </PrimaryButton>
             </div>
         </form>

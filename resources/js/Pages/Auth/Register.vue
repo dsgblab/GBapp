@@ -7,6 +7,7 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
 const form = useForm({
     name: '',
@@ -119,6 +120,7 @@ const submit = () => {
                 </Link>
 
                 <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                    <font-awesome-icon icon="circle-check" class="mr-2"/>
                     Registrarme
                 </PrimaryButton>
             </div>

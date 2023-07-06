@@ -9,6 +9,13 @@ import VueGates from 'vue-gates'
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import UserAbilities from "@/Plugins/UserAbilities.js";
+import {fas} from '@fortawesome/free-solid-svg-icons';
+import {far} from '@fortawesome/free-regular-svg-icons';
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
+
+library.add(fas, far);
+
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'GB App';
 
@@ -28,6 +35,7 @@ createInertiaApp({
                 confirmButtonText: 'Aceptar',
                 cancelButtonText: 'Cancelar',
             })
+            .component("font-awesome-icon", FontAwesomeIcon)
             .mount(el);
     },
     progress: {

@@ -6,6 +6,7 @@
                     Roles
                 </h2>
                 <PrimaryButton type="button" class="ml-auto" @click="create" v-permission="'role.create'">
+                    <font-awesome-icon icon="plus" class="mr-2"/>
                     Crear
                 </PrimaryButton>
             </div>
@@ -61,10 +62,10 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                                         <SecondaryButton class="mr-2" @click="edit(role)" v-permission="'role.edit'">
-                                            Editar
+                                            <font-awesome-icon :icon="['far', 'pen-to-square']" />
                                         </SecondaryButton>
                                         <DangerButton @click="destroy(role.id)" v-permission="'role.destroy'">
-                                            Eliminar
+                                            <font-awesome-icon :icon="['far', 'trash-can']" />
                                         </DangerButton>
                                     </td>
                                 </tr>
