@@ -14,9 +14,11 @@ class UserSeeder extends Seeder
     {
         $user = new User([
             'name' => 'Super Administrador',
+            'document' => 1234567890,
             'username' => 'super-admin',
             'email' => 'super-admin@bg-app.com',
             'password' => bcrypt('password'),
+            'type_document_identification_id' => 1
         ]);
 
         $user->save();

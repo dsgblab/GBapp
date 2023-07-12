@@ -408,7 +408,7 @@ export default {
                 }).catch(err => {
                     this.$swal({
                         icon: 'error',
-                        title: 'ERROR',
+                        title: 'Error',
                         text: err.response.data
                     });
                 })
@@ -429,7 +429,7 @@ export default {
                     }).catch(err => {
                         this.$swal({
                             icon: 'error',
-                            title: 'ERROR',
+                            title: 'Error',
                             text: err.response.data
                         });
                     })

@@ -29,6 +29,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'document',
         'username',
         'email',
         'password',
@@ -40,6 +41,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
+        'type_document_identification_id',
         'password',
         'remember_token',
         'two_factor_recovery_codes',

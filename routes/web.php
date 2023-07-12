@@ -1,8 +1,12 @@
 <?php
 
+use App\Http\Controllers\DesignPriorityController;
+use App\Http\Controllers\DesignStateController;
+use App\Http\Controllers\DesignTimeStateController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TypeDocumentIdentificationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -29,16 +33,19 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     })->name('dashboard');
 
     Route::resource('permissions',  PermissionController::class);
-    Route::get('permissions-list', [PermissionController::class, 'list'])->name('permissions.list');
-
     Route::resource('roles',  RoleController::class);
-    Route::get('roles-list', [RoleController::class, 'list'])->name('roles.list');
-
-
     Route::resource('users',  UserController::class);
-
     Route::resource('report', ReportController::class)->only('index', 'store', 'destroy', 'update');
+
     Route::get('report/view/{groupId}/{reportId}', [ReportController::class, 'view'])->name('report.view');
+
+    Route::resource('type-document-identification', TypeDocumentIdentificationController::class)->only('index', 'store', 'update', 'destroy');
+
+    Route::prefix('design')->group(function (){
+        Route::resource('priority', DesignPriorityController::class)->only('index', 'store', 'update', 'destroy');
+        Route::resource('state', DesignStateController::class)->only('index', 'store', 'update', 'destroy');
+        Route::resource('time-state', DesignTimeStateController::class)->only('index', 'store', 'update', 'destroy');
+    });
 });
 
 

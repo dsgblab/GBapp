@@ -4,10 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Report extends Model
+class DesignTask extends Model
 {
     use HasFactory;
 
@@ -15,7 +14,7 @@ class Report extends Model
      * @var string[]
      */
     protected $fillable = [
-        'name', 'group_id', 'report_id', 'access_level', 'dataset_id', 'created_id', 'updated_id'
+        'description', 'created_id', 'updated_id'
     ];
 
     /**
@@ -28,8 +27,9 @@ class Report extends Model
     /**
      * @var string[]
      */
-    protected $with = [
-        'user'
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d h:i:s A',
+        'updated_at' => 'datetime:Y-m-d h:i:s A'
     ];
 
     /**
@@ -46,14 +46,5 @@ class Report extends Model
     public function updated_by(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'updated_id');
-    }
-
-    /**
-     * @return BelongsToMany
-     */
-    public function users(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, 'user_reports')
-            ->withPivot('report_id', 'user_id');
     }
 }
