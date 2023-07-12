@@ -12,8 +12,10 @@ class DesignStateObserver
      */
     public function creating(DesignState $designState): void
     {
-        $designState->created_id = Auth::id();
-        $designState->updated_id = Auth::id();
+        if (Auth::check()){
+            $designState->created_id = Auth::id();
+            $designState->updated_id = Auth::id();
+        }
     }
 
     /**

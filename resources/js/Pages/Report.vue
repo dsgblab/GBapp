@@ -67,19 +67,19 @@
                                     </td>
 
                                     <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
-                                        {{ report.groupId }}
+                                        {{ report.group_id }}
                                     </td>
 
                                     <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
-                                        {{ report.reportId }}
+                                        {{ report.report_id }}
                                     </td>
 
                                     <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
-                                        {{ report.datasetId }}
+                                        {{ report.dataset_id }}
                                     </td>
 
                                     <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
-                                        {{ report.accessLevel }}
+                                        {{ report.access_level }}
                                     </td>
 
                                     <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
@@ -91,7 +91,7 @@
                                     </td>
 
                                     <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                                        <Link :href="route('report.view', [report.groupId, report.reportId])" class="mr-2 inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150">
+                                        <Link :href="route('report.view', [report.group_id, report.report_id])" class="mr-2 inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150">
                                             <font-awesome-icon :icon="['fas', 'arrow-up-right-from-square']" />
                                         </Link>
                                         <SecondaryButton class="mr-2" @click="edit(report)" v-permission="'report.edit'">
@@ -145,17 +145,17 @@
                 <div class="mt-4">
                     <InputLabel value="Grupo" />
                     <TextInput
-                        v-model="modal.form.groupId"
+                        v-model="modal.form.group_id"
                         type="text"
                         class="mt-1 block w-full"
-                        :class="{'border-red-500': v$.modal.form.groupId.$error}"
+                        :class="{'border-red-500': v$.modal.form.group_id.$error}"
                         required
                         autocomplete="Grupo"
                     />
-                    <template v-if="v$.modal.form.groupId.$error">
+                    <template v-if="v$.modal.form.group_id.$error">
                         <ul class="mt-1">
                             <li class="text-red-500"
-                                v-for="(error, index) of v$.modal.form.groupId.$errors" :key="index">
+                                v-for="(error, index) of v$.modal.form.group_id.$errors" :key="index">
                                 {{ error.$message }}
                             </li>
                         </ul>
@@ -165,17 +165,17 @@
                 <div class="mt-4">
                     <InputLabel value="Reporte" />
                     <TextInput
-                        v-model="modal.form.reportId"
+                        v-model="modal.form.report_id"
                         type="text"
                         class="mt-1 block w-full"
-                        :class="{'border-red-500': v$.modal.form.reportId.$error}"
+                        :class="{'border-red-500': v$.modal.form.report_id.$error}"
                         required
                         autocomplete="Reporte"
                     />
-                    <template v-if="v$.modal.form.reportId.$error">
+                    <template v-if="v$.modal.form.report_id.$error">
                         <ul class="mt-1">
                             <li class="text-red-500"
-                                v-for="(error, index) of v$.modal.form.reportId.$errors" :key="index">
+                                v-for="(error, index) of v$.modal.form.report_id.$errors" :key="index">
                                 {{ error.$message }}
                             </li>
                         </ul>
@@ -185,17 +185,17 @@
                 <div class="mt-4">
                     <InputLabel value="Dataset" />
                     <TextInput
-                        v-model="modal.form.datasetId"
+                        v-model="modal.form.dataset_id"
                         type="text"
                         class="mt-1 block w-full"
-                        :class="{'border-red-500': v$.modal.form.datasetId.$error}"
+                        :class="{'border-red-500': v$.modal.form.dataset_id.$error}"
                         required
                         autocomplete="Dataset"
                     />
-                    <template v-if="v$.modal.form.datasetId.$error">
+                    <template v-if="v$.modal.form.dataset_id.$error">
                         <ul class="mt-1">
                             <li class="text-red-500"
-                                v-for="(error, index) of v$.modal.form.datasetId.$errors" :key="index">
+                                v-for="(error, index) of v$.modal.form.dataset_id.$errors" :key="index">
                                 {{ error.$message }}
                             </li>
                         </ul>
@@ -205,17 +205,17 @@
                 <div class="mt-4">
                     <InputLabel value="Nivel de acceso" />
                     <TextInput
-                        v-model="modal.form.accessLevel"
+                        v-model="modal.form.access_level"
                         type="text"
                         class="mt-1 block w-full"
-                        :class="{'border-red-500': v$.modal.form.accessLevel.$error}"
+                        :class="{'border-red-500': v$.modal.form.access_level.$error}"
                         required
                         autocomplete="Nivel de acceso"
                     />
-                    <template v-if="v$.modal.form.accessLevel.$error">
+                    <template v-if="v$.modal.form.access_level.$error">
                         <ul class="mt-1">
                             <li class="text-red-500"
-                                v-for="(error, index) of v$.modal.form.accessLevel.$errors" :key="index">
+                                v-for="(error, index) of v$.modal.form.access_level.$errors" :key="index">
                                 {{ error.$message }}
                             </li>
                         </ul>
@@ -308,13 +308,13 @@ export default {
                     groupId: {
                         required,
                     },
-                    reportId: {
+                    report_id: {
                         required,
                     },
-                    accessLevel: {
+                    access_level: {
                         required,
                     },
-                    datasetId: {
+                    dataset_id: {
                         required,
                     },
                     permission: {
@@ -336,10 +336,10 @@ export default {
                 form: {
                     id: '',
                     name: '',
-                    groupId: '',
-                    reportId: '',
-                    accessLevel: '',
-                    datasetId: '',
+                    group_id: '',
+                    report_id: '',
+                    access_level: '',
+                    dataset_id: '',
                     permission: ''
                 }
             }
@@ -360,10 +360,10 @@ export default {
                 form: {
                     id: row.id,
                     name: row.name,
-                    groupId: row.groupId,
-                    reportId: row.reportId,
-                    accessLevel: row.accessLevel,
-                    datasetId: row.datasetId,
+                    group_id: row.group_id,
+                    report_id: row.report_id,
+                    access_level: row.access_level,
+                    dataset_id: row.dataset_id,
                     permission: row.permission
                 },
             }
@@ -445,10 +445,10 @@ export default {
                 form: {
                     id: '',
                     name: '',
-                    groupId: '',
-                    reportId: '',
-                    accessLevel: '',
-                    datasetId: '',
+                    group_id: '',
+                    report_id: '',
+                    access_level: '',
+                    dataset_id: '',
                     permission: ''
                 },
             }

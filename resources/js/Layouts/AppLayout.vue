@@ -80,6 +80,38 @@ const logout = () => {
                                     <font-awesome-icon icon="users" class="mr-2"/>
                                     Usuarios
                                 </NavLink>
+
+                                <div class="relative inline-flex items-center px-1 pt-1 border-b-2 border-transparent">
+                                    <Dropdown align="left" width="60">
+                                        <template #trigger>
+                                            <a href="javascript:void(0)" class="text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                                                <font-awesome-icon icon="compass-drafting" class="mr-2"/>
+                                                Diseño
+                                                <font-awesome-icon icon="chevron-down" class="ml-2"/>
+                                            </a>
+                                        </template>
+
+                                        <template #content>
+                                            <div class="w-48">
+                                                <DropdownLink :href="route('priority.index')">
+                                                    <font-awesome-icon icon="star" class="mr-2"/>
+                                                    Prioridades
+                                                </DropdownLink>
+
+                                                <DropdownLink :href="route('state.index')">
+                                                    <font-awesome-icon icon="list-ol" class="mr-2"/>
+                                                    Estados
+                                                </DropdownLink>
+
+                                                <DropdownLink :href="route('time-state.index')">
+                                                    <font-awesome-icon icon="clock" class="mr-2"/>
+                                                    Estados de tiempo
+                                                </DropdownLink>
+                                            </div>
+                                        </template>
+                                    </Dropdown>
+                                </div>
+
                             </div>
                         </div>
 

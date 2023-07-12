@@ -59,13 +59,13 @@ class ReportController extends Controller
     {
         if (auth()->user()->can('super-administrador')){
             $report = Report::with('user')
-                ->where('groupId', '=', $groupId)
-                ->where('reportId', '=', $reportId)
+                ->where('group_id', '=', $groupId)
+                ->where('report_id', '=', $reportId)
                 ->first();
         }else {
             $report = auth()->user()->reports
-                ->where('groupId', '=', $groupId)
-                ->where('reportId', '=', $reportId)
+                ->where('group_id', '=', $groupId)
+                ->where('report_id', '=', $reportId)
                 ->first();
 
             if (!$report){
@@ -92,10 +92,10 @@ class ReportController extends Controller
         $report->user_id = Auth::id();
         $report->save();
 
-        if (\auth()->user()->can('super-administrador')){
+        if (auth()->user()->can('super-administrador')){
             $reports = Report::with('user')->get();
         }else {
-            $reports = \auth()->user()->reports;
+            $reports = auth()->user()->reports;
         }
 
         return response()->json($reports, 200);
@@ -112,10 +112,10 @@ class ReportController extends Controller
         $report->update($request->all());
         $report->save();
 
-        if (\auth()->user()->can('super-administrador')){
+        if (auth()->user()->can('super-administrador')){
             $reports = Report::with('user')->get();
         }else {
-            $reports = \auth()->user()->reports;
+            $reports = auth()->user()->reports;
         }
 
         return response()->json($reports, 200);
@@ -177,11 +177,11 @@ class ReportController extends Controller
             ];
 
             $params = (object)[
-                "accessLevel" => $report->accessLevel,
-                "datasetId" => $report->datasetId
+                "accessLevel" => $report->access_level,
+                "datasetId" => $report->dataset_id
             ];
 
-            $response = $client->request('POST', "https://api.powerbi.com/v1.0/myorg/groups/$report->groupId/reports/$report->reportId/GenerateToken", [
+            $response = $client->request('POST', "https://api.powerbi.com/v1.0/myorg/groups/$report->group_id/reports/$report->report_id/GenerateToken", [
                 'headers' => $headers,
                 'json' => $params
             ]);
@@ -190,7 +190,7 @@ class ReportController extends Controller
 
             return (object)[
                 'status' => 200,
-                'tokenId' => $resp->tokenId,
+                'tokenId' => $resp->token_id,
                 'token' => $resp->token,
                 'expiration' => $resp->expiration
             ];

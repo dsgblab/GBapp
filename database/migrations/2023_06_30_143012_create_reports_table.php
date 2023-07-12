@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('groupId');
-            $table->string('reportId');
-            $table->string('accessLevel');
-            $table->string('datasetId');
-            $table->unique(['groupId', 'reportId', 'datasetId'], 'report_unique_group_report_fk');
+            $table->string('group_id');
+            $table->string('report_id');
+            $table->string('access_level');
+            $table->string('dataset_id');
+            $table->unique(['group_id', 'report_id', 'dataset_id'], 'report_unique_group_report_fk');
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });

@@ -14,7 +14,7 @@ class DesignTimeState extends Model
      * @var string[]
      */
     protected $fillable = [
-        'name', 'created_id', 'updated_id'
+        'name'
     ];
 
     /**

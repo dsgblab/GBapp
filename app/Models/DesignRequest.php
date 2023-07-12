@@ -14,9 +14,8 @@ class DesignRequest extends Model
      * @var string[]
      */
     protected $fillable = [
-        'priority_id', 'designer_id', 'seller_id', 'customer_id', 'comments', 'reception_date', 'tentative_date',
-        'real_date', 'delivery_date', 'customer_approved_date', 'estimated_arrival_sherpa_date', 'time_state_id',
-        'state_id', 'observations', 'created_id', 'updated_id'
+        'comments', 'reception_date', 'tentative_date', 'real_date', 'delivery_date',
+        'customer_approved_date', 'estimated_arrival_sherpa_date',  'observations',
     ];
 
     /**

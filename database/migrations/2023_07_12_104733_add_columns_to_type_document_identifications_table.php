@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('type_document_identifications', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->unique();
-            $table->timestamps();
+        Schema::table('type_document_identifications', function (Blueprint $table) {
+            $table->foreignId('created_id')->nullable()->constrained('users');
+            $table->foreignId('updated_id')->nullable()->constrained('users');
         });
     }
 
@@ -23,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('type_document_identifications');
+        Schema::table('type_document_identifications', function (Blueprint $table) {
+            //
+        });
     }
 };

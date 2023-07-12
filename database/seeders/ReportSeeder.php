@@ -16,10 +16,10 @@ class ReportSeeder extends Seeder
     {
         Report::create([
             'name' => 'US Sales Analysis',
-            'groupId' => 'dd52b766-3b70-4c05-801a-edc9da600c8c',
-            'reportId' => 'eae011d1-1ac6-4704-9dd3-88d233c382c0',
-            'accessLevel' => 'View',
-            'datasetId' => '58f0fde6-76b2-4957-8610-23204a178f5e',
+            'group_id' => 'dd52b766-3b70-4c05-801a-edc9da600c8c',
+            'report_id' => 'eae011d1-1ac6-4704-9dd3-88d233c382c0',
+            'access_level' => 'View',
+            'dataset_id' => '58f0fde6-76b2-4957-8610-23204a178f5e',
             'user_id' => 1,
         ]);
 

@@ -15,7 +15,7 @@ class Report extends Model
      * @var string[]
      */
     protected $fillable = [
-        'name', 'group_id', 'report_id', 'access_level', 'dataset_id', 'created_id', 'updated_id'
+        'name', 'group_id', 'report_id', 'access_level', 'dataset_id',
     ];
 
     /**
@@ -29,7 +29,7 @@ class Report extends Model
      * @var string[]
      */
     protected $with = [
-        'user'
+        'user', 'created_by', 'updated_by'
     ];
 
     /**
@@ -51,7 +51,7 @@ class Report extends Model
     /**
      * @return BelongsToMany
      */
-    public function users(): BelongsToMany
+    public function user(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_reports')
             ->withPivot('report_id', 'user_id');

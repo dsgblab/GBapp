@@ -12,8 +12,10 @@ class TypeDocumentIdentificationObserver
      */
     public function creating(TypeDocumentIdentification $typeDocumentIdentification): void
     {
-        $typeDocumentIdentification->created_id = Auth::id();
-        $typeDocumentIdentification->updated_id = Auth::id();
+        if (Auth::check()) {
+            $typeDocumentIdentification->created_id = Auth::id();
+            $typeDocumentIdentification->updated_id = Auth::id();
+        }
     }
 
     /**

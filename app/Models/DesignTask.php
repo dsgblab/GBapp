@@ -14,7 +14,7 @@ class DesignTask extends Model
      * @var string[]
      */
     protected $fillable = [
-        'description', 'created_id', 'updated_id'
+        'description'
     ];
 
     /**
