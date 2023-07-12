@@ -14,7 +14,7 @@ class DesignTimeStateSeeder extends Seeder
     public function run(): void
     {
         $states = [
-            'A tiempo', 'Justo a tiempo', 'Retrasado'
+            'A TIEMPO', 'JUSTO A TIEMPO', 'RETRASADO'
         ];
 
         foreach ($states as $state) {

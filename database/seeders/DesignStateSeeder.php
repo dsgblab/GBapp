@@ -14,7 +14,7 @@ class DesignStateSeeder extends Seeder
     public function run(): void
     {
         $states = [
-            'Pendiente', 'Por Entrega', 'Entregado', 'Rechazado'
+            'PENDIENTE', 'POR ENTREGA', 'ENTREGADO', 'RECHAZADO'
         ];
 
         foreach ($states as $state) {

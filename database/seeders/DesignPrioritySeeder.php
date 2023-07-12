@@ -14,7 +14,7 @@ class DesignPrioritySeeder extends Seeder
     public function run(): void
     {
         $priorities = [
-            'Alta', 'Media', 'Baja'
+            'ALTA', 'MEDIA', 'BAJA'
         ];
 
         foreach ($priorities as $priority) {
