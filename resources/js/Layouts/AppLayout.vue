@@ -93,6 +93,11 @@ const logout = () => {
 
                                         <template #content>
                                             <div class="w-48">
+                                                <DropdownLink :href="route('request.index')">
+                                                    <font-awesome-icon icon="pen-ruler" class="mr-2"/>
+                                                    Solicitudes
+                                                </DropdownLink>
+
                                                 <DropdownLink :href="route('priority.index')">
                                                     <font-awesome-icon icon="star" class="mr-2"/>
                                                     Prioridades

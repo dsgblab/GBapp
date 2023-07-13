@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class DesignRequest extends Model
@@ -40,6 +41,62 @@ class DesignRequest extends Model
     ];
 
     /**
+     * @var string[]
+     */
+    protected $with = [
+        'priority', 'designer', 'seller', 'customer', 'time_state',
+        'state', 'created_by', 'updated_by', 'tasks'
+    ];
+
+    /**
+     * @return HasOne
+     */
+    public function priority(): HasOne
+    {
+        return $this->hasOne(DesignPriority::class, 'id', 'priority_id');
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function designer(): HasOne
+    {
+        return $this->hasOne(User::class, 'id', 'designer_id');
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function seller(): HasOne
+    {
+        return $this->hasOne(User::class, 'id', 'seller_id');
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function customer(): HasOne
+    {
+        return $this->hasOne(User::class, 'id', 'customer_id');
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function time_state(): HasOne
+    {
+        return $this->hasOne(DesignTimeState::class, 'id', 'time_state_id');
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function state(): HasOne
+    {
+        return $this->hasOne(DesignState::class, 'id', 'state_id');
+    }
+
+    /**
      * @return HasOne
      */
     public function created_by(): HasOne
@@ -53,5 +110,13 @@ class DesignRequest extends Model
     public function updated_by(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'updated_id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function tasks(): HasMany
+    {
+        return $this->hasMany(DesignTask::class, 'design_request_id', 'id');
     }
 }

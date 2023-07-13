@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DesignPriorityController;
+use App\Http\Controllers\DesignRequestController;
 use App\Http\Controllers\DesignStateController;
 use App\Http\Controllers\DesignTimeStateController;
 use App\Http\Controllers\PermissionController;
@@ -42,6 +43,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::resource('type-document-identification', TypeDocumentIdentificationController::class)->only('index', 'store', 'update', 'destroy');
 
     Route::prefix('design')->group(function (){
+        Route::resource('request', DesignRequestController::class)->only('index', 'store', 'update', 'destroy');
         Route::resource('priority', DesignPriorityController::class)->only('index', 'store', 'update', 'destroy');
         Route::resource('state', DesignStateController::class)->only('index', 'store', 'update', 'destroy');
         Route::resource('time-state', DesignTimeStateController::class)->only('index', 'store', 'update', 'destroy');

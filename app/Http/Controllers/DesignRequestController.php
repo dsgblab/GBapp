@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DesignPriority;
 use App\Models\DesignRequest;
+use App\Models\DesignState;
+use App\Models\DesignTimeState;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -16,9 +19,15 @@ class DesignRequestController extends Controller
     public function index()
     {
         $requests = DesignRequest::all();
+        $priorities = DesignPriority::all();
+        $time_states = DesignTimeState::all();
+        $states = DesignState::all();
 
         return Inertia::render('Design/Request', [
-            'requests' => $requests
+            'requests' => $requests,
+            'priorities' => $priorities,
+            'time_states' => $time_states,
+            'states' => $states
         ]);
     }
 
