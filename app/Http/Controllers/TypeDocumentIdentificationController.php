@@ -18,12 +18,11 @@ class TypeDocumentIdentificationController extends Controller
         $type_document_identifications = TypeDocumentIdentification::all();
 
         return Inertia::render('TypeDocumentIdentification', [
-            'type_document_identifications' => $type_document_identifications
+            'type_document_identifications' => $type_document_identifications,
         ]);
     }
 
     /**
-     * @param Request $request
      * @return JsonResponse
      */
     public function store(Request $request)
@@ -32,15 +31,14 @@ class TypeDocumentIdentificationController extends Controller
             TypeDocumentIdentification::create($request->except('id'));
 
             $type_document_identifications = TypeDocumentIdentification::all();
+
             return response()->json($type_document_identifications, 200);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return response()->json($e->getMessage(), 500);
         }
     }
 
     /**
-     * @param Request $request
-     * @param $id
      * @return JsonResponse
      */
     public function update(Request $request, $id)
@@ -51,14 +49,14 @@ class TypeDocumentIdentificationController extends Controller
             $designState->update();
 
             $type_document_identifications = TypeDocumentIdentification::all();
+
             return response()->json($type_document_identifications, 200);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return response()->json($e->getMessage(), 500);
         }
     }
 
     /**
-     * @param $id
      * @return JsonResponse
      */
     public function destroy($id)
@@ -66,9 +64,10 @@ class TypeDocumentIdentificationController extends Controller
         try {
             TypeDocumentIdentification::destroy($id);
 
-            $type_document_identifications = º::all();
+            $type_document_identifications = TypeDocumentIdentification::all();
+
             return response()->json($type_document_identifications, 200);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return response()->json($e->getMessage(), 500);
         }
     }

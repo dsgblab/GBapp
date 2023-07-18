@@ -32,12 +32,11 @@ class RoleController extends Controller
 
         return Inertia::render('Roles', [
             'roles' => $roles,
-            'permissions' => $permissions
+            'permissions' => $permissions,
         ]);
     }
 
     /**
-     * @param Request $request
      * @return JsonResponse
      */
     public function store(Request $request)
@@ -50,16 +49,16 @@ class RoleController extends Controller
             DB::commit();
 
             $roles = Role::with('permissions')->get();
+
             return response()->json($roles, 200);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             DB::rollBack();
+
             return response()->json($e->getMessage(), 500);
         }
     }
 
     /**
-     * @param Request $request
-     * @param $id
      * @return JsonResponse
      */
     public function update(Request $request, $id)
@@ -74,15 +73,16 @@ class RoleController extends Controller
             DB::commit();
 
             $roles = Role::with('permissions')->get();
+
             return response()->json($roles, 200);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             DB::rollBack();
+
             return response()->json($e->getMessage(), 500);
         }
     }
 
     /**
-     * @param $id
      * @return JsonResponse
      */
     public function destroy($id)
@@ -93,9 +93,11 @@ class RoleController extends Controller
             DB::commit();
 
             $roles = Role::with('permissions')->get();
+
             return response()->json($roles, 200);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             DB::rollBack();
+
             return response()->json($e->getMessage(), 500);
         }
     }

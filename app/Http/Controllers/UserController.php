@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Report;
+use App\Models\TypeDocumentIdentification;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -29,21 +30,22 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('roles', 'permissions', 'reports')->get();
+        $users = User::with('roles', 'permissions', 'reports', 'type_identification')->get();
         $roles = Role::all();
         $permissions = Permission::all();
         $reports = Report::all();
+        $type_document_identifications = TypeDocumentIdentification::all();
 
         return Inertia::render('Users', [
             'users' => $users,
             'roles' => $roles,
             'permissions' => $permissions,
-            'reports' => $reports
+            'reports' => $reports,
+            'type_document_identifications' => $type_document_identifications,
         ]);
     }
 
     /**
-     * @param Request $request
      * @return JsonResponse
      */
     public function store(Request $request)
@@ -59,17 +61,17 @@ class UserController extends Controller
 
             DB::commit();
 
-            $users = User::with('roles', 'permissions', 'reports')->get();
+            $users = User::with('roles', 'permissions', 'reports', 'type_identification')->get();
+
             return response()->json($users, 200);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             DB::rollBack();
+
             return response()->json($e->getMessage(), 500);
         }
     }
 
     /**
-     * @param Request $request
-     * @param $id
      * @return JsonResponse
      */
     public function update(Request $request, $id)
@@ -79,12 +81,14 @@ class UserController extends Controller
             $user = User::find($id);
 
             $user->update([
+                'document' => $request->document,
+                'type_document_identification_id' => $request->type_document_identification_id,
                 'name' => $request->name,
                 'username' => $request->username,
                 'email' => $request->email,
             ]);
 
-            if ($request->change_password){
+            if ($request->change_password) {
                 $user->password = $request->password;
             }
 
@@ -96,24 +100,25 @@ class UserController extends Controller
 
             DB::commit();
 
-            $users = User::with('roles', 'permissions', 'reports')->get();
+            $users = User::with('roles', 'permissions', 'reports', 'type_identification')->get();
+
             return response()->json($users, 200);
         } catch (\Exception $e) {
             DB::rollBack();
+
             return response()->json($e->getMessage(), 500);
         }
     }
 
     /**
-     * @param $id
      * @return JsonResponse
      */
     public function destroy($id)
     {
-         User::destroy($id);
+        User::destroy($id);
 
-        $users = User::with('roles', 'permissions', 'reports')->get();
+        $users = User::with('roles', 'permissions', 'reports', 'type_identification')->get();
+
         return response()->json($users, 200);
     }
 }
-

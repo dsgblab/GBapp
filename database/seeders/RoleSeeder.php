@@ -17,7 +17,7 @@ class RoleSeeder extends Seeder
             'role.create', 'role.edit', 'role.destroy',
             'user.create', 'user.edit', 'roles.destroy',
             'permission.create', 'permission.edit', 'permission.destroy',
-            'report.create', 'report.edit', 'report.destroy'
+            'report.create', 'report.edit', 'report.destroy',
         ];
 
         foreach ($permissions as $permission) {
@@ -26,7 +26,6 @@ class RoleSeeder extends Seeder
 
         $role = Role::create(['name' => 'super-administrador']);
         $role->syncPermissions($permissions);
-
 
     }
 }

@@ -22,6 +22,14 @@
                                 <tr>
                                     <th scope="col"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Documento
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Tipo Documento
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Nombre
                                     </th>
                                     <th scope="col"
@@ -64,6 +72,14 @@
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                 <tr v-for="user in records">
+                                    <td class="px-6 py-4 text-left text-sm font-medium">
+                                        {{ user.document }}
+                                    </td>
+
+                                    <td class="px-6 py-4 text-left text-sm font-medium">
+                                        {{ user.type_identification.name }}
+                                    </td>
+
                                     <td class="px-6 py-4 text-left text-sm font-medium">
                                         {{ user.name }}
                                     </td>
@@ -151,6 +167,47 @@
             </template>
 
             <template #content>
+                <div class="mt-4">
+                    <InputLabel value="Tipo Documento"/>
+
+                    <select class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
+                            v-model="modal.form.type_document_identification_id"
+                            :class="{'border-red-500': v$.modal.form.type_document_identification_id.$error}"
+                            required>
+                        <option value="" disabled selected>Seleccione…</option>
+                        <option v-for="type_document_identification in type_document_identifications" :value="type_document_identification.id">{{ type_document_identification.name }}</option>
+                    </select>
+
+                    <template v-if="v$.modal.form.name.$error">
+                        <ul class="mt-1">
+                            <li class="text-red-500"
+                                v-for="(error, index) of v$.modal.form.name.$errors" :key="index">
+                                {{ error.$message }}
+                            </li>
+                        </ul>
+                    </template>
+                </div>
+
+                <div class="mt-4">
+                    <InputLabel value="CC/NIT"/>
+                    <TextInput
+                        v-model="modal.form.document"
+                        type="text"
+                        class="mt-1 block w-full"
+                        :class="{'border-red-500': v$.modal.form.document.$error}"
+                        required
+                        autocomplete="off"
+                    />
+                    <template v-if="v$.modal.form.document.$error">
+                        <ul class="mt-1">
+                            <li class="text-red-500"
+                                v-for="(error, index) of v$.modal.form.document.$errors" :key="index">
+                                {{ error.$message }}
+                            </li>
+                        </ul>
+                    </template>
+                </div>
+
                 <div class="mt-4">
                     <InputLabel value="Nombre"/>
                     <TextInput
@@ -349,9 +406,8 @@ import SecondaryButton from '@/Components/SecondaryButton.vue';
 import DialogModal from '@/Components/DialogModal.vue';
 import TextInput from "@/Components/TextInput.vue";
 import InputError from "@/Components/InputError.vue";
-
 import {useVuelidate} from '@vuelidate/core'
-import {required, requiredIf, email, sameAs, minLength} from '@vuelidate/validators'
+import {required, requiredIf, email, sameAs, minLength, numeric} from '@vuelidate/validators'
 import InputLabel from "@/Components/InputLabel.vue";
 import Checkbox from "@/Components/Checkbox.vue";
 import DangerButton from "@/Components/DangerButton.vue";
@@ -378,7 +434,8 @@ export default {
         users: Array,
         roles: Array,
         permissions: Array,
-        reports: Array
+        reports: Array,
+        type_document_identifications: Array
     },
 
     validations() {
@@ -387,6 +444,13 @@ export default {
                 form: {
                     id: {
                         requiredIf: requiredIf(this.modal.editMode)
+                    },
+                    type_document_identification_id: {
+                        required
+                    },
+                    document: {
+                        required,
+                        numeric
                     },
                     name: {
                         required
@@ -432,6 +496,8 @@ export default {
                 open: false,
                 form: {
                     id: '',
+                    type_document_identification_id: '',
+                    document: '',
                     name: '',
                     username: '',
                     email: '',
@@ -459,6 +525,8 @@ export default {
                 open: true,
                 form: {
                     id: row.id,
+                    type_document_identification_id: row.type_identification.id,
+                    document: row.document,
                     name: row.name,
                     username: row.username,
                     email: row.email,
@@ -547,6 +615,8 @@ export default {
                 open: false,
                 form: {
                     id: '',
+                    type_document_identification_id: '',
+                    document: '',
                     name: '',
                     username: '',
                     email: '',

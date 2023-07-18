@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
@@ -33,6 +33,7 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
+        'type',
     ];
 
     /**
@@ -56,7 +57,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'created_at' => 'datetime:Y-m-d h:i:s A',
-        'updated_at' => 'datetime:Y-m-d h:i:s A'
+        'updated_at' => 'datetime:Y-m-d h:i:s A',
     ];
 
     /**
@@ -67,29 +68,25 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
         'role_names',
-        'permission_names'
+        'permission_names',
     ];
 
-    /**
-     * @return BelongsToMany
-     */
     public function reports(): BelongsToMany
     {
         return $this->belongsToMany(Report::class, 'user_reports')
             ->withPivot('user_id', 'report_id');
     }
 
-    /**
-     * @return Collection
-     */
+    public function type_identification(): HasOne
+    {
+        return $this->hasOne(TypeDocumentIdentification::class, 'id', 'type_document_identification_id');
+    }
+
     public function getRoleNamesAttribute(): Collection
     {
         return $this->getRoleNames();
     }
 
-    /**
-     * @return Collection
-     */
     public function getPermissionNamesAttribute(): Collection
     {
         return $this->getAllPermissions()->pluck('name');

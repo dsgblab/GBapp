@@ -14,14 +14,14 @@ class DesignTask extends Model
      * @var string[]
      */
     protected $fillable = [
-        'description'
+        'description',
     ];
 
     /**
      * @var string[]
      */
     protected $hidden = [
-        'created_id', 'updated_id'
+        'created_id', 'updated_id',
     ];
 
     /**
@@ -29,20 +29,14 @@ class DesignTask extends Model
      */
     protected $casts = [
         'created_at' => 'datetime:Y-m-d h:i:s A',
-        'updated_at' => 'datetime:Y-m-d h:i:s A'
+        'updated_at' => 'datetime:Y-m-d h:i:s A',
     ];
 
-    /**
-     * @return HasOne
-     */
     public function created_by(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'created_id');
     }
 
-    /**
-     * @return HasOne
-     */
     public function updated_by(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'updated_id');

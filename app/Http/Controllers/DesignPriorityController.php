@@ -7,7 +7,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-use Throwable;
 
 class DesignPriorityController extends Controller
 {
@@ -19,12 +18,11 @@ class DesignPriorityController extends Controller
         $priorities = DesignPriority::all();
 
         return Inertia::render('Design/Priority', [
-            'priorities' => $priorities
+            'priorities' => $priorities,
         ]);
     }
 
     /**
-     * @param Request $request
      * @return JsonResponse
      */
     public function store(Request $request)
@@ -33,15 +31,14 @@ class DesignPriorityController extends Controller
             DesignPriority::create($request->except('id'));
 
             $priorities = DesignPriority::all();
+
             return response()->json($priorities, 200);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return response()->json($e->getMessage(), 500);
         }
     }
 
     /**
-     * @param Request $request
-     * @param $id
      * @return JsonResponse
      */
     public function update(Request $request, $id)
@@ -52,14 +49,14 @@ class DesignPriorityController extends Controller
             $designPriority->update();
 
             $priorities = DesignPriority::all();
+
             return response()->json($priorities, 200);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return response()->json($e->getMessage(), 500);
         }
     }
 
     /**
-     * @param $id
      * @return JsonResponse
      */
     public function destroy($id)
@@ -68,8 +65,9 @@ class DesignPriorityController extends Controller
             DesignPriority::destroy($id);
 
             $priorities = DesignPriority::all();
+
             return response()->json($priorities, 200);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return response()->json($e->getMessage(), 500);
         }
     }

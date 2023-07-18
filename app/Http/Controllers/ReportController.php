@@ -20,6 +20,7 @@ class ReportController extends Controller
 
     /**
      * Verifies that the user has sufficient permissions to access the methods
+     *
      * @throws GuzzleException
      */
     public function __construct()
@@ -38,37 +39,36 @@ class ReportController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->can('super-administrador')){
+        if (auth()->user()->can('super-administrador')) {
             $reports = Report::with('user')->get();
-        }else {
+        } else {
             $reports = auth()->user()->reports;
         }
 
         return Inertia::render('Report', [
-            'reports' => $reports
+            'reports' => $reports,
         ]);
     }
 
     /**
-     * @param $groupId
-     * @param $reportId
      * @return Response
+     *
      * @throws GuzzleException
      */
     public function view($groupId, $reportId)
     {
-        if (auth()->user()->can('super-administrador')){
+        if (auth()->user()->can('super-administrador')) {
             $report = Report::with('user')
                 ->where('group_id', '=', $groupId)
                 ->where('report_id', '=', $reportId)
                 ->first();
-        }else {
+        } else {
             $report = auth()->user()->reports
                 ->where('group_id', '=', $groupId)
                 ->where('report_id', '=', $reportId)
                 ->first();
 
-            if (!$report){
+            if (! $report) {
                 abort(403);
             }
         }
@@ -78,12 +78,11 @@ class ReportController extends Controller
         $report->embedUrl = "https://app.powerbi.com/reportEmbed?reportId=$reportId&groupId=$groupId";
 
         return Inertia::render('ViewReport', [
-            'report' => $report
+            'report' => $report,
         ]);
     }
 
     /**
-     * @param Request $request
      * @return JsonResponse
      */
     public function store(Request $request)
@@ -92,9 +91,9 @@ class ReportController extends Controller
         $report->user_id = Auth::id();
         $report->save();
 
-        if (auth()->user()->can('super-administrador')){
+        if (auth()->user()->can('super-administrador')) {
             $reports = Report::with('user')->get();
-        }else {
+        } else {
             $reports = auth()->user()->reports;
         }
 
@@ -102,8 +101,6 @@ class ReportController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @param $id
      * @return JsonResponse
      */
     public function update(Request $request, $id)
@@ -112,9 +109,9 @@ class ReportController extends Controller
         $report->update($request->all());
         $report->save();
 
-        if (auth()->user()->can('super-administrador')){
+        if (auth()->user()->can('super-administrador')) {
             $reports = Report::with('user')->get();
-        }else {
+        } else {
             $reports = auth()->user()->reports;
         }
 
@@ -123,6 +120,7 @@ class ReportController extends Controller
 
     /**
      * @return mixed
+     *
      * @throws GuzzleException
      */
     protected function getUserAccessToken()
@@ -130,18 +128,18 @@ class ReportController extends Controller
         $user_id = config('power-bi.user_id');
 
         $client = new Client([
-            'base_uri' => "https://login.microsoftonline.com/$user_id/oauth2/token"
+            'base_uri' => "https://login.microsoftonline.com/$user_id/oauth2/token",
         ]);
 
         $response = $client->request('POST', "https://login.microsoftonline.com/$user_id/oauth2/token", [
             'multipart' => [
                 [
                     'name' => 'resource',
-                    'contents' => config('power-bi.resource')
+                    'contents' => config('power-bi.resource'),
                 ],
                 [
                     'name' => 'grant_type',
-                    'contents' => config('power-bi.grant_type')
+                    'contents' => config('power-bi.grant_type'),
                 ],
                 [
                     'name' => 'client_secret',
@@ -149,7 +147,7 @@ class ReportController extends Controller
                 ],
                 [
                     'name' => 'client_id',
-                    'contents' => config('power-bi.client_id')
+                    'contents' => config('power-bi.client_id'),
                 ],
             ],
         ]);
@@ -158,46 +156,45 @@ class ReportController extends Controller
     }
 
     /**
-     * @param $userAccessToken
-     * @param $report
      * @return object
+     *
      * @throws GuzzleException
      */
     protected function getReportAccessToken($userAccessToken, $report)
     {
         try {
             $client = new Client([
-                'base_uri' => "https://api.powerbi.com"
+                'base_uri' => 'https://api.powerbi.com',
             ]);
 
             $headers = [
-                "Authorization" => "Bearer $userAccessToken",
-                "Content-type" => "application/json",
-                "Accept" => "application/json"
+                'Authorization' => "Bearer $userAccessToken",
+                'Content-type' => 'application/json',
+                'Accept' => 'application/json',
             ];
 
-            $params = (object)[
-                "accessLevel" => $report->access_level,
-                "datasetId" => $report->dataset_id
+            $params = (object) [
+                'accessLevel' => $report->access_level,
+                'datasetId' => $report->dataset_id,
             ];
 
             $response = $client->request('POST', "https://api.powerbi.com/v1.0/myorg/groups/$report->group_id/reports/$report->report_id/GenerateToken", [
                 'headers' => $headers,
-                'json' => $params
+                'json' => $params,
             ]);
 
             $resp = json_decode($response->getBody()->getContents());
 
-            return (object)[
+            return (object) [
                 'status' => 200,
                 'tokenId' => $resp->token_id,
                 'token' => $resp->token,
-                'expiration' => $resp->expiration
+                'expiration' => $resp->expiration,
             ];
-        }catch (\Exception $e){
-            return (object)[
+        } catch (\Exception $e) {
+            return (object) [
                 'status' => 500,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ];
         }
     }

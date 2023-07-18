@@ -12,14 +12,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-       $this->call([
-           TypeDocumentIdentificationSeeder::class,
-           RoleSeeder::class,
-           UserSeeder::class,
-           ReportSeeder::class,
-           DesignPrioritySeeder::class,
-           DesignStateSeeder::class,
-           DesignTimeStateSeeder::class
-       ]);
+        $this->call([
+            TypeDocumentIdentificationSeeder::class,
+            RoleSeeder::class,
+            UserSeeder::class,
+            ReportSeeder::class,
+            DesignPrioritySeeder::class,
+            DesignStateSeeder::class,
+            DesignTimeStateSeeder::class,
+        ]);
     }
 }

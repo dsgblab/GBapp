@@ -29,12 +29,11 @@ class PermissionController extends Controller
         $permissions = Permission::with('roles')->get();
 
         return Inertia::render('Permissions', [
-            'permissions' => $permissions
+            'permissions' => $permissions,
         ]);
     }
 
     /**
-     * @param Request $request
      * @return JsonResponse
      */
     public function store(Request $request)
@@ -45,16 +44,16 @@ class PermissionController extends Controller
             DB::commit();
 
             $permissions = Permission::with('roles')->get();
+
             return response()->json($permissions, 200);
         } catch (\Exception $e) {
             DB::rollBack();
+
             return response()->json($e->getMessage(), 500);
         }
     }
 
     /**
-     * @param Request $request
-     * @param $id
      * @return JsonResponse
      */
     public function update(Request $request, $id)
@@ -68,15 +67,16 @@ class PermissionController extends Controller
             DB::commit();
 
             $permissions = Permission::with('roles')->get();
+
             return response()->json($permissions, 200);
         } catch (\Exception $e) {
             DB::rollBack();
+
             return response()->json($e->getMessage(), 500);
         }
     }
 
     /**
-     * @param $id
      * @return JsonResponse
      */
     public function destroy($id)
@@ -87,11 +87,12 @@ class PermissionController extends Controller
             DB::commit();
 
             $permissions = Permission::with('roles')->get();
+
             return response()->json($permissions, 200);
         } catch (\Exception $e) {
             DB::rollBack();
+
             return response()->json($e->getMessage(), 500);
         }
     }
-
 }

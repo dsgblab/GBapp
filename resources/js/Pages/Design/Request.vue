@@ -63,6 +63,41 @@
 
                                     <th scope="col"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Fecha real
+                                    </th>
+
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Fecha entrega
+                                    </th>
+
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Fecha aprobación cliente
+                                    </th>
+
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Fecha Sherpa
+                                    </th>
+
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Estado tiempo
+                                    </th>
+
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Estado
+                                    </th>
+
+                                     <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Observaciones
+                                    </th>
+
+                                    <th scope="col"
+                                        class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     </th>
                                 </tr>
                                 </thead>
@@ -70,6 +105,79 @@
                                     <tr v-for="row in table.data" v-if="table.data.length > 0">
                                         <td class="px-6 py-4 text-left text-sm font-medium">
                                             {{ row.id }}
+                                        </td>
+
+                                        <td class="px-6 py-4 text-left text-sm font-medium">
+                                            {{ row.priority.name }}
+                                        </td>
+
+                                        <td class="px-6 py-4 text-left text-sm font-medium">
+                                            {{ row.designer.name }}
+                                        </td>
+
+                                        <td class="px-6 py-4 text-left text-sm font-medium">
+                                            {{ row.seller.name }}
+                                        </td>
+
+                                        <td class="px-6 py-4 text-left text-sm font-medium">
+                                            {{ row.customer.name }}
+                                        </td>
+
+                                        <td class="px-6 py-4 text-left text-sm font-medium">
+                                            {{ row.comments }}
+                                        </td>
+
+                                        <td class="px-6 py-4 text-left text-sm font-medium">
+                                            {{ row.reception_date }}
+                                        </td>
+
+                                        <td class="px-6 py-4 text-left text-sm font-medium">
+                                            {{ row.tentative_date }}
+                                        </td>
+
+                                        <td class="px-6 py-4 text-left text-sm font-medium">
+                                            {{ row.real_date }}
+                                        </td>
+
+                                        <td class="px-6 py-4 text-left text-sm font-medium">
+                                            {{ row.delivery_date }}
+                                        </td>
+
+                                        <td class="px-6 py-4 text-left text-sm font-medium">
+                                            {{ row.customer_approved_date }}
+                                        </td>
+
+                                        <td class="px-6 py-4 text-left text-sm font-medium">
+                                            {{ row.estimated_arrival_sherpa_date }}
+                                        </td>
+
+                                        <td class="px-6 py-4 text-left text-sm font-medium">
+                                            {{ row.time_state.name }}
+                                        </td>
+
+                                        <td class="px-6 py-4 text-left text-sm font-medium">
+                                            {{ row.state.name }}
+                                        </td>
+
+                                        <td class="px-6 py-4 text-left text-sm font-medium">
+                                            {{ row.observations }}
+                                        </td>
+
+                                        <td class="px-6 py-4 text-center text-sm font-medium">
+                                            <div class="flex flex-row">
+                                                <SecondaryButton class="mr-2" @click="">
+                                                    <font-awesome-icon :icon="['far', 'eye']" />
+                                                </SecondaryButton>
+
+                                                <SecondaryButton class="mr-2" @click="">
+                                                    <font-awesome-icon :icon="['far', 'pen-to-square']" />
+                                                </SecondaryButton>
+
+                                                <DangerButton @click="">
+                                                    <font-awesome-icon :icon="['far', 'trash-can']" />
+                                                </DangerButton>
+                                            </div>
+
                                         </td>
                                     </tr>
 
@@ -118,17 +226,17 @@
                         <InputLabel value="Diseñador" />
 
                         <select class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
-                                v-model="modal.form.priority_id"
-                                :class="{'border-red-500': v$.modal.form.priority_id.$error}"
+                                v-model="modal.form.designer_id"
+                                :class="{'border-red-500': v$.modal.form.designer_id.$error}"
                                 required>
                             <option value="" disabled selected>Seleccione…</option>
-                            <option v-for="priority in priorities" :value="priority.id">{{ priority.name }}</option>
+                            <option v-for="designer in designers" :value="designer.id">{{ designer.name }}</option>
                         </select>
 
-                        <template v-if="v$.modal.form.priority_id.$error">
+                        <template v-if="v$.modal.form.designer_id.$error">
                             <ul class="mt-1">
                                 <li class="text-red-500"
-                                    v-for="(error, index) of v$.modal.form.priority_id.$errors" :key="index">
+                                    v-for="(error, index) of v$.modal.form.designer_id.$errors" :key="index">
                                     {{ error.$message }}
                                 </li>
                             </ul>
@@ -139,17 +247,17 @@
                         <InputLabel value="Vendedor" />
 
                         <select class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
-                                v-model="modal.form.priority_id"
-                                :class="{'border-red-500': v$.modal.form.priority_id.$error}"
+                                v-model="modal.form.seller_id"
+                                :class="{'border-red-500': v$.modal.form.seller_id.$error}"
                                 required>
                             <option value="" disabled selected>Seleccione…</option>
-                            <option v-for="priority in priorities" :value="priority.id">{{ priority.name }}</option>
+                            <option v-for="seller in sellers" :value="seller.id">{{ seller.name }}</option>
                         </select>
 
-                        <template v-if="v$.modal.form.priority_id.$error">
+                        <template v-if="v$.modal.form.seller_id.$error">
                             <ul class="mt-1">
                                 <li class="text-red-500"
-                                    v-for="(error, index) of v$.modal.form.priority_id.$errors" :key="index">
+                                    v-for="(error, index) of v$.modal.form.seller_id.$errors" :key="index">
                                     {{ error.$message }}
                                 </li>
                             </ul>
@@ -160,17 +268,17 @@
                         <InputLabel value="Cliente" />
 
                         <select class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
-                                v-model="modal.form.priority_id"
-                                :class="{'border-red-500': v$.modal.form.priority_id.$error}"
+                                v-model="modal.form.customer_id"
+                                :class="{'border-red-500': v$.modal.form.customer_id.$error}"
                                 required>
                             <option value="" disabled selected>Seleccione…</option>
-                            <option v-for="priority in priorities" :value="priority.id">{{ priority.name }}</option>
+                            <option v-for="customer in customers" :value="customer.id">{{ customer.name }}</option>
                         </select>
 
-                        <template v-if="v$.modal.form.priority_id.$error">
+                        <template v-if="v$.modal.form.customer_id.$error">
                             <ul class="mt-1">
                                 <li class="text-red-500"
-                                    v-for="(error, index) of v$.modal.form.priority_id.$errors" :key="index">
+                                    v-for="(error, index) of v$.modal.form.customer_id.$errors" :key="index">
                                     {{ error.$message }}
                                 </li>
                             </ul>
@@ -229,7 +337,8 @@
                             cancelText="Cancelar"
                             selectText="Seleccionar"
                             :enable-time-picker="false"
-                            :teleport="true"/>
+                            :teleport="true"
+                            format="dd-MM-yyyy"/>
 
                         <template v-if="v$.modal.form.reception_date.$error">
                             <ul class="mt-1">
@@ -251,7 +360,8 @@
                             cancelText="Cancelar"
                             selectText="Seleccionar"
                             :enable-time-picker="false"
-                            :teleport="true"/>
+                            :teleport="true"
+                            format="dd-MM-yyyy"/>
 
                         <template v-if="v$.modal.form.tentative_date.$error">
                             <ul class="mt-1">
@@ -273,7 +383,8 @@
                             cancelText="Cancelar"
                             selectText="Seleccionar"
                             :enable-time-picker="false"
-                            :teleport="true"/>
+                            :teleport="true"
+                            format="dd-MM-yyyy"/>
 
                         <template v-if="v$.modal.form.real_date.$error">
                             <ul class="mt-1">
@@ -295,7 +406,8 @@
                             cancelText="Cancelar"
                             selectText="Seleccionar"
                             :enable-time-picker="false"
-                            :teleport="true"/>
+                            :teleport="true"
+                            format="dd-MM-yyyy"/>
 
                         <template v-if="v$.modal.form.delivery_date.$error">
                             <ul class="mt-1">
@@ -317,7 +429,8 @@
                             cancelText="Cancelar"
                             selectText="Seleccionar"
                             :enable-time-picker="false"
-                            :teleport="true"/>
+                            :teleport="true"
+                            format="dd-MM-yyyy"/>
 
                         <template v-if="v$.modal.form.customer_approved_date.$error">
                             <ul class="mt-1">
@@ -339,7 +452,8 @@
                             cancelText="Cancelar"
                             selectText="Seleccionar"
                             :enable-time-picker="false"
-                            :teleport="true"/>
+                            :teleport="true"
+                            format="dd-MM-yyyy"/>
 
                         <template v-if="v$.modal.form.estimated_arrival_sherpa_date.$error">
                             <ul class="mt-1">
@@ -387,16 +501,20 @@
                         </template>
                     </div>
                 </div>
-
-
-
-
             </template>
 
             <template #footer>
                 <SecondaryButton @click="closeModal">
                     Cancelar
                 </SecondaryButton>
+
+                <PrimaryButton class="ml-3" @click="update" v-if="modal.editMode">
+                    Actualizar
+                </PrimaryButton>
+
+                <PrimaryButton class="ml-3" @click="store" v-else>
+                    Guardar
+                </PrimaryButton>
             </template>
 
         </DialogModal>
@@ -416,9 +534,11 @@ import TextInput from "@/Components/TextInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
+import DangerButton from "@/Components/DangerButton.vue";
 
 export default {
     components: {
+        DangerButton,
         InputLabel,
         TextInput,
         FontAwesomeIcon,
@@ -437,7 +557,10 @@ export default {
         requests: Array,
         priorities: Array,
         time_states: Array,
-        states: Array
+        states: Array,
+        designers: Array,
+        customers: Array,
+        sellers: Array
     },
 
     validations(){
@@ -494,11 +617,72 @@ export default {
 
     methods: {
         store(){
+            this.v$.modal.form.$touch()
+
+            if (this.v$.modal.form.$invalid){
+                this.$swal({
+                    icon: 'error',
+                    title: 'ERROR',
+                    text: 'Verifica que toda la información este correctamente diligenciada'
+                });
+            }else {
+                axios.post(route('request.store'), this.modal.form).then(resp => {
+                    this.closeModal()
+                    this.table.data = resp.data
+                }).catch(err => {
+                    this.$swal({
+                        icon: 'error',
+                        title: 'Error',
+                        text: err.response.data
+                    });
+                })
+            }
 
         },
 
         update(){
+            this.v$.modal.form.$touch()
 
+            if (this.v$.modal.form.$invalid){
+                this.$swal({
+                    icon: 'error',
+                    title: 'ERROR',
+                    text: 'Verifica que toda la información este correctamente diligenciada'
+                });
+            }else {
+                axios.put(route('request.update', this.modal.form.id), this.modal.form).then(resp => {
+                    this.closeModal()
+                    this.table.data = resp.data
+                }).catch(err => {
+                    this.$swal({
+                        icon: 'error',
+                        title: 'Error',
+                        text: err.response.data
+                    });
+                })
+            }
+        },
+
+        destroy(id){
+            this.$swal({
+                icon: 'question',
+                title: '¿Eliminar registro?',
+                text: "¡Esta acción no es reversible!",
+                showCancelButton: true,
+                confirmButtonText: '¡Si, Eliminar!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.delete(route('request.destroy', id)).then(resp => {
+                        this.table.data = resp.data
+                    }).catch(err => {
+                        this.$swal({
+                            icon: 'error',
+                            title: 'Error',
+                            text: err.response.data
+                        });
+                    })
+                }
+            })
         },
 
         closeModal(){
@@ -522,6 +706,8 @@ export default {
                     observations: ''
                 }
             }
+
+            this.v$.modal.form.$reset()
         }
     }
 

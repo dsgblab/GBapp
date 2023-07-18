@@ -14,14 +14,14 @@ class DesignTimeState extends Model
      * @var string[]
      */
     protected $fillable = [
-        'name'
+        'name',
     ];
 
     /**
      * @var string[]
      */
     protected $hidden = [
-        'created_id', 'updated_id'
+        'created_id', 'updated_id',
     ];
 
     /**
@@ -29,27 +29,21 @@ class DesignTimeState extends Model
      */
     protected $casts = [
         'created_at' => 'datetime:Y-m-d h:i:s A',
-        'updated_at' => 'datetime:Y-m-d h:i:s A'
+        'updated_at' => 'datetime:Y-m-d h:i:s A',
     ];
 
     /**
      * @var string[]
      */
     protected $with = [
-        'created_by', 'updated_by'
+        'created_by', 'updated_by',
     ];
 
-    /**
-     * @return HasOne
-     */
     public function created_by(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'created_id');
     }
 
-    /**
-     * @return HasOne
-     */
     public function updated_by(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'updated_id');

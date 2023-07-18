@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\DesignPriority;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DesignPrioritySeeder extends Seeder
@@ -14,7 +13,7 @@ class DesignPrioritySeeder extends Seeder
     public function run(): void
     {
         $priorities = [
-            'ALTA', 'MEDIA', 'BAJA'
+            'ALTA', 'MEDIA', 'BAJA',
         ];
 
         foreach ($priorities as $priority) {

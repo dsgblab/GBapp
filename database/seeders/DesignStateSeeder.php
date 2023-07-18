@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\DesignState;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DesignStateSeeder extends Seeder
@@ -14,7 +13,7 @@ class DesignStateSeeder extends Seeder
     public function run(): void
     {
         $states = [
-            'PENDIENTE', 'POR ENTREGA', 'ENTREGADO', 'RECHAZADO'
+            'PENDIENTE', 'POR ENTREGA', 'ENTREGADO', 'RECHAZADO',
         ];
 
         foreach ($states as $state) {

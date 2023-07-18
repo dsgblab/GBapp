@@ -12,7 +12,7 @@ class DesignPriorityObserver
      */
     public function creating(DesignPriority $designPriority): void
     {
-        if (Auth::check()){
+        if (Auth::check()) {
             $designPriority->created_id = Auth::id();
             $designPriority->updated_id = Auth::id();
         }

@@ -18,12 +18,11 @@ class DesignTimeStateController extends Controller
         $time_states = DesignTimeState::all();
 
         return Inertia::render('Design/TimeState', [
-            'time_states' => $time_states
+            'time_states' => $time_states,
         ]);
     }
 
     /**
-     * @param Request $request
      * @return JsonResponse
      */
     public function store(Request $request)
@@ -32,15 +31,14 @@ class DesignTimeStateController extends Controller
             DesignTimeState::create($request->except('id'));
 
             $time_states = DesignTimeState::all();
+
             return response()->json($time_states, 200);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return response()->json($e->getMessage(), 500);
         }
     }
 
     /**
-     * @param Request $request
-     * @param $id
      * @return JsonResponse
      */
     public function update(Request $request, $id)
@@ -51,14 +49,14 @@ class DesignTimeStateController extends Controller
             $designState->update();
 
             $time_states = DesignTimeState::all();
+
             return response()->json($time_states, 200);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return response()->json($e->getMessage(), 500);
         }
     }
 
     /**
-     * @param $id
      * @return JsonResponse
      */
     public function destroy($id)
@@ -67,8 +65,9 @@ class DesignTimeStateController extends Controller
             DesignTimeState::destroy($id);
 
             $time_states = DesignTimeState::all();
+
             return response()->json($time_states, 200);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return response()->json($e->getMessage(), 500);
         }
     }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DesignPriority;
 use App\Models\DesignState;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -19,12 +18,11 @@ class DesignStateController extends Controller
         $states = DesignState::all();
 
         return Inertia::render('Design/State', [
-            'states' => $states
+            'states' => $states,
         ]);
     }
 
     /**
-     * @param Request $request
      * @return JsonResponse
      */
     public function store(Request $request)
@@ -33,15 +31,14 @@ class DesignStateController extends Controller
             DesignState::create($request->except('id'));
 
             $states = DesignState::all();
+
             return response()->json($states, 200);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return response()->json($e->getMessage(), 500);
         }
     }
 
     /**
-     * @param Request $request
-     * @param $id
      * @return JsonResponse
      */
     public function update(Request $request, $id)
@@ -52,14 +49,14 @@ class DesignStateController extends Controller
             $designState->update();
 
             $states = DesignState::all();
+
             return response()->json($states, 200);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return response()->json($e->getMessage(), 500);
         }
     }
 
     /**
-     * @param $id
      * @return JsonResponse
      */
     public function destroy($id)
@@ -68,8 +65,9 @@ class DesignStateController extends Controller
             DesignState::destroy($id);
 
             $states = DesignState::all();
+
             return response()->json($states, 200);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return response()->json($e->getMessage(), 500);
         }
     }

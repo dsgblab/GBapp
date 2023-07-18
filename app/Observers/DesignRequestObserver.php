@@ -10,7 +10,7 @@ class DesignRequestObserver
     /**
      * Handle the DesignRequest "created" event.
      */
-    public function created(DesignRequest $designRequest): void
+    public function creating(DesignRequest $designRequest): void
     {
         $designRequest->created_id = Auth::id();
         $designRequest->updated_id = Auth::id();

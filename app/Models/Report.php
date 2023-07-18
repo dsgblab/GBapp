@@ -22,35 +22,26 @@ class Report extends Model
      * @var string[]
      */
     protected $hidden = [
-        'created_id', 'updated_id'
+        'created_id', 'updated_id',
     ];
 
     /**
      * @var string[]
      */
     protected $with = [
-        'user', 'created_by', 'updated_by'
+        'user', 'created_by', 'updated_by',
     ];
 
-    /**
-     * @return HasOne
-     */
     public function created_by(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'created_id');
     }
 
-    /**
-     * @return HasOne
-     */
     public function updated_by(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'updated_id');
     }
 
-    /**
-     * @return BelongsToMany
-     */
     public function user(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_reports')
