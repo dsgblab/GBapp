@@ -14,7 +14,7 @@ class DesignTask extends Model
      * @var string[]
      */
     protected $fillable = [
-        'description',
+        'design_request_id', 'description'
     ];
 
     /**
@@ -22,6 +22,14 @@ class DesignTask extends Model
      */
     protected $hidden = [
         'created_id', 'updated_id',
+    ];
+
+    /**
+     * @var string[]
+     */
+    protected $with = [
+        'created_by',
+        'updated_by'
     ];
 
     /**

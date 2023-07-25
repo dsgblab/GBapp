@@ -10,7 +10,7 @@ class DesignTaskObserver
     /**
      * Handle the DesignTask "created" event.
      */
-    public function created(DesignTask $designTask): void
+    public function creating(DesignTask $designTask): void
     {
         $designTask->created_id = Auth::id();
         $designTask->updated_id = Auth::id();
@@ -21,7 +21,6 @@ class DesignTaskObserver
      */
     public function updated(DesignTask $designTask): void
     {
-        $designTask->created_id = Auth::id();
         $designTask->updated_id = Auth::id();
     }
 }

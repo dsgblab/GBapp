@@ -3,6 +3,7 @@
 use App\Http\Controllers\DesignPriorityController;
 use App\Http\Controllers\DesignRequestController;
 use App\Http\Controllers\DesignStateController;
+use App\Http\Controllers\DesignTaskController;
 use App\Http\Controllers\DesignTimeStateController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ReportController;
@@ -43,9 +44,11 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::resource('type-document-identification', TypeDocumentIdentificationController::class)->only('index', 'store', 'update', 'destroy');
 
     Route::prefix('design')->group(function () {
-        Route::resource('request', DesignRequestController::class)->only('index', 'store', 'update', 'destroy');
+        Route::resource('request', DesignRequestController::class)->only('index', 'store', 'update', 'destroy', 'show');
         Route::resource('priority', DesignPriorityController::class)->only('index', 'store', 'update', 'destroy');
         Route::resource('state', DesignStateController::class)->only('index', 'store', 'update', 'destroy');
         Route::resource('time-state', DesignTimeStateController::class)->only('index', 'store', 'update', 'destroy');
+        Route::resource('task', DesignTaskController::class)->only('store', 'update');
+        Route::delete('task/{request_id}/{id}', [DesignTaskController::class, 'destroy'])->name('task.destroy');
     });
 });

@@ -165,9 +165,9 @@
 
                                         <td class="px-6 py-4 text-center text-sm font-medium">
                                             <div class="flex flex-row">
-                                                <SecondaryButton class="mr-2" @click="">
+                                                <Link :href="route('request.show', row.id)" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150 mr-2" @click="">
                                                     <font-awesome-icon :icon="['far', 'eye']" />
-                                                </SecondaryButton>
+                                                </Link>
 
                                                 <SecondaryButton class="mr-2" @click="">
                                                     <font-awesome-icon :icon="['far', 'pen-to-square']" />
@@ -177,7 +177,6 @@
                                                     <font-awesome-icon :icon="['far', 'trash-can']" />
                                                 </DangerButton>
                                             </div>
-
                                         </td>
                                     </tr>
 
@@ -516,7 +515,6 @@
                     Guardar
                 </PrimaryButton>
             </template>
-
         </DialogModal>
     </AppLayout>
 </template>
@@ -535,6 +533,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import DangerButton from "@/Components/DangerButton.vue";
+import {Link} from "@inertiajs/vue3";
 
 export default {
     components: {
@@ -546,7 +545,8 @@ export default {
         DialogModal,
         PrimaryButton,
         AppLayout,
-        VueDatePicker
+        VueDatePicker,
+        Link
     },
 
     setup () {

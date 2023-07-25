@@ -103,4 +103,28 @@ class DesignRequestController extends Controller
             return response()->json($e->getMessage(), 500);
         }
     }
+
+    /**
+     * @return Response
+     */
+    public function show($id)
+    {
+        $request = DesignRequest::find($id);
+        $priorities = DesignPriority::all();
+        $time_states = DesignTimeState::all();
+        $states = DesignState::all();
+        $designers = User::where('type', '=', 'designer')->get();
+        $customers = User::where('type', '=', 'customer')->get();
+        $sellers = User::where('type', '=', 'seller')->get();
+
+        return Inertia::render('Design/Show', [
+            'design_request' => $request,
+            'priorities' => $priorities,
+            'time_states' => $time_states,
+            'states' => $states,
+            'designers' => $designers,
+            'customers' => $customers,
+            'sellers' => $sellers,
+        ]);
+    }
 }
