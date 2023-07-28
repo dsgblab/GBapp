@@ -28,7 +28,7 @@
                                                 <p class="mb-0 font-sans font-semibold leading-normal text-sm">
                                                     Prioridad
                                                 </p>
-                                                <h5 class="mb-0 font-bold">
+                                                <h5 class="mb-0 font-bold hover:text-blue-800 cursor-pointer" @click="updatePriority">
                                                     {{ designRequest.priority.name }}
                                                 </h5>
                                             </div>
@@ -50,7 +50,7 @@
                                                 <p class="mb-0 font-sans font-semibold leading-normal text-sm">
                                                     Diseñador
                                                 </p>
-                                                <h5 class="mb-0 font-bold">
+                                                <h5 class="mb-0 font-bold hover:text-blue-800 cursor-pointer" @click="updateDesigner">
                                                     {{ designRequest.designer.name }}
                                                 </h5>
                                             </div>
@@ -72,7 +72,7 @@
                                                 <p class="mb-0 font-sans font-semibold leading-normal text-sm">
                                                     Vendedor(a)
                                                 </p>
-                                                <h5 class="mb-0 font-bold">
+                                                <h5 class="mb-0 font-bold hover:text-blue-800 cursor-pointer" @click="updateSeller">
                                                     {{ designRequest.seller.name }}
                                                 </h5>
                                             </div>
@@ -94,7 +94,7 @@
                                                 <p class="mb-0 font-sans font-semibold leading-normal text-sm">
                                                     Cliente
                                                 </p>
-                                                <h5 class="mb-0 font-bold">
+                                                <h5 class="mb-0 font-bold hover:text-blue-800 cursor-pointer" @click="updateCustomer">
                                                     {{ designRequest.customer.name }}
                                                 </h5>
                                             </div>
@@ -248,7 +248,7 @@
                                                 <p class="mb-0 font-sans font-semibold leading-normal text-sm">
                                                     Estado de tiempo
                                                 </p>
-                                                <h5 class="mb-0 font-bold">
+                                                <h5 class="mb-0 font-bold hover:text-blue-800 cursor-pointer" @click="updateTimeState">
                                                     {{ designRequest.time_state.name }}
                                                 </h5>
                                             </div>
@@ -268,9 +268,9 @@
                                         <div class="flex-none w-2/3 max-w-full px-3">
                                             <div>
                                                 <p class="mb-0 font-sans font-semibold leading-normal text-sm">
-                                                    Estado de tiempo
+                                                    Estado
                                                 </p>
-                                                <h5 class="mb-0 font-bold">
+                                                <h5 class="mb-0 font-bold hover:text-blue-800 cursor-pointer" @click="updateState">
                                                     {{ designRequest.state.name }}
                                                 </h5>
                                             </div>
@@ -465,7 +465,7 @@
                                 </tr>
 
                                 <tr v-else>
-                                    <td class="px-6 py-4 text-center text-red-500 text-sm font-medium" colspan="4">
+                                    <td class="px-6 py-4 text-center text-red-500 text-sm font-medium" colspan="6">
                                         Sin registros…
                                     </td>
                                 </tr>
@@ -574,7 +574,6 @@ export default {
     data() {
         return {
             designRequest: this.design_request,
-
             taskModal: {
                 open: false,
                 editMode: false,
@@ -584,8 +583,6 @@ export default {
                     description: ''
                 }
             }
-
-
         }
     },
 
@@ -694,6 +691,330 @@ export default {
             }
 
             this.v$.taskModal.form.$reset();
+        },
+
+        updateState(){
+            let list = this.states.map((value) =>  [value.id, value.name])
+            list = Object.fromEntries(list)
+
+            this.$swal({
+                icon: 'info',
+                title: 'Estado',
+                text: `Por favor, seleccione una opción`,
+                input: 'select',
+                inputOptions: list,
+                inputValue: this.designRequest.state.id,
+                showCancelButton: true,
+                inputAttributes: {
+                    required: true
+                },
+                customClass: {
+                    input: 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm '
+                },
+                confirmButtonText: 'Actualizar',
+                cancelButtonText: 'Cancelar',
+                inputValidator: (inputValue) => {
+                    if (inputValue === '0') return 'Debes seleccionar una opción...'
+                }
+            }).then((inputValue) => {
+                if (inputValue.value) {
+                    axios.post(route('design.request.update-state'), {
+                        id: this.designRequest.id,
+                        property: 'state_id',
+                        state_id: inputValue.value
+                    }).then(resp => {
+                        this.designRequest = resp.data
+
+                        this.$swal({
+                            icon: 'success',
+                            title: '¡Registro actualizado!',
+                            text: 'Estado actualizado con éxito',
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 5000,
+                            timerProgressBar: true,
+                            reverseButtons: false,
+                        });
+                    }).catch(err => {
+                        this.$swal({
+                            icon: 'error',
+                            title: 'Error',
+                            text: err.response.data.message
+                        });
+                    })
+                }
+            })
+        },
+
+        updateTimeState(){
+            let list = this.time_states.map((value) =>  [value.id, value.name])
+            list = Object.fromEntries(list)
+
+            this.$swal({
+                icon: 'info',
+                title: 'Estado de tiempo',
+                text: `Por favor, seleccione una opción`,
+                input: 'select',
+                inputOptions: list,
+                inputValue: this.designRequest.time_state.id,
+                showCancelButton: true,
+                inputAttributes: {
+                    required: true
+                },
+                customClass: {
+                    input: 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm '
+                },
+                confirmButtonText: 'Actualizar',
+                cancelButtonText: 'Cancelar',
+                inputValidator: (inputValue) => {
+                    if (inputValue === '0') return 'Debes seleccionar una opción...'
+                }
+            }).then((inputValue) => {
+                if (inputValue.value) {
+                    axios.post(route('design.request.update-state'), {
+                        id: this.designRequest.id,
+                        property: 'time_state_id',
+                        state_id: inputValue.value
+                    }).then(resp => {
+                        this.designRequest = resp.data
+
+                        this.$swal({
+                            icon: 'success',
+                            title: '¡Registro actualizado!',
+                            text: 'Estado de tiempo actualizado con éxito',
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 5000,
+                            timerProgressBar: true,
+                            reverseButtons: false,
+                        });
+                    }).catch(err => {
+                        this.$swal({
+                            icon: 'error',
+                            title: 'Error',
+                            text: err.response.data.message
+                        });
+                    })
+                }
+            })
+        },
+
+        updatePriority(){
+            let list = this.priorities.map((value) =>  [value.id, value.name])
+            list = Object.fromEntries(list)
+
+            this.$swal({
+                icon: 'info',
+                title: 'Prioridad',
+                text: `Por favor, seleccione una opción`,
+                input: 'select',
+                inputOptions: list,
+                inputValue: this.designRequest.priority.id,
+                showCancelButton: true,
+                inputAttributes: {
+                    required: true
+                },
+                customClass: {
+                    input: 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm '
+                },
+                confirmButtonText: 'Actualizar',
+                cancelButtonText: 'Cancelar',
+                inputValidator: (inputValue) => {
+                    if (inputValue === '0') return 'Debes seleccionar una opción...'
+                }
+            }).then((inputValue) => {
+                if (inputValue.value) {
+                    axios.post(route('design.request.update-state'), {
+                        id: this.designRequest.id,
+                        property: 'priority_id',
+                        state_id: inputValue.value
+                    }).then(resp => {
+                        this.designRequest = resp.data
+
+                        this.$swal({
+                            icon: 'success',
+                            title: '¡Registro actualizado!',
+                            text: 'Prioridad actualizada con éxito',
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 5000,
+                            timerProgressBar: true,
+                            reverseButtons: false,
+                        });
+                    }).catch(err => {
+                        this.$swal({
+                            icon: 'error',
+                            title: 'Error',
+                            text: err.response.data.message
+                        });
+                    })
+                }
+            })
+        },
+
+        updateDesigner(){
+            let list = this.designers.map((value) =>  [value.id, value.name])
+            list = Object.fromEntries(list)
+
+            this.$swal({
+                icon: 'info',
+                title: 'Diseñador(a)',
+                text: `Por favor, seleccione una opción`,
+                input: 'select',
+                inputOptions: list,
+                inputValue: this.designRequest.designer.id,
+                showCancelButton: true,
+                inputAttributes: {
+                    required: true
+                },
+                customClass: {
+                    input: 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm '
+                },
+                confirmButtonText: 'Actualizar',
+                cancelButtonText: 'Cancelar',
+                inputValidator: (inputValue) => {
+                    if (inputValue === '0') return 'Debes seleccionar una opción...'
+                }
+            }).then((inputValue) => {
+                if (inputValue.value) {
+                    axios.post(route('design.request.update-state'), {
+                        id: this.designRequest.id,
+                        property: 'designer_id',
+                        state_id: inputValue.value
+                    }).then(resp => {
+                        this.designRequest = resp.data
+
+                        this.$swal({
+                            icon: 'success',
+                            title: '¡Registro actualizado!',
+                            text: 'Diseñador actualizado con éxito',
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 5000,
+                            timerProgressBar: true,
+                            reverseButtons: false,
+                        });
+                    }).catch(err => {
+                        this.$swal({
+                            icon: 'error',
+                            title: 'Error',
+                            text: err.response.data.message
+                        });
+                    })
+                }
+            })
+        },
+
+        updateSeller(){
+            let list = this.sellers.map((value) =>  [value.id, value.name])
+            list = Object.fromEntries(list)
+
+            this.$swal({
+                icon: 'info',
+                title: 'Diseñador(a)',
+                text: `Por favor, seleccione una opción`,
+                input: 'select',
+                inputOptions: list,
+                inputValue: this.designRequest.seller.id,
+                showCancelButton: true,
+                inputAttributes: {
+                    required: true
+                },
+                customClass: {
+                    input: 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm '
+                },
+                confirmButtonText: 'Actualizar',
+                cancelButtonText: 'Cancelar',
+                inputValidator: (inputValue) => {
+                    if (inputValue === '0') return 'Debes seleccionar una opción...'
+                }
+            }).then((inputValue) => {
+                if (inputValue.value) {
+                    axios.post(route('design.request.update-state'), {
+                        id: this.designRequest.id,
+                        property: 'seller_id',
+                        state_id: inputValue.value
+                    }).then(resp => {
+                        this.designRequest = resp.data
+
+                        this.$swal({
+                            icon: 'success',
+                            title: '¡Registro actualizado!',
+                            text: 'Vendedor actualizado con éxito',
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 5000,
+                            timerProgressBar: true,
+                            reverseButtons: false,
+                        });
+                    }).catch(err => {
+                        this.$swal({
+                            icon: 'error',
+                            title: 'Error',
+                            text: err.response.data.message
+                        });
+                    })
+                }
+            })
+        },
+
+        updateCustomer(){
+            let list = this.customers.map((value) =>  [value.id, value.name])
+            list = Object.fromEntries(list)
+
+            this.$swal({
+                icon: 'info',
+                title: 'Diseñador(a)',
+                text: `Por favor, seleccione una opción`,
+                input: 'select',
+                inputOptions: list,
+                inputValue: this.designRequest.customer.id,
+                showCancelButton: true,
+                inputAttributes: {
+                    required: true
+                },
+                customClass: {
+                    input: 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm '
+                },
+                confirmButtonText: 'Actualizar',
+                cancelButtonText: 'Cancelar',
+                inputValidator: (inputValue) => {
+                    if (inputValue === '0') return 'Debes seleccionar una opción...'
+                }
+            }).then((inputValue) => {
+                if (inputValue.value) {
+                    axios.post(route('design.request.update-state'), {
+                        id: this.designRequest.id,
+                        property: 'customer_id',
+                        state_id: inputValue.value
+                    }).then(resp => {
+                        this.designRequest = resp.data
+
+                        this.$swal({
+                            icon: 'success',
+                            title: '¡Registro actualizado!',
+                            text: 'Cliente actualizado con éxito',
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 5000,
+                            timerProgressBar: true,
+                            reverseButtons: false,
+                        });
+                    }).catch(err => {
+                        this.$swal({
+                            icon: 'error',
+                            title: 'Error',
+                            text: err.response.data.message
+                        });
+                    })
+                }
+            })
         }
     }
 }

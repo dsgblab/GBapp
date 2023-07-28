@@ -169,10 +169,6 @@
                                                     <font-awesome-icon :icon="['far', 'eye']" />
                                                 </Link>
 
-                                                <SecondaryButton class="mr-2" @click="">
-                                                    <font-awesome-icon :icon="['far', 'pen-to-square']" />
-                                                </SecondaryButton>
-
                                                 <DangerButton @click="">
                                                     <font-awesome-icon :icon="['far', 'trash-can']" />
                                                 </DangerButton>

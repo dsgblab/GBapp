@@ -9,6 +9,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TypeDocumentIdentificationController;
+use App\Http\Controllers\UpdateStateController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -45,10 +46,13 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
     Route::prefix('design')->group(function () {
         Route::resource('request', DesignRequestController::class)->only('index', 'store', 'update', 'destroy', 'show');
+        Route::post('request/update-state', [DesignRequestController::class, 'update_state'])->name('design.request.update-state');
+
         Route::resource('priority', DesignPriorityController::class)->only('index', 'store', 'update', 'destroy');
         Route::resource('state', DesignStateController::class)->only('index', 'store', 'update', 'destroy');
         Route::resource('time-state', DesignTimeStateController::class)->only('index', 'store', 'update', 'destroy');
         Route::resource('task', DesignTaskController::class)->only('store', 'update');
         Route::delete('task/{request_id}/{id}', [DesignTaskController::class, 'destroy'])->name('task.destroy');
+
     });
 });

@@ -127,4 +127,18 @@ class DesignRequestController extends Controller
             'sellers' => $sellers,
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function update_state(Request $request)
+    {
+        $design_request = DesignRequest::find($request->id);
+        $design_request[$request->property] = $request->state_id;
+        $design_request->save();
+
+        $stored = DesignRequest::find($request->id);
+        return response()->json($stored, 200);
+    }
 }
