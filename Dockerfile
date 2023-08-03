@@ -30,8 +30,8 @@ RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
 RUN curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
 RUN GNUTLS_CPUID_OVERRIDE=0x1 apt-get update -y
 RUN GNUTLS_CPUID_OVERRIDE=0x1 apt-get upgrade -y
-RUN ACCEPT_EULA=Y apt-get install -y msodbcsql18
-RUN ACCEPT_EULA=Y apt-get install -y mssql-tools
+RUN ACCEPT_EULA=Y GNUTLS_CPUID_OVERRIDE=0x1 apt-get install -y msodbcsql18
+RUN ACCEPT_EULA=Y GNUTLS_CPUID_OVERRIDE=0x1 apt-get install -y mssql-tools
 RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile
 RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
 RUN /bin/bash -c "source ~/.bashrc"
