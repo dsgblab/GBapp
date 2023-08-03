@@ -28,14 +28,14 @@ RUN apt-get update && apt-get install -y mysql-client-8.0 && rm -rf /var/lib/apt
 # Prerequisitos para instalar driver OBDC para Microsoft SQL Server
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
 RUN curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
-RUN apt-get update -y
-RUN apt-get upgrade -y
-RUN ACCEPT_EULA=Y apt-get install -y msodbcsql18
-RUN ACCEPT_EULA=Y apt-get install -y mssql-tools
+RUN apt-get update -y apt-transport-https
+RUN apt-get upgrade -y apt-transport-https
+RUN ACCEPT_EULA=Y apt-get install -y apt-transport-https msodbcsql18
+RUN ACCEPT_EULA=Y apt-get install -y apt-transport-https mssql-tools
 RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile
 RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
 RUN /bin/bash -c "source ~/.bashrc"
-RUN apt-get install -y unixodbc-dev
+RUN apt-get install -y apt-transport-https unixodbc-dev
 
 
 # Configuracion de PHP v8.2
