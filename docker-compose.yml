@@ -24,3 +24,24 @@ services:
             - ./:/var/www/html
         ports:
             - "5173:5173"
+
+    mysql:
+        image: mysql:latest
+        container_name: gb-app-db
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "3306:3306"
+        volumes:
+            - data:/var/lib/mysql
+        environment:
+            MYSQL_USER: 'gb-application'
+            MYSQL_PASSWORD: 'eu2Ce@rg6#V7bAoH30CX3V0H4L'
+            MYSQL_ROOT_PASSWORD: '90A2og8^%GHjMM%4%rdV133A!y'
+            SERVICE_TAGS: dev
+            SERVICE_NAME: database
+            MYSQL_ROOT_HOST: '%'
+
+volumes:
+    data:
+
