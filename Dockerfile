@@ -35,7 +35,7 @@ RUN ACCEPT_EULA=Y GNUTLS_CPUID_OVERRIDE=0x1 apt-get install -y mssql-tools
 RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile
 RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
 RUN /bin/bash -c "source ~/.bashrc"
-RUN apt-get install -y unixodbc-dev
+RUN GNUTLS_CPUID_OVERRIDE=0x1 apt-get install -y unixodbc-dev
 
 
 # Configuracion de PHP v8.2
