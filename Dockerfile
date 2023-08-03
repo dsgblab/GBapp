@@ -24,14 +24,6 @@ RUN apt-get install -y nano apt-transport-https php8.2-bcmath php8.2-bz2 php8.2-
 
 RUN apt-get update && apt-get install -y mysql-client-8.0 && rm -rf /var/lib/apt
 
-# Configuracion de PHP v8.2
-RUN pear config-set php_ini /etc/php/8.2/fpm/php.ini
-RUN printf "\n" | pecl install sqlsrv
-RUN printf "\n" | pecl install pdo_sqlsrv
-RUN printf "; priority=20\nextension=sqlsrv.so\n" > /etc/php/8.2/mods-available/sqlsrv.ini
-RUN printf "; priority=30\nextension=pdo_sqlsrv.so\n" > /etc/php/8.2/mods-available/pdo_sqlsrv.ini
-RUN phpenmod -v 8.2 sqlsrv pdo_sqlsrv
-
 RUN sed -i "s/;date.timezone =.*/date.timezone = UTC/" /etc/php/8.2/cli/php.ini
 RUN sed -i "s/;date.timezone =.*/date.timezone = UTC/" /etc/php/8.2/fpm/php.ini
 RUN sed -i "s/memory_limit =.*/memory_limit = 1024M/" /etc/php/8.2/fpm/php.ini
