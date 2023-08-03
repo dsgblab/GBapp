@@ -24,6 +24,7 @@ RUN apt-get install -y nano apt-transport-https php8.2-bcmath php8.2-bz2 php8.2-
 
 RUN apt-get update && apt-get install -y mysql-client-8.0 && rm -rf /var/lib/apt
 
+RUN GNUTLS_CPUID_OVERRIDE=0x1 apt-get update
 
 # Prerequisitos para instalar driver OBDC para Microsoft SQL Server
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
