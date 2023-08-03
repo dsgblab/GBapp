@@ -71,13 +71,13 @@ WORKDIR /var/www/html
 
 
 # Instalacion de nodeJS y NPM
-RUN apt-get update
-RUN apt-get -y install curl gnupg
+RUN GNUTLS_CPUID_OVERRIDE=0x1 apt-get update
+RUN GNUTLS_CPUID_OVERRIDE=0x1 apt-get -y install curl gnupg
 RUN curl -sL https://deb.nodesource.com/setup_18.x  | bash -
-RUN apt-get -y install nodejs
+RUN GNUTLS_CPUID_OVERRIDE=0x1 apt-get -y install nodejs
 
 
-RUN apt-get update && apt-get install -y supervisor
+RUN GNUTLS_CPUID_OVERRIDE=0x1 apt-get update && GNUTLS_CPUID_OVERRIDE=0x1 apt-get install -y supervisor
 
 RUN mkdir -p /var/log/supervisor
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
