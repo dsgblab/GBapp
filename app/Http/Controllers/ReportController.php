@@ -187,7 +187,7 @@ class ReportController extends Controller
 
             return (object) [
                 'status' => 200,
-                'tokenId' => $resp->token_id,
+                'tokenId' => $resp->tokenId,
                 'token' => $resp->token,
                 'expiration' => $resp->expiration,
             ];
