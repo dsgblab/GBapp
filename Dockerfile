@@ -6,6 +6,8 @@ ENV DEBIAN_FRONTEND noninteractive
 
 ARG XDEBUG
 
+
+
 # Instalacion de PHP v8.2
 RUN apt-get clean && apt-get -y update && apt-get install -y locales wget curl software-properties-common git \
   && locale-gen en_US.UTF-8
@@ -73,8 +75,6 @@ WORKDIR /var/www/html
 # Instalacion de nodeJS y NPM
 RUN GNUTLS_CPUID_OVERRIDE=0x1 apt-get update
 RUN GNUTLS_CPUID_OVERRIDE=0x1 apt-get -y install curl gnupg
-RUN GNUTLS_CPUID_OVERRIDE=0x1 curl -sL https://deb.nodesource.com/setup_18.x  | bash -
-RUN GNUTLS_CPUID_OVERRIDE=0x1 apt-get -y install nodejs
 
 
 RUN GNUTLS_CPUID_OVERRIDE=0x1 apt-get update && GNUTLS_CPUID_OVERRIDE=0x1 apt-get install -y supervisor
