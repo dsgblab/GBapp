@@ -73,7 +73,7 @@ WORKDIR /var/www/html
 # Instalacion de nodeJS y NPM
 RUN GNUTLS_CPUID_OVERRIDE=0x1 apt-get update
 RUN GNUTLS_CPUID_OVERRIDE=0x1 apt-get -y install curl gnupg
-RUN curl -sL https://deb.nodesource.com/setup_18.x  | bash -
+RUN GNUTLS_CPUID_OVERRIDE=0x1 curl -sL https://deb.nodesource.com/setup_18.x  | bash -
 RUN GNUTLS_CPUID_OVERRIDE=0x1 apt-get -y install nodejs
 
 
