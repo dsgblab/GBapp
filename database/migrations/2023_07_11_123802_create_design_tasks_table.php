@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('design_request_id')->constrained('design_requests')->onDelete('cascade');
             $table->longText('description');
-            $table->foreignId('created_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('updated_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('created_id')->constrained('users');
+            $table->foreignId('updated_id')->constrained('users');
             $table->timestamps();
         });
     }

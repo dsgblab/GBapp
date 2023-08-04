@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('design_requests', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('priority_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('designer_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('seller_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('customer_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('priority_id')->constrained('users');
+            $table->foreignId('designer_id')->constrained('users');
+            $table->foreignId('seller_id')->constrained('users');
+            $table->foreignId('customer_id')->constrained('users');
             $table->longText('comments')->nullable();
             $table->dateTime('reception_date')->nullable();
             $table->dateTime('tentative_date')->nullable();
@@ -24,11 +24,11 @@ return new class extends Migration
             $table->dateTime('delivery_date')->nullable();
             $table->dateTime('customer_approved_date')->nullable();
             $table->dateTime('estimated_arrival_sherpa_date')->nullable();
-            $table->foreignId('time_state_id')->constrained('design_priorities')->onDelete('cascade');
-            $table->foreignId('state_id')->constrained('design_states')->onDelete('cascade');
+            $table->foreignId('time_state_id')->constrained('design_priorities');
+            $table->foreignId('state_id')->constrained('design_states');
             $table->longText('observations')->nullable();
-            $table->foreignId('created_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('updated_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('created_id')->constrained('users');
+            $table->foreignId('updated_id')->constrained('users');
             $table->timestamps();
         });
     }

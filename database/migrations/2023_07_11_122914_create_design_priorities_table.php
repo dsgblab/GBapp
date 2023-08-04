@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('design_priorities', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->foreignId('created_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('updated_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('created_id')->constrained('users');
+            $table->foreignId('updated_id')->constrained('users');
             $table->timestamps();
         });
     }
