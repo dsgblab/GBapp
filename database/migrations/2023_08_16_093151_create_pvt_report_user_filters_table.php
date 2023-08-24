@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_reports', function (Blueprint $table) {
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+        Schema::create('pvt_report_user_filters', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('report_id')->constrained('reports')->onDelete('cascade');
-            $table->boolean('show')->default(false);
-            $table->unique(['user_id', 'report_id']);
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('filter_id')->constrained('report_filters');
+            $table->timestamps();
         });
     }
 
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_reports');
+        Schema::dropIfExists('pvt_report_user_filters');
     }
 };

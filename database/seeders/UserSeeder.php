@@ -16,15 +16,13 @@ class UserSeeder extends Seeder
             'name' => 'Super Administrador',
             'document' => 1234567890,
             'username' => 'super-admin',
-            'email' => 'super-admin@bg-app.com',
-            'password' => bcrypt('password'),
-            'type_document_identification_id' => 1,
+            'email' => 'super-admin@example.com',
+            'password' => bcrypt('password'), // S3cur3-P@ssw0rd*
         ]);
 
         $user->save();
         $user->syncRoles(['super-administrador']);
 
-        $users = User::factory()->count(10)->create();
-
+        User::factory()->count(10)->create();
     }
 }

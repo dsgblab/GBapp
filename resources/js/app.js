@@ -13,9 +13,9 @@ import {fas} from '@fortawesome/free-solid-svg-icons';
 import {far} from '@fortawesome/free-regular-svg-icons';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
+import VueFullscreen from 'vue-fullscreen'
 
 library.add(fas, far);
-
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'GB App';
 
@@ -26,6 +26,7 @@ createInertiaApp({
         return createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(UserAbilities)
+            .use(VueFullscreen)
             .use(ZiggyVue, Ziggy)
             .use(VueGates, {
                 superRole: 'super-administrador',

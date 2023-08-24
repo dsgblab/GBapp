@@ -23,88 +23,47 @@
                                 <tr>
                                     <th scope="col"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Nombre
                                     </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Grupo
-                                    </th>
 
                                     <th scope="col"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Reporte
-                                    </th>
-
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Dataset
-                                    </th>
-
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Nivel de acceso
-                                    </th>
-
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Creado por
-                                    </th>
-
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Permiso
-                                    </th>
-
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Ultima actualización
                                     </th>
                                 </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                 <tr v-for="report in records" v-if="records.length > 0">
-                                    <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
+                                    <td class="px-6 py-4 text-center text-sm font-medium">
+                                        <div class="flex flex-row">
+                                            <Link :href="route('report.view', [report.group_id, report.report_id])" class="mr-2 inline-flex items-center px-2 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150">
+                                                <font-awesome-icon :icon="['fas', 'arrow-up-right-from-square']" />
+                                            </Link>
+                                            <CustomButton class="mr-2"
+                                                    @click="edit(report)"
+                                                    v-permission="'report.edit'">
+                                                <font-awesome-icon :icon="['far', 'pen-to-square']" />
+                                            </CustomButton>
+                                            <CustomButton @click="destroy(report.id)"
+                                                          v-permission="'report.destroy'">
+                                                <font-awesome-icon :icon="['far', 'trash-can']" />
+                                            </CustomButton>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-left text-sm font-medium">
                                         {{ report.name }}
                                     </td>
 
-                                    <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
-                                        {{ report.group_id }}
-                                    </td>
-
-                                    <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
-                                        {{ report.report_id }}
-                                    </td>
-
-                                    <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
-                                        {{ report.dataset_id }}
-                                    </td>
-
-                                    <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
-                                        {{ report.access_level }}
-                                    </td>
-
-                                    <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
-                                        {{ report.user.name }}
-                                    </td>
-
-                                    <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
-                                        {{ report.permission }}
-                                    </td>
-
-                                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                                        <Link :href="route('report.view', [report.group_id, report.report_id])" class="mr-2 inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150">
-                                            <font-awesome-icon :icon="['fas', 'arrow-up-right-from-square']" />
-                                        </Link>
-                                        <SecondaryButton class="mr-2" @click="edit(report)" v-permission="'report.edit'">
-                                            <font-awesome-icon :icon="['far', 'pen-to-square']" />
-                                        </SecondaryButton>
-                                        <DangerButton @click="destroy(report.id)" v-permission="'report.destroy'">
-                                            <font-awesome-icon :icon="['far', 'trash-can']" />
-                                        </DangerButton>
+                                    <td class="px-6 py-4 text-left text-sm font-medium">
+                                        {{ report.updated_at }}
                                     </td>
                                 </tr>
 
                                 <tr v-else>
-                                    <td colspan="9" class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-red-500">
+                                    <td colspan="9" class="px-6 py-4 text-center text-sm font-medium text-red-500">
                                         No se encontraron registros…
                                     </td>
                                 </tr>
@@ -201,47 +160,6 @@
                         </ul>
                     </template>
                 </div>
-
-                <div class="mt-4">
-                    <InputLabel value="Nivel de acceso" />
-                    <TextInput
-                        v-model="modal.form.access_level"
-                        type="text"
-                        class="mt-1 block w-full"
-                        :class="{'border-red-500': v$.modal.form.access_level.$error}"
-                        required
-                        autocomplete="Nivel de acceso"
-                    />
-                    <template v-if="v$.modal.form.access_level.$error">
-                        <ul class="mt-1">
-                            <li class="text-red-500"
-                                v-for="(error, index) of v$.modal.form.access_level.$errors" :key="index">
-                                {{ error.$message }}
-                            </li>
-                        </ul>
-                    </template>
-                </div>
-
-                <div class="mt-4">
-                    <InputLabel value="Permiso" />
-                    <TextInput
-                        v-model="modal.form.permission"
-                        type="text"
-                        class="mt-1 block w-full"
-                        :class="{'border-red-500': v$.modal.form.permission.$error}"
-                        required
-                        autocomplete="Permiso"
-                    />
-                    <template v-if="v$.modal.form.permission.$error">
-                        <ul class="mt-1">
-                            <li class="text-red-500"
-                                v-for="(error, index) of v$.modal.form.permission.$errors" :key="index">
-                                {{ error.$message }}
-                            </li>
-                        </ul>
-                    </template>
-                </div>
-
             </template>
 
             <template #footer>
@@ -258,7 +176,6 @@
                 </PrimaryButton>
             </template>
         </DialogModal>
-
     </AppLayout>
 </template>
 <script>
@@ -273,6 +190,7 @@ import TextInput from "@/Components/TextInput.vue";
 import {required, requiredIf, alpha} from "@vuelidate/validators";
 import {useVuelidate} from "@vuelidate/core";
 import { Link } from '@inertiajs/vue3';
+import CustomButton from "@/Components/CustomButton.vue";
 
 export default {
     setup () {
@@ -284,6 +202,7 @@ export default {
     },
 
     components: {
+        CustomButton,
         TextInput,
         SecondaryButton,
         Checkbox,
@@ -305,22 +224,15 @@ export default {
                     name: {
                         required
                     },
-                    groupId: {
+                    group_id: {
                         required,
                     },
                     report_id: {
                         required,
                     },
-                    access_level: {
-                        required,
-                    },
                     dataset_id: {
                         required,
                     },
-                    permission: {
-                        required,
-                        alpha
-                    }
                 }
             }
         }
@@ -338,9 +250,7 @@ export default {
                     name: '',
                     group_id: '',
                     report_id: '',
-                    access_level: '',
                     dataset_id: '',
-                    permission: ''
                 }
             }
         }
@@ -362,9 +272,7 @@ export default {
                     name: row.name,
                     group_id: row.group_id,
                     report_id: row.report_id,
-                    access_level: row.access_level,
                     dataset_id: row.dataset_id,
-                    permission: row.permission
                 },
             }
         },
@@ -447,18 +355,12 @@ export default {
                     name: '',
                     group_id: '',
                     report_id: '',
-                    access_level: '',
                     dataset_id: '',
-                    permission: ''
                 },
             }
-
             this.v$.modal.form.$reset()
         }
     },
-
-
-
 }
 
 </script>

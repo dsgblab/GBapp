@@ -5,24 +5,31 @@
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                     {{ report.name }}
                 </h2>
+
+                <PrimaryButton type="button" class="ml-auto" @click="toggle">
+                    <font-awesome-icon icon="expand" class="mr-2"/>
+                    Pantalla completa
+                </PrimaryButton>
             </div>
         </template>
 
-        <div class="py-12">
-            <div class="max-w-8xl mx-6 sm:px-6 lg:px-8">
-                <PowerBIReportEmbed :embed-config="embedConfig" css-class-name="h-screen">
-
-                </PowerBIReportEmbed>
+        <fullscreen v-model="fullscreen">
+            <div class="py-12">
+                <div class="max-w-8xl mx-6 sm:px-6 lg:px-8">
+                    <PowerBIReportEmbed :embed-config="embedConfig" css-class-name="h-screen">
+                    </PowerBIReportEmbed>
+                </div>
             </div>
-        </div>
+        </fullscreen>
     </AppLayout>
 </template>
 
 <script>
-import { PowerBIReportEmbed } from 'powerbi-client-vue-js';
+import {PowerBIReportEmbed} from 'powerbi-client-vue-js';
 import {models} from "powerbi-client";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+
 export default {
     props: {
         report: Object
@@ -31,14 +38,14 @@ export default {
     components: {
         PrimaryButton,
         AppLayout,
-        PowerBIReportEmbed
+        PowerBIReportEmbed,
     },
 
-    data(){
+    data() {
         return {
             embedConfig: {
                 type: "report",
-                id: this.reportId,
+                id: this.report.report_id,
                 embedUrl: this.report.embedUrl,
                 accessToken: this.report.token.token,
                 tokenType: models.TokenType.Embed,
@@ -51,15 +58,18 @@ export default {
                         }
                     },
                     background: models.BackgroundType.Transparent,
-                }
-            }
+                },
+                filters: JSON.parse(this.report.filter_array),
+            },
+
+            fullscreen: false,
         }
     },
 
     methods: {
-
+        toggle() {
+            this.fullscreen = !this.fullscreen
+        },
     }
-
-
 }
 </script>

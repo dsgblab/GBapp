@@ -22,11 +22,6 @@
                                 <tr>
                                     <th scope="col"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Documento
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Tipo Documento
                                     </th>
                                     <th scope="col"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -64,22 +59,23 @@
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Actualizado el
                                     </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-
-                                    </th>
                                 </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                 <tr v-for="user in records">
-                                    <td class="px-6 py-4 text-left text-sm font-medium">
-                                        {{ user.document }}
-                                    </td>
+                                    <td class="px-6 py-4 text-center text-sm font-medium">
+                                        <div class="flex flex-row">
+                                            <Link :href="route('users.show', user.id)"
+                                                  v-permission="'user.edit'"
+                                                  class="mr-2 inline-flex items-center px-2 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150">
+                                                <font-awesome-icon :icon="['far', 'pen-to-square']"/>
+                                            </Link>
 
-                                    <td class="px-6 py-4 text-left text-sm font-medium">
-                                        {{ user.type_identification.name }}
+                                            <CustomButton @click="destroy(user.id)" v-permission="'user.destroy'">
+                                                <font-awesome-icon :icon="['far', 'trash-can']"/>
+                                            </CustomButton>
+                                        </div>
                                     </td>
-
                                     <td class="px-6 py-4 text-left text-sm font-medium">
                                         {{ user.name }}
                                     </td>
@@ -137,20 +133,11 @@
                                         </span>
                                     </td>
 
-
                                     <td class="px-6 py-4 text-left text-sm font-medium">
                                         {{ user.created_at }}
                                     </td>
                                     <td class="px-6 py-4 text-left text-sm font-medium">
                                         {{ user.updated_at }}
-                                    </td>
-                                    <td class="px-6 py-4 text-center text-sm font-medium">
-                                        <SecondaryButton class="mr-2" @click="edit(user)" v-permission="'user.edit'">
-                                            <font-awesome-icon :icon="['far', 'pen-to-square']" />
-                                        </SecondaryButton>
-                                        <DangerButton @click="destroy(user.id)" v-permission="'user.destroy'">
-                                            <font-awesome-icon :icon="['far', 'trash-can']" />
-                                        </DangerButton>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -167,47 +154,6 @@
             </template>
 
             <template #content>
-                <div class="mt-4">
-                    <InputLabel value="Tipo Documento"/>
-
-                    <select class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
-                            v-model="modal.form.type_document_identification_id"
-                            :class="{'border-red-500': v$.modal.form.type_document_identification_id.$error}"
-                            required>
-                        <option value="" disabled selected>Seleccione…</option>
-                        <option v-for="type_document_identification in type_document_identifications" :value="type_document_identification.id">{{ type_document_identification.name }}</option>
-                    </select>
-
-                    <template v-if="v$.modal.form.name.$error">
-                        <ul class="mt-1">
-                            <li class="text-red-500"
-                                v-for="(error, index) of v$.modal.form.name.$errors" :key="index">
-                                {{ error.$message }}
-                            </li>
-                        </ul>
-                    </template>
-                </div>
-
-                <div class="mt-4">
-                    <InputLabel value="CC/NIT"/>
-                    <TextInput
-                        v-model="modal.form.document"
-                        type="text"
-                        class="mt-1 block w-full"
-                        :class="{'border-red-500': v$.modal.form.document.$error}"
-                        required
-                        autocomplete="off"
-                    />
-                    <template v-if="v$.modal.form.document.$error">
-                        <ul class="mt-1">
-                            <li class="text-red-500"
-                                v-for="(error, index) of v$.modal.form.document.$errors" :key="index">
-                                {{ error.$message }}
-                            </li>
-                        </ul>
-                    </template>
-                </div>
-
                 <div class="mt-4">
                     <InputLabel value="Nombre"/>
                     <TextInput
@@ -270,7 +216,7 @@
 
                 <div class="block mt-4" v-if="modal.editMode">
                     <label class="flex items-center">
-                        <Checkbox v-model:checked="modal.form.change_password" name="change_password" />
+                        <Checkbox v-model:checked="modal.form.change_password" name="change_password"/>
                         <span class="ml-2 text-sm text-gray-600">Cambiar contraseña</span>
                     </label>
                 </div>
@@ -318,7 +264,7 @@
                 </template>
 
                 <div class="mt-4">
-                    <InputLabel value="Reportes disponibles" />
+                    <InputLabel value="Reportes disponibles"/>
                     <div class="grid grid-cols-3 gap-5 mt-2">
                         <div class="flex items-center" v-for="report in reports">
                             <Checkbox v-model:checked="modal.form.reports" :value="report.id"/>
@@ -339,7 +285,7 @@
                 </div>
 
                 <div class="mt-4">
-                    <InputLabel value="Roles Disponibles" />
+                    <InputLabel value="Roles Disponibles"/>
                     <div class="grid grid-cols-3 gap-5 mt-2">
                         <div class="flex items-center" v-for="role in roles">
                             <Checkbox v-model:checked="modal.form.roles" :value="role.name"/>
@@ -360,7 +306,7 @@
                 </div>
 
                 <div class="mt-4">
-                    <InputLabel value="Permisos Disponibles" />
+                    <InputLabel value="Permisos Disponibles"/>
                     <div class="grid grid-cols-3 gap-5 mt-2">
                         <div class="flex items-center" v-for="permission in permissions">
                             <Checkbox v-model:checked="modal.form.permissions" :value="permission.name"/>
@@ -406,12 +352,15 @@ import SecondaryButton from '@/Components/SecondaryButton.vue';
 import DialogModal from '@/Components/DialogModal.vue';
 import TextInput from "@/Components/TextInput.vue";
 import InputError from "@/Components/InputError.vue";
+
 import {useVuelidate} from '@vuelidate/core'
-import {required, requiredIf, email, sameAs, minLength, numeric} from '@vuelidate/validators'
+import {email, minLength, required, requiredIf, sameAs} from '@vuelidate/validators'
 import InputLabel from "@/Components/InputLabel.vue";
 import Checkbox from "@/Components/Checkbox.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import CustomButton from "@/Components/CustomButton.vue";
+import {Link} from "@inertiajs/vue3";
 
 export default {
     setup() {
@@ -419,6 +368,8 @@ export default {
     },
 
     components: {
+        Link,
+        CustomButton,
         FontAwesomeIcon,
         DangerButton,
         Checkbox,
@@ -434,8 +385,7 @@ export default {
         users: Array,
         roles: Array,
         permissions: Array,
-        reports: Array,
-        type_document_identifications: Array
+        reports: Array
     },
 
     validations() {
@@ -445,24 +395,17 @@ export default {
                     id: {
                         requiredIf: requiredIf(this.modal.editMode)
                     },
-                    type_document_identification_id: {
-                        required
-                    },
-                    document: {
-                        required,
-                        numeric
-                    },
                     name: {
                         required
                     },
-                    username:  {
+                    username: {
                         required
                     },
-                    email:  {
+                    email: {
                         required,
                         email
                     },
-                    password:  {
+                    password: {
                         requiredIf: requiredIf(this.modal.form.change_password || !this.modal.editMode),
                         minLength: minLength(8)
                     },
@@ -471,14 +414,14 @@ export default {
                         sameAs: sameAs(this.modal.form.password),
                         minLength: minLength(8)
                     },
-                    reports:  {
+                    reports: {
                         minLength: minLength(1)
                     },
-                    permissions:  {
+                    permissions: {
                         requiredIf: requiredIf(this.modal.form.roles.length < 1),
                         minLength: minLength(1)
                     },
-                    roles:  {
+                    roles: {
                         requiredIf: requiredIf(this.modal.form.permissions.length < 1),
                         minLength: minLength(1)
                     },
@@ -496,8 +439,6 @@ export default {
                 open: false,
                 form: {
                     id: '',
-                    type_document_identification_id: '',
-                    document: '',
                     name: '',
                     username: '',
                     email: '',
@@ -525,8 +466,6 @@ export default {
                 open: true,
                 form: {
                     id: row.id,
-                    type_document_identification_id: row.type_identification.id,
-                    document: row.document,
                     name: row.name,
                     username: row.username,
                     email: row.email,
@@ -615,8 +554,6 @@ export default {
                 open: false,
                 form: {
                     id: '',
-                    type_document_identification_id: '',
-                    document: '',
                     name: '',
                     username: '',
                     email: '',

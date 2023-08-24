@@ -22,6 +22,9 @@
                                 <tr>
                                     <th scope="col"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Nombre
                                     </th>
                                     <th scope="col"
@@ -36,37 +39,35 @@
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Actualizado el
                                     </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-
-                                    </th>
                                 </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                 <tr v-for="role in records">
-                                    <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
+                                    <td class="px-6 py-4 text-center text-sm font-medium">
+                                        <div class="flex flex-row">
+                                            <CustomButton class="mr-2" @click="edit(role)" v-permission="'role.edit'">
+                                                <font-awesome-icon :icon="['far', 'pen-to-square']" />
+                                            </CustomButton>
+                                            <CustomButton @click="destroy(role.id)" v-permission="'role.destroy'">
+                                                <font-awesome-icon :icon="['far', 'trash-can']" />
+                                            </CustomButton>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-left text-sm font-medium">
                                         {{ role.name }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
+                                    <td class="px-6 py-4 text-left text-sm font-medium">
                                         <span class="text-xs font-semibold inline-block py-1 px-2 rounded text-indigo-600 bg-indigo-200 uppercase last:mr-0 mr-1"
                                               v-for="(permission, index) in role.permissions">
                                           {{ permission.name }}
                                         </span>
                                     </td>
 
-                                    <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
+                                    <td class="px-6 py-4 text-left text-sm font-medium">
                                         {{ role.created_at }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
+                                    <td class="px-6 py-4 text-left text-sm font-medium">
                                         {{ role.updated_at }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                                        <SecondaryButton class="mr-2" @click="edit(role)" v-permission="'role.edit'">
-                                            <font-awesome-icon :icon="['far', 'pen-to-square']" />
-                                        </SecondaryButton>
-                                        <DangerButton @click="destroy(role.id)" v-permission="'role.destroy'">
-                                            <font-awesome-icon :icon="['far', 'trash-can']" />
-                                        </DangerButton>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -156,6 +157,7 @@ import { required, requiredIf, minLength } from '@vuelidate/validators'
 import InputLabel from "@/Components/InputLabel.vue";
 import Checkbox from "@/Components/Checkbox.vue";
 import DangerButton from "@/Components/DangerButton.vue";
+import CustomButton from "@/Components/CustomButton.vue";
 
 export default {
     setup () {
@@ -163,6 +165,7 @@ export default {
     },
 
     components: {
+        CustomButton,
         DangerButton,
         Checkbox,
         InputLabel,

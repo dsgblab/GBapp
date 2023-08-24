@@ -16,7 +16,6 @@ class DatabaseSeeder extends Seeder
             TypeDocumentIdentificationSeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
-            ReportSeeder::class,
             DesignPrioritySeeder::class,
             DesignStateSeeder::class,
             DesignTimeStateSeeder::class,

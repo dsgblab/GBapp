@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Report;
-use App\Models\TypeDocumentIdentification;
+use App\Models\ReportFilter;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -30,18 +30,16 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('roles', 'permissions', 'reports', 'type_identification')->get();
+        $users = User::with('roles', 'permissions', 'reports')->get();
         $roles = Role::all();
         $permissions = Permission::all();
         $reports = Report::all();
-        $type_document_identifications = TypeDocumentIdentification::all();
 
-        return Inertia::render('Users', [
+        return Inertia::render('Users/Index', [
             'users' => $users,
             'roles' => $roles,
             'permissions' => $permissions,
             'reports' => $reports,
-            'type_document_identifications' => $type_document_identifications,
         ]);
     }
 
@@ -61,7 +59,7 @@ class UserController extends Controller
 
             DB::commit();
 
-            $users = User::with('roles', 'permissions', 'reports', 'type_identification')->get();
+            $users = User::with('roles', 'permissions', 'reports')->get();
 
             return response()->json($users, 200);
         } catch (\Exception $e) {
@@ -81,8 +79,6 @@ class UserController extends Controller
             $user = User::find($id);
 
             $user->update([
-                'document' => $request->document,
-                'type_document_identification_id' => $request->type_document_identification_id,
                 'name' => $request->name,
                 'username' => $request->username,
                 'email' => $request->email,
@@ -94,18 +90,54 @@ class UserController extends Controller
 
             $user->save();
 
-            $user->reports()->sync($request->reports);
             $user->syncPermissions($request->permissions);
             $user->syncRoles($request->roles);
 
             DB::commit();
 
-            $users = User::with('roles', 'permissions', 'reports', 'type_identification')->get();
+            $users = User::with('roles', 'permissions', 'reports')->get();
 
             return response()->json($users, 200);
         } catch (\Exception $e) {
             DB::rollBack();
+            return response()->json($e->getMessage(), 500);
+        }
+    }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function update_reports(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $user = User::findOrFail($request->user_id);
+            $user->reports()->sync($request->reports);
+
+            DB::commit();
+            return response()->json('success', 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json($e->getMessage(), 500);
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function update_filters(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $user = User::with('reports.filters')->find($request->user_id);
+            $user->reports()->find($request->report_id)->filters()->syncWithPivotValues($request->filters, ['user_id' => $request->user_id]);
+
+            DB::commit();
+            return response()->json('success', 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json($e->getMessage(), 500);
         }
     }
@@ -117,8 +149,46 @@ class UserController extends Controller
     {
         User::destroy($id);
 
-        $users = User::with('roles', 'permissions', 'reports', 'type_identification')->get();
+        $users = User::with('roles', 'permissions', 'reports')->get();
 
         return response()->json($users, 200);
+    }
+
+    /**
+     * @param $id
+     * @return Response
+     */
+    public function show($id)
+    {
+        $user = User::with('roles', 'permissions', 'reports')
+            ->find($id);
+
+        $roles = Role::all();
+        $permissions = Permission::all();
+        $reports = Report::all();
+        $filters = ReportFilter::all();
+
+        return Inertia::render('Users/Show', [
+            'user' => $user,
+            'roles' => $roles,
+            'permissions' => $permissions,
+            'reports' => $reports,
+            'filters' => $filters
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function set_default(Request $request)
+    {
+        $user = User::find($request->user_id);
+
+        $user->reports()->updateExistingPivot($request->report_id, [
+            'show' => $request->state
+        ]);
+
+        return response()->json('success', 200);
     }
 }
