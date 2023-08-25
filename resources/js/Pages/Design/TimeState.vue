@@ -129,7 +129,7 @@
 
 <script>
 import {useVuelidate} from "@vuelidate/core";
-import {required, requiredIf} from "@vuelidate/validators";
+import {required, requiredIf} from "@/Utils/i18n-validators.js";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {Link} from "@inertiajs/vue3";

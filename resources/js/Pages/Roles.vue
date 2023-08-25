@@ -153,7 +153,7 @@ import TextInput from "@/Components/TextInput.vue";
 import InputError from "@/Components/InputError.vue";
 
 import { useVuelidate } from '@vuelidate/core'
-import { required, requiredIf, minLength } from '@vuelidate/validators'
+import { required, requiredIf, minLength } from '@/Utils/i18n-validators.js'
 import InputLabel from "@/Components/InputLabel.vue";
 import Checkbox from "@/Components/Checkbox.vue";
 import DangerButton from "@/Components/DangerButton.vue";

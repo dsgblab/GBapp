@@ -234,7 +234,7 @@ import SecondaryButton from "@/Components/SecondaryButton.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import DialogModal from "@/Components/DialogModal.vue";
 import {useVuelidate} from "@vuelidate/core";
-import {required, requiredIf} from "@vuelidate/validators";
+import {required, requiredIf} from "@/Utils/i18n-validators.js";
 
 export default {
     setup () {

@@ -315,7 +315,7 @@ import TextInput from "@/Components/TextInput.vue";
 import Checkbox from "@/Components/Checkbox.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import {useVuelidate} from "@vuelidate/core";
-import {email, minLength, required, requiredIf, sameAs} from "@vuelidate/validators";
+import {email, minLength, required, requiredIf, sameAs} from "@/Utils/i18n-validators.js";
 import {Link} from "@inertiajs/vue3";
 import CustomButton from "@/Components/CustomButton.vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";

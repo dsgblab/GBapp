@@ -98,7 +98,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import {useVuelidate} from "@vuelidate/core";
-import {minLength, required} from "@vuelidate/validators";
+import {minLength, required} from "@/Utils/i18n-validators.js";
 import Checkbox from "@/Components/Checkbox.vue";
 export default {
     setup () {

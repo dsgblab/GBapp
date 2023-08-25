@@ -523,7 +523,7 @@ import DialogModal from "@/Components/DialogModal.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {useVuelidate} from "@vuelidate/core";
-import {required} from "@vuelidate/validators";
+import {required} from "@/Utils/i18n-validators.js";
 import TextInput from "@/Components/TextInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import VueDatePicker from '@vuepic/vue-datepicker';
