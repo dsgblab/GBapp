@@ -81,6 +81,20 @@ const logout = () => {
                                     Usuarios
                                 </NavLink>
 
+                                <NavLink :href="route('import-report.index')"
+                                         :active="route().current('import-report.index')"
+                                         v-permission="'import-report'">
+                                    <font-awesome-icon icon="download" class="mr-2"/>
+                                    Importar reportes
+                                </NavLink>
+
+                                <NavLink :href="route('filters.index')"
+                                         :active="route().current('filters.index')"
+                                         v-permission:any="'filter.create|filter.edit|filter.destroy'">
+                                    <font-awesome-icon icon="filter" class="mr-2"/>
+                                    Filtros
+                                </NavLink>
+
                                 <div class="relative inline-flex items-center px-1 pt-1 border-b-2 border-transparent">
                                     <Dropdown align="left" width="60">
                                         <template #trigger>
@@ -263,7 +277,48 @@ const logout = () => {
                 <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                            <font-awesome-icon icon="house" class="mr-2"/>
                             Dashboard
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink :href="route('report.index')" :active="route().current('report.index')">
+                            <font-awesome-icon icon="chart-simple" class="mr-2"/>
+                            Reportes
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink :href="route('roles.index')"
+                                           :active="route().current('roles.index')"
+                                           v-permission:any="'role.create|role.edit|role.destroy'">
+                            <font-awesome-icon icon="lock" class="mr-2"/>
+                            Roles
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink :href="route('permissions.index')"
+                                           :active="route().current('permissions.index')"
+                                           v-permission:any="'permission.create|permission.edit|permission.destroy'">
+                            <font-awesome-icon icon="user-lock" class="mr-2"/>
+                            Permisos
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink :href="route('users.index')"
+                                           :active="route().current('users.index')"
+                                           v-permission:any="'user.create|user.edit|user.destroy'">
+                            <font-awesome-icon icon="users" class="mr-2"/>
+                            Usuarios
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink :href="route('import-report.index')"
+                                           :active="route().current('import-report.index')"
+                                           v-permission="'import-report'">
+                            <font-awesome-icon icon="download" class="mr-2"/>
+                            Importar reportes
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink :href="route('filters.index')"
+                                           :active="route().current('filters.index')"
+                                           v-permission:any="'filter.create|filter.edit|filter.destroy'">
+                            <font-awesome-icon icon="filter" class="mr-2"/>
+                            Filtros
                         </ResponsiveNavLink>
                     </div>
 
