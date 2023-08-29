@@ -187,7 +187,7 @@ import DialogModal from "@/Components/DialogModal.vue";
 import Checkbox from "@/Components/Checkbox.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import {required, requiredIf, alpha} from "@/Utils/i18n-validators.js";
+import {required, requiredIf} from "@/Utils/i18n-validators.js";
 import {useVuelidate} from "@vuelidate/core";
 import { Link } from '@inertiajs/vue3';
 import CustomButton from "@/Components/CustomButton.vue";

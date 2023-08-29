@@ -15,3 +15,4 @@ export const requiredIf = withI18nMessage(validators.requiredIf, {withArguments:
 export const email = withI18nMessage(validators.email)
 export const sameAs = withI18nMessage(validators.sameAs, {withArguments: true})
 export const alphaNum = withI18nMessage(validators.alphaNum)
+export const alpha = withI18nMessage(validators.alpha)
