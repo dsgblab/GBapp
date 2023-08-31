@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -37,6 +38,8 @@ class ImportReportController extends Controller
     public function get_reports(Request $request)
     {
         try {
+            Session::push('power_access_token', $this->getUserAccessToken());
+
             $result = $this->getReportsInGroup($request->group_id);
 
             return response()->json($result);
