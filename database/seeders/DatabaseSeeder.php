@@ -13,9 +13,11 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            /*
             TypeDocumentIdentificationSeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
+            */
             DesignPrioritySeeder::class,
             DesignStateSeeder::class,
             DesignTimeStateSeeder::class,

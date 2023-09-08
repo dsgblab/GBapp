@@ -35,29 +35,20 @@ class Report extends Model
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d h:i:s A',
-        'updated_at' => 'datetime:Y-m-d h:i:s A'
+        'updated_at' => 'datetime:Y-m-d h:i:s A',
     ];
 
-    /**
-     * @return HasOne
-     */
     public function created_by(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
-    /**
-     * @return BelongsToMany
-     */
     public function user(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_reports')
             ->withPivot('report_id', 'user_id');
     }
 
-    /**
-     * @return BelongsToMany
-     */
     public function filters(): BelongsToMany
     {
         return $this->belongsToMany(ReportFilter::class, 'pvt_report_user_filters', 'report_id', 'filter_id')

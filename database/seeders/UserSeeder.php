@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
             'username' => 'super-admin',
             'email' => 'super-admin@example.com',
             'password' => bcrypt('password'), // S3cur3-P@ssw0rd*
-            'type_document_identification_id' => 1
+            'type_document_identification_id' => 1,
         ]);
 
         $user->save();

@@ -14,14 +14,13 @@ class DesignTaskController extends Controller
     {
         DesignTask::create([
             'design_request_id' => $request->design_request_id,
-            'description' => $request->description
+            'description' => $request->description,
         ]);
 
         $design_tasks = DesignTask::where('design_request_id', '=', $request->design_request_id)->get();
 
         return response()->json($design_tasks, 200);
     }
-
 
     /**
      * Update the specified resource in storage.
@@ -45,6 +44,7 @@ class DesignTaskController extends Controller
         DesignTask::destroy($id);
 
         $design_tasks = DesignTask::where('design_request_id', '=', $design_request_id)->get();
+
         return response()->json($design_tasks, 200);
     }
 }

@@ -14,7 +14,6 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TypeDocumentIdentificationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,7 +39,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::resource('roles', RoleController::class);
 
     Route::resource('users', UserController::class);
-    Route::prefix('users')->group(function (){
+    Route::prefix('users')->group(function () {
         Route::post('update-reports', [UserController::class, 'update_reports'])->name('user.update-reports');
         Route::post('report/update-filters', [UserController::class, 'update_filters'])->name('user.report.update-filters');
         Route::post('report/set-default', [UserController::class, 'set_default'])->name('user.report.set-default');

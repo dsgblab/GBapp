@@ -14,7 +14,7 @@ class DesignTask extends Model
      * @var string[]
      */
     protected $fillable = [
-        'design_request_id', 'description'
+        'design_request_id', 'description',
     ];
 
     /**
@@ -29,7 +29,7 @@ class DesignTask extends Model
      */
     protected $with = [
         'created_by',
-        'updated_by'
+        'updated_by',
     ];
 
     /**

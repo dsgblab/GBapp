@@ -69,9 +69,6 @@ trait PowerBITrait
     }
 
     /**
-     * @param $userAccessToken
-     * @param $report
-     * @return object
      * @throws GuzzleException
      */
     protected function getReportAccessToken($userAccessToken, $report): object
@@ -87,7 +84,7 @@ trait PowerBITrait
                 'Accept' => 'application/json',
             ];
 
-            $params = (object)[
+            $params = (object) [
                 'accessLevel' => $report->access_level,
                 'datasetId' => $report->dataset_id,
             ];
@@ -99,14 +96,14 @@ trait PowerBITrait
 
             $resp = json_decode($response->getBody()->getContents());
 
-            return (object)[
+            return (object) [
                 'status' => 200,
                 'tokenId' => $resp->tokenId,
                 'token' => $resp->token,
                 'expiration' => $resp->expiration,
             ];
         } catch (Exception $e) {
-            return (object)[
+            return (object) [
                 'status' => 500,
                 'message' => $e->getMessage(),
             ];

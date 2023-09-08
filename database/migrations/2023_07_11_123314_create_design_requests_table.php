@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('priority_id')->constrained('users');
             $table->foreignId('designer_id')->constrained('users');
-            $table->foreignId('seller_id')->constrained('users');
+            $table->string('seller_document');
             $table->foreignId('customer_id')->constrained('users');
             $table->longText('comments')->nullable();
             $table->dateTime('reception_date')->nullable();

@@ -79,6 +79,7 @@ class UserController extends Controller
             $user = User::find($id);
 
             $user->update([
+                'type' => $request->type,
                 'name' => $request->name,
                 'username' => $request->username,
                 'email' => $request->email,
@@ -100,12 +101,12 @@ class UserController extends Controller
             return response()->json($users, 200);
         } catch (\Exception $e) {
             DB::rollBack();
+
             return response()->json($e->getMessage(), 500);
         }
     }
 
     /**
-     * @param Request $request
      * @return JsonResponse
      */
     public function update_reports(Request $request)
@@ -116,15 +117,16 @@ class UserController extends Controller
             $user->reports()->sync($request->reports);
 
             DB::commit();
+
             return response()->json('success', 200);
         } catch (\Exception $e) {
             DB::rollBack();
+
             return response()->json($e->getMessage(), 500);
         }
     }
 
     /**
-     * @param Request $request
      * @return JsonResponse
      */
     public function update_filters(Request $request)
@@ -135,9 +137,11 @@ class UserController extends Controller
             $user->reports()->find($request->report_id)->filters()->syncWithPivotValues($request->filters, ['user_id' => $request->user_id]);
 
             DB::commit();
+
             return response()->json('success', 200);
         } catch (\Exception $e) {
             DB::rollBack();
+
             return response()->json($e->getMessage(), 500);
         }
     }
@@ -155,7 +159,6 @@ class UserController extends Controller
     }
 
     /**
-     * @param $id
      * @return Response
      */
     public function show($id)
@@ -173,12 +176,11 @@ class UserController extends Controller
             'roles' => $roles,
             'permissions' => $permissions,
             'reports' => $reports,
-            'filters' => $filters
+            'filters' => $filters,
         ]);
     }
 
     /**
-     * @param Request $request
      * @return JsonResponse
      */
     public function set_default(Request $request)
@@ -186,7 +188,7 @@ class UserController extends Controller
         $user = User::find($request->user_id);
 
         $user->reports()->updateExistingPivot($request->report_id, [
-            'show' => $request->state
+            'show' => $request->state,
         ]);
 
         return response()->json('success', 200);

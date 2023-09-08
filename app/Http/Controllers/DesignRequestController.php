@@ -6,6 +6,7 @@ use App\Models\DesignPriority;
 use App\Models\DesignRequest;
 use App\Models\DesignState;
 use App\Models\DesignTimeState;
+use App\Models\Seller;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -26,7 +27,7 @@ class DesignRequestController extends Controller
         $states = DesignState::all();
         $designers = User::where('type', '=', 'designer')->get();
         $customers = User::where('type', '=', 'customer')->get();
-        $sellers = User::where('type', '=', 'seller')->get();
+        $sellers = Seller::all();
 
         return Inertia::render('Design/Request', [
             'requests' => $requests,
@@ -48,7 +49,7 @@ class DesignRequestController extends Controller
             DesignRequest::create([
                 'priority_id' => $request->priority_id,
                 'designer_id' => $request->designer_id,
-                'seller_id' => $request->seller_id,
+                'seller_document' => $request->seller_document,
                 'customer_id' => $request->customer_id,
                 'comments' => $request->comments,
                 'reception_date' => Carbon::parse($request->reception_date),
@@ -115,7 +116,7 @@ class DesignRequestController extends Controller
         $states = DesignState::all();
         $designers = User::where('type', '=', 'designer')->get();
         $customers = User::where('type', '=', 'customer')->get();
-        $sellers = User::where('type', '=', 'seller')->get();
+        $sellers = Seller::all();
 
         return Inertia::render('Design/Show', [
             'design_request' => $request,
@@ -129,7 +130,6 @@ class DesignRequestController extends Controller
     }
 
     /**
-     * @param Request $request
      * @return JsonResponse
      */
     public function update_state(Request $request)
@@ -139,6 +139,7 @@ class DesignRequestController extends Controller
         $design_request->save();
 
         $stored = DesignRequest::find($request->id);
+
         return response()->json($stored, 200);
     }
 }

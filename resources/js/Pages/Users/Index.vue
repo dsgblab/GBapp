@@ -25,6 +25,10 @@
                                     </th>
                                     <th scope="col"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Tipo
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Nombre
                                     </th>
                                     <th scope="col"
@@ -76,6 +80,10 @@
                                             </CustomButton>
                                         </div>
                                     </td>
+                                    <td class="px-6 py-4 text-center text-sm font-medium">
+                                        {{ user.type === 'customer' ?  'Cliente' : (user.type === 'designer' ? 'Diseñador' : '–') }}
+                                    </td>
+
                                     <td class="px-6 py-4 text-left text-sm font-medium">
                                         {{ user.name }}
                                     </td>
@@ -154,6 +162,19 @@
             </template>
 
             <template #content>
+
+                <div class="mt-4">
+                    <InputLabel value="Tipo"/>
+                    <select class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
+                            v-model="modal.form.type"
+                            :class="{'border-red-500': v$.modal.form.type.$error}"
+                            required>
+                        <option value="" disabled selected>Seleccione…</option>
+                        <option value="customer">Cliente</option>
+                        <option value="designer">Diseñador</option>
+                    </select>
+                </div>
+
                 <div class="mt-4">
                     <InputLabel value="Nombre"/>
                     <TextInput
@@ -395,6 +416,9 @@ export default {
                     id: {
                         requiredIf: requiredIf(this.modal.editMode)
                     },
+                    type: {
+                        required
+                    },
                     name: {
                         required
                     },
@@ -439,6 +463,7 @@ export default {
                 open: false,
                 form: {
                     id: '',
+                    type: '',
                     name: '',
                     username: '',
                     email: '',
@@ -466,6 +491,7 @@ export default {
                 open: true,
                 form: {
                     id: row.id,
+                    type: row.type,
                     name: row.name,
                     username: row.username,
                     email: row.email,
@@ -554,6 +580,7 @@ export default {
                 open: false,
                 form: {
                     id: '',
+                    type: '',
                     name: '',
                     username: '',
                     email: '',

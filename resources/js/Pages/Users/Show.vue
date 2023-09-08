@@ -15,6 +15,18 @@
                         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg bg-white p-5">
                             <div class="grid grid-cols-3 gap-5">
                                 <div>
+                                    <InputLabel value="Tipo"/>
+                                    <select class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
+                                            v-model="form.type"
+                                            :class="{'border-red-500': v$.form.type.$error}"
+                                            required>
+                                        <option value="" disabled selected>Seleccione…</option>
+                                        <option value="customer">Cliente</option>
+                                        <option value="designer">Diseñador</option>
+                                    </select>
+                                </div>
+
+                                <div>
                                     <InputLabel value="Nombre"/>
                                     <TextInput
                                         v-model="form.name"
@@ -359,6 +371,9 @@ export default {
                 id: {
                     required
                 },
+                type: {
+                    required
+                },
                 name: {
                     required
                 },
@@ -397,6 +412,7 @@ export default {
         return {
             form: {
                 id: this.user.id,
+                type: this.user.type,
                 name: this.user.name,
                 username: this.user.username,
                 email: this.user.email,

@@ -14,12 +14,13 @@ class DashboardController extends Controller
 
     /**
      * @return Response
+     *
      * @throws GuzzleException
      */
     public function index()
     {
         $reports = auth()->user()->reports()->wherePivot('show', true)
-            ->get()->map(function ($row){
+            ->get()->map(function ($row) {
                 $row->token = $this->getReportAccessToken(Session::get('power_access_token')[0]->access_token, $row);
                 $row->userAccessToken = Session::get('power_access_token')[0]->access_token;
                 $row->embedUrl = "https://app.powerbi.com/reportEmbed?reportId=$row->reportId&groupId=$row->groupId";
@@ -28,7 +29,7 @@ class DashboardController extends Controller
             });
 
         return Inertia::render('Dashboard', [
-            'reports' => $reports
+            'reports' => $reports,
         ]);
     }
 }

@@ -19,7 +19,7 @@ class RoleSeeder extends Seeder
             'permission.create', 'permission.edit', 'permission.destroy',
             'report.create', 'report.edit', 'report.destroy',
             'filter.create', 'filter.index', 'filter.edit', 'filter.destroy',
-            'import-report'
+            'import-report',
         ];
 
         foreach ($permissions as $permission) {

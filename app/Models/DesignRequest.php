@@ -17,7 +17,7 @@ class DesignRequest extends Model
     protected $fillable = [
         'comments', 'reception_date', 'tentative_date', 'real_date', 'delivery_date',
         'customer_approved_date', 'estimated_arrival_sherpa_date',  'observations',
-        'priority_id', 'designer_id', 'seller_id', 'customer_id',
+        'priority_id', 'designer_id', 'seller_document', 'customer_id',
         'time_state_id', 'state_id', 'created_id', 'updated_id',
     ];
 
@@ -25,7 +25,7 @@ class DesignRequest extends Model
      * @var string[]
      */
     protected $hidden = [
-        'priority_id', 'designer_id', 'seller_id', 'customer_id',
+        'priority_id', 'designer_id', 'seller_document', 'customer_id',
         'time_state_id', 'state_id', 'created_id', 'updated_id',
     ];
 
@@ -63,7 +63,7 @@ class DesignRequest extends Model
 
     public function seller(): HasOne
     {
-        return $this->hasOne(User::class, 'id', 'seller_id');
+        return $this->hasOne(Seller::class, 'tgecodigo', 'seller_document');
     }
 
     public function customer(): HasOne
