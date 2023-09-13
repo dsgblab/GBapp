@@ -17,9 +17,7 @@
                                 <div>
                                     <InputLabel value="Tipo"/>
                                     <select class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
-                                            v-model="form.type"
-                                            :class="{'border-red-500': v$.form.type.$error}"
-                                            required>
+                                            v-model="form.type">
                                         <option value="" disabled selected>Seleccione…</option>
                                         <option value="customer">Cliente</option>
                                         <option value="designer">Diseñador</option>
@@ -190,7 +188,7 @@
                                 <thead class="bg-gray-50">
                                 <tr class="border-b">
                                     <th scope="col"
-                                        colspan="3"
+                                        colspan="4"
                                         class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                                         Reportes
                                     </th>
@@ -369,9 +367,6 @@ export default {
         return {
             form: {
                 id: {
-                    required
-                },
-                type: {
                     required
                 },
                 name: {

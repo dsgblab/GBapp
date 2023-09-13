@@ -6,7 +6,7 @@
                     Diseño - Solicitudes
                 </h2>
 
-                <PrimaryButton type="button" class="ml-auto" @click="modal.open = true" v-permission="'design.state.create'">
+                <PrimaryButton type="button" class="ml-auto" @click="modal.open = true">
                     <font-awesome-icon icon="plus" class="mr-2"/>
                     Nuevo
                 </PrimaryButton>
