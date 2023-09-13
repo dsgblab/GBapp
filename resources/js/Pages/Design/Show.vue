@@ -556,6 +556,7 @@ export default {
         states: Array,
         designers: Array,
         customers: Array,
+        psl_customers: Array,
         sellers: Array
     },
 

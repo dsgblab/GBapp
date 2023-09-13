@@ -1,7 +1,7 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "_tailwind.css";
 
-[x-cloak] {
-    display: none;
-}
+@import "components/_tom-select.css";
+@import "components/_form-control.css";
+@import "components/_form-select.css";
+@import "tom-select/dist/css/tom-select.css";
+

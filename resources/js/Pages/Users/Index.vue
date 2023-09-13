@@ -167,7 +167,6 @@
                     <InputLabel value="Tipo"/>
                     <select class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
                             v-model="modal.form.type"
-                            :class="{'border-red-500': v$.modal.form.type.$error}"
                             required>
                         <option value="" disabled selected>Seleccione…</option>
                         <option value="customer">Cliente</option>
@@ -415,9 +414,6 @@ export default {
                 form: {
                     id: {
                         requiredIf: requiredIf(this.modal.editMode)
-                    },
-                    type: {
-                        required
                     },
                     name: {
                         required

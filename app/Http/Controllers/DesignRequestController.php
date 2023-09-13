@@ -6,11 +6,13 @@ use App\Models\DesignPriority;
 use App\Models\DesignRequest;
 use App\Models\DesignState;
 use App\Models\DesignTimeState;
+use App\Models\PSLCustomer;
 use App\Models\Seller;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -26,8 +28,23 @@ class DesignRequestController extends Controller
         $time_states = DesignTimeState::all();
         $states = DesignState::all();
         $designers = User::where('type', '=', 'designer')->get();
-        $customers = User::where('type', '=', 'customer')->get();
         $sellers = Seller::all();
+
+        $customers = DB::table('GBapp.dbo.users')
+            ->where('type', '=', 'customer')
+            ->select('document', 'name', DB::raw("'local' as type"));
+
+        $customers = DB::connection('ssf')
+            ->table('un_tercegener')
+            ->where('eobcodigo ', '=', 'AC')
+            ->where('tgeesclie', '=', 'S')
+            ->select(DB::raw('RTRIM(LTRIM(tgecodigo)) as document'), DB::raw('RTRIM(LTRIM(tgenombcomp)) as name'), DB::raw("'external' as type"))
+            ->distinct()
+            ->union($customers)
+            ->orderBy('name')
+            ->get();
+
+        $customers = $customers->groupBy('type');
 
         return Inertia::render('Design/Request', [
             'requests' => $requests,
@@ -115,8 +132,24 @@ class DesignRequestController extends Controller
         $time_states = DesignTimeState::all();
         $states = DesignState::all();
         $designers = User::where('type', '=', 'designer')->get();
-        $customers = User::where('type', '=', 'customer')->get();
         $sellers = Seller::all();
+
+        $customers = DB::table('GBapp.dbo.users')
+            ->where('type', '=', 'customer')
+            ->select('document', 'name', DB::raw("'local' as type"));
+
+        $customers = DB::connection('ssf')
+            ->table('un_tercegener')
+            ->where('eobcodigo ', '=', 'AC')
+            ->where('tgeesclie', '=', 'S')
+            ->select(DB::raw('RTRIM(LTRIM(tgecodigo)) as document'), DB::raw('RTRIM(LTRIM(tgenombcomp)) as name'), DB::raw("'external' as type"))
+            ->distinct()
+            ->union($customers)
+            ->orderBy('name')
+            ->get();
+
+        $customers = $customers->groupBy('type');
+
 
         return Inertia::render('Design/Show', [
             'design_request' => $request,

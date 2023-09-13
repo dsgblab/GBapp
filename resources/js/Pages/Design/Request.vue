@@ -177,7 +177,7 @@
                                     </tr>
 
                                     <tr v-else>
-                                        <td class="px-6 py-4 text-center text-red-500 text-sm font-medium" colspan="9">
+                                        <td class="px-6 py-4 text-center text-red-500 text-sm font-medium" colspan="16">
                                             Sin registros…
                                         </td>
                                     </tr>
@@ -199,13 +199,12 @@
                     <div>
                         <InputLabel value="Prioridad" />
 
-                        <select class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
-                                v-model="modal.form.priority_id"
-                                :class="{'border-red-500': v$.modal.form.priority_id.$error}"
-                                required>
-                            <option value="" disabled selected>Seleccione…</option>
+                        <TomSelect v-model="modal.form.priority_id"
+                                   class="w-full"
+                                   :class="{'border-red-500': v$.modal.form.priority_id.$error}">
+                            <option value="">Seleccione…</option>
                             <option v-for="priority in priorities" :value="priority.id">{{ priority.name }}</option>
-                        </select>
+                        </TomSelect>
 
                         <template v-if="v$.modal.form.priority_id.$error">
                             <ul class="mt-1">
@@ -220,13 +219,12 @@
                     <div>
                         <InputLabel value="Diseñador" />
 
-                        <select class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
-                                v-model="modal.form.designer_id"
-                                :class="{'border-red-500': v$.modal.form.designer_id.$error}"
-                                required>
-                            <option value="" disabled selected>Seleccione…</option>
+                        <TomSelect v-model="modal.form.designer_id"
+                                   class="w-full"
+                                   :class="{'border-red-500': v$.modal.form.designer_id.$error}">
+                            <option value="">Seleccione…</option>
                             <option v-for="designer in designers" :value="designer.id">{{ designer.name }}</option>
-                        </select>
+                        </TomSelect>
 
                         <template v-if="v$.modal.form.designer_id.$error">
                             <ul class="mt-1">
@@ -241,18 +239,17 @@
                     <div>
                         <InputLabel value="Vendedor" />
 
-                        <select class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
-                                v-model="modal.form.seller_id"
-                                :class="{'border-red-500': v$.modal.form.seller_id.$error}"
-                                required>
-                            <option value="" disabled selected>Seleccione…</option>
-                            <option v-for="seller in sellers" :value="seller.id">{{ seller.name }}</option>
-                        </select>
+                        <TomSelect v-model="modal.form.seller_document"
+                                   class="w-full"
+                                   :class="{'border-red-500': v$.modal.form.seller_document.$error}">
+                            <option value="">Seleccione…</option>
+                            <option v-for="seller in sellers" :value="seller.tgecodigo">{{ seller.tgenombcomp }}</option>
+                        </TomSelect>
 
-                        <template v-if="v$.modal.form.seller_id.$error">
+                        <template v-if="v$.modal.form.seller_document.$error">
                             <ul class="mt-1">
                                 <li class="text-red-500"
-                                    v-for="(error, index) of v$.modal.form.seller_id.$errors" :key="index">
+                                    v-for="(error, index) of v$.modal.form.seller_document.$errors" :key="index">
                                     {{ error.$message }}
                                 </li>
                             </ul>
@@ -262,13 +259,16 @@
                     <div>
                         <InputLabel value="Cliente" />
 
-                        <select class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
-                                v-model="modal.form.customer_id"
-                                :class="{'border-red-500': v$.modal.form.customer_id.$error}"
-                                required>
-                            <option value="" disabled selected>Seleccione…</option>
-                            <option v-for="customer in customers" :value="customer.id">{{ customer.name }}</option>
-                        </select>
+                        <TomSelect v-model="modal.form.customer_id"
+                                   class="w-full"
+                                   :class="{'border-red-500': v$.modal.form.customer_id.$error}">
+                            <option value="">Seleccione…</option>
+
+                            <optgroup v-for="(group, key) in customers" :label="key === 'local' ? 'LOCALES' : 'PSL'">
+                                <option v-for="customer in group" :value="customer.document">{{ customer.name }}</option>
+                            </optgroup>
+
+                        </TomSelect>
 
                         <template v-if="v$.modal.form.customer_id.$error">
                             <ul class="mt-1">
@@ -283,13 +283,12 @@
                     <div>
                         <InputLabel value="Estado" />
 
-                        <select class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
-                                v-model="modal.form.state_id"
-                                :class="{'border-red-500': v$.modal.form.state_id.$error}"
-                                required>
-                            <option value="" disabled selected>Seleccione…</option>
+                        <TomSelect v-model="modal.form.state_id"
+                                   class="w-full"
+                                   :class="{'border-red-500': v$.modal.form.state_id.$error}">
+                            <option value="">Seleccione…</option>
                             <option v-for="state in states" :value="state.id">{{ state.name }}</option>
-                        </select>
+                        </TomSelect>
 
                         <template v-if="v$.modal.form.state_id.$error">
                             <ul class="mt-1">
@@ -304,13 +303,12 @@
                     <div>
                         <InputLabel value="Estado de tiempo" />
 
-                        <select class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
-                                v-model="modal.form.time_state_id"
-                                :class="{'border-red-500': v$.modal.form.time_state_id.$error}"
-                                required>
-                            <option value="" disabled selected>Seleccione…</option>
+                        <TomSelect v-model="modal.form.time_state_id"
+                                   class="w-full"
+                                   :class="{'border-red-500': v$.modal.form.time_state_id.$error}">
+                            <option value="">Seleccione…</option>
                             <option v-for="time_state in time_states" :value="time_state.id">{{ time_state.name }}</option>
-                        </select>
+                        </TomSelect>
 
                         <template v-if="v$.modal.form.time_state_id.$error">
                             <ul class="mt-1">
@@ -463,7 +461,7 @@
                     <div>
                         <InputLabel value="Comentarios" />
 
-                        <textarea class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full resize-none"
+                        <textarea class="form-control resize-none"
                                   v-model="modal.form.comments"
                                   :class="{'border-red-500': v$.modal.form.comments.$error}"
                                   required cols="30" rows="2" ></textarea>
@@ -481,7 +479,7 @@
                     <div>
                         <InputLabel value="Observaciones" />
 
-                        <textarea class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full resize-none"
+                        <textarea class="form-control resize-none"
                                   v-model="modal.form.observations"
                                   :class="{'border-red-500': v$.modal.form.observations.$error}"
                                   required cols="30" rows="2" ></textarea>
@@ -556,6 +554,7 @@ export default {
         states: Array,
         designers: Array,
         customers: Array,
+        psl_customers: Array,
         sellers: Array
     },
 
@@ -565,7 +564,7 @@ export default {
                 form: {
                     priority_id: {required},
                     designer_id: {required},
-                    seller_id: {required},
+                    seller_document: {required},
                     customer_id: {required},
                     comments: {required},
                     reception_date: {required},
@@ -594,7 +593,7 @@ export default {
                 form: {
                     priority_id: '',
                     designer_id: '',
-                    seller_id: '',
+                    seller_document: '',
                     customer_id: '',
                     comments: '',
                     reception_date: '',
@@ -688,7 +687,7 @@ export default {
                 form: {
                     priority_id: '',
                     designer_id: '',
-                    seller_id: '',
+                    seller_document: '',
                     customer_id: '',
                     comments: '',
                     reception_date: '',
