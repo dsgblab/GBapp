@@ -95,7 +95,8 @@ const logout = () => {
                                     Filtros
                                 </NavLink>
 
-                                <div class="relative inline-flex items-center px-1 pt-1 border-b-2 border-transparent">
+                                <div class="relative inline-flex items-center px-1 pt-1 border-b-2 border-transparent"
+                                     v-permission:any="'design.request|design.priority|design.state|design.time-state'">
                                     <Dropdown align="left" width="60">
                                         <template #trigger>
                                             <a href="javascript:void(0)" class="text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
@@ -107,22 +108,22 @@ const logout = () => {
 
                                         <template #content>
                                             <div class="w-48">
-                                                <DropdownLink :href="route('request.index')">
+                                                <DropdownLink :href="route('request.index')" v-permission="'design.request'">
                                                     <font-awesome-icon icon="pen-ruler" class="mr-2"/>
                                                     Solicitudes
                                                 </DropdownLink>
 
-                                                <DropdownLink :href="route('priority.index')">
+                                                <DropdownLink :href="route('priority.index')" v-permission="'design.priority'">
                                                     <font-awesome-icon icon="star" class="mr-2"/>
                                                     Prioridades
                                                 </DropdownLink>
 
-                                                <DropdownLink :href="route('state.index')">
+                                                <DropdownLink :href="route('state.index')" v-permission="'design.state'">
                                                     <font-awesome-icon icon="list-ol" class="mr-2"/>
                                                     Estados
                                                 </DropdownLink>
 
-                                                <DropdownLink :href="route('time-state.index')">
+                                                <DropdownLink :href="route('time-state.index')" v-permission="'design.time-state'">
                                                     <font-awesome-icon icon="clock" class="mr-2"/>
                                                     Estados de tiempo
                                                 </DropdownLink>
