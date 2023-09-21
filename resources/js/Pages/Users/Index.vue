@@ -81,7 +81,7 @@
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 text-center text-sm font-medium">
-                                        {{ user.type === 'customer' ?  'Cliente' : (user.type === 'designer' ? 'Diseñador' : '–') }}
+                                        {{ user.type }}
                                     </td>
 
                                     <td class="px-6 py-4 text-left text-sm font-medium">
@@ -99,9 +99,9 @@
                                     <td class="px-6 py-4 text-left text-sm font-medium">
                                         <span
                                             class="text-xs font-semibold inline-block py-1 px-2 rounded text-indigo-600 bg-indigo-200 uppercase last:mr-0 mr-1"
-                                            v-for="role in user.roles"
-                                            v-if="user.roles.length > 0">
-                                          {{ role.name }}
+                                            v-for="role in user.roles.split(', ')"
+                                            v-if="user.roles">
+                                          {{ role }}
                                         </span>
 
                                         <span
@@ -114,9 +114,9 @@
                                     <td class="px-6 py-4 text-left text-sm font-medium">
                                         <span
                                             class="text-xs font-semibold inline-block py-1 px-2 rounded text-indigo-600 bg-indigo-200 uppercase last:mr-0 mr-1"
-                                            v-for="permission in user.permissions"
-                                            v-if="user.permissions.length > 0">
-                                          {{ permission.name }}
+                                            v-for="permission in user.permissions.split(', ')"
+                                            v-if="user.permissions">
+                                          {{ permission }}
                                         </span>
 
                                         <span
@@ -129,9 +129,9 @@
                                     <td class="px-6 py-4 text-left text-sm font-medium">
                                         <span
                                             class="text-xs font-semibold inline-block py-1 px-2 rounded text-indigo-600 bg-indigo-200 uppercase last:mr-0 mr-1"
-                                            v-for="report in user.reports"
-                                            v-if="user.reports.length > 0">
-                                          {{ report.name }}
+                                            v-for="report in user.reports.split(', ')"
+                                            v-if="user.reports">
+                                          {{ report }}
                                         </span>
 
                                         <span

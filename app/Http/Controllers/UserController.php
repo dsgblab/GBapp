@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\Permission\Models\Permission;
@@ -25,12 +26,10 @@ class UserController extends Controller
         $this->middleware(['role_or_permission:super-administrador|user.destroy'])->only('update', 'store');
     }
 
-    /**
-     * @return Response
-     */
+
     public function index()
     {
-        $users = User::with('roles', 'permissions', 'reports')->get();
+        $users = DB::table('V_USERS')->get();
         $roles = Role::all();
         $permissions = Permission::all();
         $reports = Report::all();
@@ -59,7 +58,7 @@ class UserController extends Controller
 
             DB::commit();
 
-            $users = User::with('roles', 'permissions', 'reports')->get();
+            $users = DB::table('V_USERS')->get();
 
             return response()->json($users, 200);
         } catch (\Exception $e) {
@@ -86,7 +85,7 @@ class UserController extends Controller
             ]);
 
             if ($request->change_password) {
-                $user->password = $request->password;
+                $user->password = Hash::make($request->password);
             }
 
             $user->save();
@@ -96,7 +95,7 @@ class UserController extends Controller
 
             DB::commit();
 
-            $users = User::with('roles', 'permissions', 'reports')->get();
+            $users = DB::table('V_USERS')->get();
 
             return response()->json($users, 200);
         } catch (\Exception $e) {
@@ -153,7 +152,7 @@ class UserController extends Controller
     {
         User::destroy($id);
 
-        $users = User::with('roles', 'permissions', 'reports')->get();
+        $users = DB::table('V_USERS')->get();
 
         return response()->json($users, 200);
     }

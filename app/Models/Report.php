@@ -22,13 +22,6 @@ class Report extends Model
     /**
      * @var string[]
      */
-    protected $with = [
-        'user', 'created_by', 'filters',
-    ];
-
-    /**
-     * @var string[]
-     */
     protected $appends = [
         'filter_array',
     ];

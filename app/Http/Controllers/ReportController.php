@@ -40,7 +40,7 @@ class ReportController extends Controller
     public function index()
     {
         if (auth()->user()->can('super-administrador')) {
-            $reports = Report::with('user')->get();
+            $reports = Report::all();
         } else {
             $reports = auth()->user()->reports;
         }
@@ -58,7 +58,7 @@ class ReportController extends Controller
     public function view($groupId, $reportId)
     {
         if (auth()->user()->can('super-administrador')) {
-            $report = Report::with('user')
+            $report = Report::with('user', 'created_by', 'filters')
                 ->where('group_id', '=', $groupId)
                 ->where('report_id', '=', $reportId)
                 ->first();
@@ -92,7 +92,7 @@ class ReportController extends Controller
         $report->save();
 
         if (auth()->user()->can('super-administrador')) {
-            $reports = Report::with('user')->get();
+            $reports = Report::with('user', 'created_by', 'filters')->get();
         } else {
             $reports = auth()->user()->reports;
         }
@@ -110,7 +110,7 @@ class ReportController extends Controller
         $report->save();
 
         if (auth()->user()->can('super-administrador')) {
-            $reports = Report::with('user')->get();
+            $reports = Report::with('user', 'created_by', 'filters')->get();
         } else {
             $reports = auth()->user()->reports;
         }
