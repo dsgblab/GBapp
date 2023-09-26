@@ -119,6 +119,23 @@ class ReportController extends Controller
     }
 
     /**
+     * @param $id
+     * @return JsonResponse
+     */
+    public function destroy($id)
+    {
+        Report::destroy($id);
+
+        if (auth()->user()->can('super-administrador')) {
+            $reports = Report::with('user')->get();
+        } else {
+            $reports = auth()->user()->reports;
+        }
+
+        return response()->json($reports, 200);
+    }
+
+    /**
      * @return mixed
      *
      * @throws GuzzleException
