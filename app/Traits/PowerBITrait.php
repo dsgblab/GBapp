@@ -54,7 +54,7 @@ trait PowerBITrait
             ],
         ]);
 
-        return json_decode($response->getBody()->getContents());
+        return json_decode($response->getBody()->getContents())->access_token;
     }
 
     /**
