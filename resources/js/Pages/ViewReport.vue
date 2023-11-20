@@ -47,7 +47,7 @@ export default {
                 type: "report",
                 id: this.report.report_id,
                 embedUrl: this.report.embedUrl,
-                accessToken: this.report.token.token,
+                accessToken: this.report.token,
                 tokenType: models.TokenType.Embed,
                 pageView: 'fitToWidth',
                 settings: {
@@ -61,7 +61,6 @@ export default {
                 },
                 filters: JSON.parse(this.report.filter_array),
             },
-
             fullscreen: false,
         }
     },

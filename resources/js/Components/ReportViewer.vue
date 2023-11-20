@@ -32,7 +32,7 @@ export default {
                 type: "report",
                 id: this.report.report_id,
                 embedUrl: this.report.embedUrl,
-                accessToken: this.report.token.token,
+                accessToken: this.report.token,
                 tokenType: models.TokenType.Embed,
                 pageView: 'fitToWidth',
                 settings: {

@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Carbon\Carbon;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
@@ -17,18 +18,22 @@ trait PowerBITrait
         $user_id = config('power-bi.user_id');
 
         $client = new Client([
-            'base_uri' => "https://login.microsoftonline.com/$user_id/oauth2/token",
+            'base_uri' => "https://login.windows.net/common/oauth2/token",
         ]);
 
-        $response = $client->request('POST', "https://login.microsoftonline.com/$user_id/oauth2/token", [
+        $response = $client->request('POST', "https://login.windows.net/common/oauth2/token", [
             'multipart' => [
-                [
-                    'name' => 'resource',
-                    'contents' => config('power-bi.resource'),
-                ],
                 [
                     'name' => 'grant_type',
                     'contents' => config('power-bi.grant_type'),
+                ],
+                [
+                    'name' => 'scope',
+                    'contents' => 'openid'
+                ],
+                [
+                    'name' => 'resource',
+                    'contents' => config('power-bi.resource'),
                 ],
                 [
                     'name' => 'client_secret',
@@ -37,6 +42,14 @@ trait PowerBITrait
                 [
                     'name' => 'client_id',
                     'contents' => config('power-bi.client_id'),
+                ],
+                [
+                    'name' => 'username',
+                    'contents' => config('power-bi.username'),
+                ],
+                [
+                    'name' => 'password',
+                    'contents' => config('power-bi.password'),
                 ],
             ],
         ]);
@@ -100,7 +113,7 @@ trait PowerBITrait
                 'status' => 200,
                 'tokenId' => $resp->tokenId,
                 'token' => $resp->token,
-                'expiration' => $resp->expiration,
+                'expiration' => Carbon::parse($resp->expiration)->setTimezone('America/Bogota'),
             ];
         } catch (Exception $e) {
             return (object) [

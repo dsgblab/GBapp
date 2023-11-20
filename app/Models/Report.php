@@ -16,7 +16,7 @@ class Report extends Model
      * @var string[]
      */
     protected $fillable = [
-        'name', 'group_id', 'report_id', 'access_level', 'dataset_id', 'user_id',
+        'name', 'group_id', 'report_id', 'access_level', 'dataset_id', 'user_id', 'token', 'expiration_date'
     ];
 
     /**
@@ -26,22 +26,35 @@ class Report extends Model
         'filter_array',
     ];
 
+    /**
+     * @var string[]
+     */
     protected $casts = [
         'created_at' => 'datetime:Y-m-d h:i:s A',
         'updated_at' => 'datetime:Y-m-d h:i:s A',
+        'expiration_date' => 'datetime'
     ];
 
+    /**
+     * @return HasOne
+     */
     public function created_by(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
+    /**
+     * @return BelongsToMany
+     */
     public function user(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_reports')
             ->withPivot('report_id', 'user_id');
     }
 
+    /**
+     * @return BelongsToMany
+     */
     public function filters(): BelongsToMany
     {
         return $this->belongsToMany(ReportFilter::class, 'pvt_report_user_filters', 'report_id', 'filter_id')

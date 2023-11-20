@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Report;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\JsonResponse;
@@ -10,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
+use function PHPUnit\Framework\isNull;
+use Exception;
 
 class ReportController extends Controller
 {
@@ -51,8 +54,9 @@ class ReportController extends Controller
     }
 
     /**
-     * @return Response
-     *
+     * @param $groupId
+     * @param $reportId
+     * @return Response|void
      * @throws GuzzleException
      */
     public function view($groupId, $reportId)
@@ -68,18 +72,36 @@ class ReportController extends Controller
                 ->where('report_id', '=', $reportId)
                 ->first();
 
-            if (! $report) {
+            if (!$report) {
                 abort(403);
             }
         }
 
-        $report->token = $this->getReportAccessToken($this->userAccessToken, $report);
-        $report->userAccessToken = $this->userAccessToken;
-        $report->embedUrl = "https://app.powerbi.com/reportEmbed?reportId=$reportId&groupId=$groupId";
+        if ($report->token === null || Carbon::now() >= $report->expiration_date) {
+            $token = $this->getReportAccessToken($this->userAccessToken, $report);
 
-        return Inertia::render('ViewReport', [
-            'report' => $report,
-        ]);
+            if ($token->status === 200){
+                $report->token = $token->token;
+                $report->expiration_date = $token->expiration;
+                $report->save();
+
+                $report->userAccessToken = $this->userAccessToken;
+                $report->embedUrl = "https://app.powerbi.com/reportEmbed?reportId=$reportId&groupId=$groupId";
+
+                return Inertia::render('ViewReport', [
+                    'report' => $report,
+                ]);
+            }else {
+                return redirect()->route('report.index')->dangerBanner($token->message);
+            }
+        }else {
+            $report->userAccessToken = $this->userAccessToken;
+            $report->embedUrl = "https://app.powerbi.com/reportEmbed?reportId=$reportId&groupId=$groupId";
+
+            return Inertia::render('ViewReport', [
+                'report' => $report,
+            ]);
+        }
     }
 
     /**
@@ -145,18 +167,22 @@ class ReportController extends Controller
         $user_id = config('power-bi.user_id');
 
         $client = new Client([
-            'base_uri' => "https://login.microsoftonline.com/$user_id/oauth2/token",
+            'base_uri' => "https://login.windows.net/common/oauth2/token",
         ]);
 
-        $response = $client->request('POST', "https://login.microsoftonline.com/$user_id/oauth2/token", [
+        $response = $client->request('POST', "https://login.windows.net/common/oauth2/token", [
             'multipart' => [
-                [
-                    'name' => 'resource',
-                    'contents' => config('power-bi.resource'),
-                ],
                 [
                     'name' => 'grant_type',
                     'contents' => config('power-bi.grant_type'),
+                ],
+                [
+                    'name' => 'scope',
+                    'contents' => 'openid'
+                ],
+                [
+                    'name' => 'resource',
+                    'contents' => config('power-bi.resource'),
                 ],
                 [
                     'name' => 'client_secret',
@@ -165,6 +191,14 @@ class ReportController extends Controller
                 [
                     'name' => 'client_id',
                     'contents' => config('power-bi.client_id'),
+                ],
+                [
+                    'name' => 'username',
+                    'contents' => config('power-bi.username'),
+                ],
+                [
+                    'name' => 'password',
+                    'contents' => config('power-bi.password'),
                 ],
             ],
         ]);
@@ -190,7 +224,7 @@ class ReportController extends Controller
                 'Accept' => 'application/json',
             ];
 
-            $params = (object) [
+            $params = (object)[
                 'accessLevel' => $report->access_level,
                 'datasetId' => $report->dataset_id,
             ];
@@ -202,14 +236,14 @@ class ReportController extends Controller
 
             $resp = json_decode($response->getBody()->getContents());
 
-            return (object) [
+            return (object)[
                 'status' => 200,
                 'tokenId' => $resp->tokenId,
                 'token' => $resp->token,
-                'expiration' => $resp->expiration,
+                'expiration' => Carbon::parse($resp->expiration)->setTimezone('America/Bogota'),
             ];
-        } catch (\Exception $e) {
-            return (object) [
+        } catch (Exception $e) {
+            return (object)[
                 'status' => 500,
                 'message' => $e->getMessage(),
             ];
