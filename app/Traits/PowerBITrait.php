@@ -15,8 +15,6 @@ trait PowerBITrait
      */
     protected function getUserAccessToken(): mixed
     {
-        $user_id = config('power-bi.user_id');
-
         $client = new Client([
             'base_uri' => "https://login.windows.net/common/oauth2/token",
         ]);

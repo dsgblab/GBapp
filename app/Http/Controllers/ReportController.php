@@ -3,19 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Report;
+use App\Traits\PowerBITrait;
 use Carbon\Carbon;
-use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
-use function PHPUnit\Framework\isNull;
-use Exception;
 
 class ReportController extends Controller
 {
+    use PowerBITrait;
+
     /**
      * @var string|mixed
      */
@@ -80,7 +80,7 @@ class ReportController extends Controller
         if ($report->token === null || Carbon::now() >= $report->expiration_date) {
             $token = $this->getReportAccessToken($this->userAccessToken, $report);
 
-            if ($token->status === 200){
+            if ($token->status === 200) {
                 $report->token = $token->token;
                 $report->expiration_date = $token->expiration;
                 $report->save();
@@ -91,10 +91,10 @@ class ReportController extends Controller
                 return Inertia::render('ViewReport', [
                     'report' => $report,
                 ]);
-            }else {
+            } else {
                 return redirect()->route('report.index')->dangerBanner($token->message);
             }
-        }else {
+        } else {
             $report->userAccessToken = $this->userAccessToken;
             $report->embedUrl = "https://app.powerbi.com/reportEmbed?reportId=$reportId&groupId=$groupId";
 
@@ -155,98 +155,5 @@ class ReportController extends Controller
         }
 
         return response()->json($reports, 200);
-    }
-
-    /**
-     * @return mixed
-     *
-     * @throws GuzzleException
-     */
-    protected function getUserAccessToken()
-    {
-        $user_id = config('power-bi.user_id');
-
-        $client = new Client([
-            'base_uri' => "https://login.windows.net/common/oauth2/token",
-        ]);
-
-        $response = $client->request('POST', "https://login.windows.net/common/oauth2/token", [
-            'multipart' => [
-                [
-                    'name' => 'grant_type',
-                    'contents' => config('power-bi.grant_type'),
-                ],
-                [
-                    'name' => 'scope',
-                    'contents' => 'openid'
-                ],
-                [
-                    'name' => 'resource',
-                    'contents' => config('power-bi.resource'),
-                ],
-                [
-                    'name' => 'client_secret',
-                    'contents' => config('power-bi.client_secret'),
-                ],
-                [
-                    'name' => 'client_id',
-                    'contents' => config('power-bi.client_id'),
-                ],
-                [
-                    'name' => 'username',
-                    'contents' => config('power-bi.username'),
-                ],
-                [
-                    'name' => 'password',
-                    'contents' => config('power-bi.password'),
-                ],
-            ],
-        ]);
-
-        return json_decode($response->getBody()->getContents())->access_token;
-    }
-
-    /**
-     * @return object
-     *
-     * @throws GuzzleException
-     */
-    protected function getReportAccessToken($userAccessToken, $report)
-    {
-        try {
-            $client = new Client([
-                'base_uri' => 'https://api.powerbi.com',
-            ]);
-
-            $headers = [
-                'Authorization' => "Bearer $userAccessToken",
-                'Content-type' => 'application/json',
-                'Accept' => 'application/json',
-            ];
-
-            $params = (object)[
-                'accessLevel' => $report->access_level,
-                'datasetId' => $report->dataset_id,
-            ];
-
-            $response = $client->request('POST', "https://api.powerbi.com/v1.0/myorg/groups/$report->group_id/reports/$report->report_id/GenerateToken", [
-                'headers' => $headers,
-                'json' => $params,
-            ]);
-
-            $resp = json_decode($response->getBody()->getContents());
-
-            return (object)[
-                'status' => 200,
-                'tokenId' => $resp->tokenId,
-                'token' => $resp->token,
-                'expiration' => Carbon::parse($resp->expiration)->setTimezone('America/Bogota'),
-            ];
-        } catch (Exception $e) {
-            return (object)[
-                'status' => 500,
-                'message' => $e->getMessage(),
-            ];
-        }
     }
 }
