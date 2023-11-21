@@ -60,7 +60,7 @@ trait PowerBITrait
      */
     protected function getReportsInGroup($group_id): array
     {
-        $userAccessToken = Session::get('power_access_token')[0]->access_token;
+        $userAccessToken = $this->getUserAccessToken();
 
         $client = new Client([
             'base_uri' => 'https://api.powerbi.com/v1.0/myorg',
