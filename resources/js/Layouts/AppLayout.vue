@@ -60,41 +60,6 @@ const logout = () => {
                                     Reportes
                                 </NavLink>
 
-                                <NavLink :href="route('roles.index')"
-                                         :active="route().current('roles.index')"
-                                         v-permission:any="'role.create|role.edit|role.destroy'">
-                                    <font-awesome-icon icon="lock" class="mr-2"/>
-                                    Roles
-                                </NavLink>
-
-                                <NavLink :href="route('permissions.index')"
-                                         :active="route().current('permissions.index')"
-                                         v-permission:any="'permission.create|permission.edit|permission.destroy'">
-                                    <font-awesome-icon icon="user-lock" class="mr-2"/>
-                                    Permisos
-                                </NavLink>
-
-                                <NavLink :href="route('users.index')"
-                                         :active="route().current('users.index')"
-                                         v-permission:any="'user.create|user.edit|user.destroy'">
-                                    <font-awesome-icon icon="users" class="mr-2"/>
-                                    Usuarios
-                                </NavLink>
-
-                                <NavLink :href="route('import-report.index')"
-                                         :active="route().current('import-report.index')"
-                                         v-permission="'import-report'">
-                                    <font-awesome-icon icon="download" class="mr-2"/>
-                                    Importar reportes
-                                </NavLink>
-
-                                <NavLink :href="route('filters.index')"
-                                         :active="route().current('filters.index')"
-                                         v-permission:any="'filter.create|filter.edit|filter.destroy'">
-                                    <font-awesome-icon icon="filter" class="mr-2"/>
-                                    Filtros
-                                </NavLink>
-
                                 <div class="relative inline-flex items-center px-1 pt-1 border-b-2 border-transparent"
                                      v-permission:any="'design.request|design.priority|design.state|design.time-state'">
                                     <Dropdown align="left" width="60">
@@ -132,6 +97,50 @@ const logout = () => {
                                     </Dropdown>
                                 </div>
 
+                                <div class="relative inline-flex items-center px-1 pt-1 border-b-2 border-transparent"
+                                     v-permission:any="'user.create|user.edit|user.destroy|role.create|role.edit|role.destroy|permission.create|permission.edit|permission.destroy|import-report|report.filter.update|report.filter.store|report.filter.destroy'">
+                                    <Dropdown align="left" width="60">
+                                        <template #trigger>
+                                            <a href="javascript:void(0)"
+                                               class="text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                                                <font-awesome-icon icon="gears" class="mr-2"/>
+                                                Administración
+                                                <font-awesome-icon icon="chevron-down" class="ml-2"/>
+                                            </a>
+                                        </template>
+
+                                        <template #content>
+                                            <div class="w-48">
+                                                <DropdownLink :href="route('users.index')"
+                                                              v-permission:any="'user.create|user.edit|user.destroy'">
+                                                    <font-awesome-icon icon="users" class="mr-2"/>
+                                                    Usuarios
+                                                </DropdownLink>
+
+                                                <DropdownLink :href="route('roles.index')"
+                                                              v-permission:any="'role.create|role.edit|role.destroy'">
+                                                    <font-awesome-icon icon="lock" class="mr-2"/>
+                                                    Roles
+                                                </DropdownLink>
+
+                                                <div class="border-t border-gray-200"
+                                                     v-permission:any="'import-report'"/>
+
+                                                <DropdownLink :href="route('report.import.index')"
+                                                              v-permission="'import-report'">
+                                                    <font-awesome-icon icon="download" class="mr-2"/>
+                                                    Importar reportes
+                                                </DropdownLink>
+
+                                                <DropdownLink :href="route('report.filter.index')"
+                                                              v-permission:any="'report.filter.index|report.filter.update|report.filter.store|report.filter.destroy'">
+                                                    <font-awesome-icon icon="filter" class="mr-2"/>
+                                                    Filtros
+                                                </DropdownLink>
+                                            </div>
+                                        </template>
+                                    </Dropdown>
+                                </div>
                             </div>
                         </div>
 
@@ -402,8 +411,11 @@ const logout = () => {
 
             <!-- Page Heading -->
             <header v-if="$slots.header" class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-                    <slot name="header" />
+                <div class="max-w-7xl mx-auto py-4 px-4 sm:px-4 lg:px-8 flex items-center justify-between">
+                    <slot name="header"/>
+                    <div>
+                        <slot name="actions"/>
+                    </div>
                 </div>
             </header>
 

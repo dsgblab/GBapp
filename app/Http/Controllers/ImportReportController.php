@@ -27,7 +27,7 @@ class ImportReportController extends Controller
             ->pluck('report_id')
             ->toArray();
 
-        return Inertia::render('ImportReport', [
+        return Inertia::render('Report/Import', [
             'current_reports' => $current_reports,
         ]);
     }
@@ -38,7 +38,10 @@ class ImportReportController extends Controller
     public function get_reports(Request $request)
     {
         try {
+            Session::push('power_access_token', $this->getUserAccessToken());
+
             $result = $this->getReportsInGroup($request->group_id);
+
             return response()->json($result);
         } catch (Exception|GuzzleException $e) {
             return response()->json($e->getMessage(), 500);

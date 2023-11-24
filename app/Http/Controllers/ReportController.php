@@ -7,6 +7,7 @@ use App\Traits\PowerBITrait;
 use Carbon\Carbon;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -22,16 +23,10 @@ class ReportController extends Controller
     private string $userAccessToken = '';
 
     /**
-     * Verifies that the user has sufficient permissions to access the methods
-     *
      * @throws GuzzleException
      */
     public function __construct()
     {
-        $this->middleware(['role_or_permission:super-administrador|report.create'])->except('update', 'destroy');
-        $this->middleware(['role_or_permission:super-administrador|report.edit'])->except('store', 'destroy');
-        $this->middleware(['role_or_permission:super-administrador|report.destroy'])->only('update', 'store');
-
         if ($this->userAccessToken === '') {
             $this->userAccessToken = $this->getUserAccessToken();
         }
@@ -48,7 +43,7 @@ class ReportController extends Controller
             $reports = auth()->user()->reports;
         }
 
-        return Inertia::render('Report', [
+        return Inertia::render('Report/Index', [
             'reports' => $reports,
         ]);
     }
@@ -56,7 +51,7 @@ class ReportController extends Controller
     /**
      * @param $groupId
      * @param $reportId
-     * @return Response|void
+     * @return RedirectResponse|Response
      * @throws GuzzleException
      */
     public function view($groupId, $reportId)
@@ -88,7 +83,7 @@ class ReportController extends Controller
                 $report->userAccessToken = $this->userAccessToken;
                 $report->embedUrl = "https://app.powerbi.com/reportEmbed?reportId=$reportId&groupId=$groupId";
 
-                return Inertia::render('ViewReport', [
+                return Inertia::render('Report/View', [
                     'report' => $report,
                 ]);
             } else {
@@ -98,7 +93,7 @@ class ReportController extends Controller
             $report->userAccessToken = $this->userAccessToken;
             $report->embedUrl = "https://app.powerbi.com/reportEmbed?reportId=$reportId&groupId=$groupId";
 
-            return Inertia::render('ViewReport', [
+            return Inertia::render('Report/View', [
                 'report' => $report,
             ]);
         }

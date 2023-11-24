@@ -18,7 +18,8 @@ class ReportFilterController extends Controller
     {
         $filters = ReportFilter::all();
 
-        return Inertia::render('Filter', [
+        return Inertia::render('Report/Filter
+        ', [
             'filters' => $filters,
         ]);
     }

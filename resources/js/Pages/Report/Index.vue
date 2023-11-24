@@ -1,15 +1,15 @@
 <template>
-    <AppLayout title="Roles">
+    <AppLayout title="Reportes">
         <template #header>
             <div class="flex flex-row">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    Roles
+                    Reportes
                 </h2>
             </div>
         </template>
 
         <template #actions>
-            <PrimaryButton v-permission="'role.create'" type="button" @click="create">
+            <PrimaryButton v-permission="'report.store'" class="ml-auto" type="button" @click="create">
                 <font-awesome-icon class="mr-2" icon="plus"/>
                 Crear
             </PrimaryButton>
@@ -24,20 +24,21 @@
 
                     <template v-slot:actions="{row}">
                         <div class="text-center flex flex-row">
-                            <CustomButton v-permission="'role.edit'" class="mr-2" @click="edit(row)">
+                            <Link :href="route('report.view', [row.group_id, row.report_id])"
+                                  class="mr-2 inline-flex items-center px-2 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150">
+                                <font-awesome-icon :icon="['fas', 'arrow-up-right-from-square']"/>
+                            </Link>
+                            <CustomButton v-permission="'report.view'"
+                                          class="mr-2"
+                                          @click="edit(row)">
                                 <font-awesome-icon :icon="['far', 'pen-to-square']"/>
                             </CustomButton>
-                            <CustomButton v-permission="'role.destroy'" @click="destroy(row.id)">
+
+                            <CustomButton v-permission="'report.destroy'"
+                                          @click="destroy(row.id)">
                                 <font-awesome-icon :icon="['far', 'trash-can']"/>
                             </CustomButton>
                         </div>
-                    </template>
-
-                    <template v-slot:permissions="{row}">
-                                <span v-for="(permission, index) in row.permissions"
-                                      class="badge badge-success">
-                                    {{ permission.description }}
-                                </span>
                     </template>
                 </v-client-table>
             </div>
@@ -70,19 +71,58 @@
                 </div>
 
                 <div class="mt-4">
-                    <InputLabel value="Permisos Disponibles"/>
-                    <div class="grid grid-cols-3 gap-5 mt-2">
-                        <div v-for="permission in permissions" class="flex items-center">
-                            <Checkbox v-model:checked="modal.form.permissions" :value="permission.name"/>
-                            <div class="ml-2">
-                                {{ permission.description }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <template v-if="v$.form.permissions.$error">
+                    <InputLabel value="Grupo"/>
+                    <TextInput
+                        v-model="modal.form.group_id"
+                        :class="{'border-red-500': v$.form.group_id.$error}"
+                        autocomplete="Grupo"
+                        class="mt-1 block w-full"
+                        required
+                        type="text"
+                    />
+                    <template v-if="v$.form.group_id.$error">
                         <ul class="mt-1">
-                            <li v-for="(error, index) of v$.form.permissions.$errors"
+                            <li v-for="(error, index) of v$.form.group_id.$errors"
+                                :key="index" class="text-red-500">
+                                {{ error.$message }}
+                            </li>
+                        </ul>
+                    </template>
+                </div>
+
+                <div class="mt-4">
+                    <InputLabel value="Reporte"/>
+                    <TextInput
+                        v-model="modal.form.report_id"
+                        :class="{'border-red-500': v$.form.report_id.$error}"
+                        autocomplete="Reporte"
+                        class="mt-1 block w-full"
+                        required
+                        type="text"
+                    />
+                    <template v-if="v$.form.report_id.$error">
+                        <ul class="mt-1">
+                            <li v-for="(error, index) of v$.form.report_id.$errors"
+                                :key="index" class="text-red-500">
+                                {{ error.$message }}
+                            </li>
+                        </ul>
+                    </template>
+                </div>
+
+                <div class="mt-4">
+                    <InputLabel value="Dataset"/>
+                    <TextInput
+                        v-model="modal.form.dataset_id"
+                        :class="{'border-red-500': v$.form.dataset_id.$error}"
+                        autocomplete="Dataset"
+                        class="mt-1 block w-full"
+                        required
+                        type="text"
+                    />
+                    <template v-if="v$.form.dataset_id.$error">
+                        <ul class="mt-1">
+                            <li v-for="(error, index) of v$.form.dataset_id.$errors"
                                 :key="index" class="text-red-500">
                                 {{ error.$message }}
                             </li>
@@ -107,61 +147,43 @@
         </DialogModal>
     </AppLayout>
 </template>
-
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import SecondaryButton from '@/Components/SecondaryButton.vue';
-import DialogModal from '@/Components/DialogModal.vue';
-import TextInput from "@/Components/TextInput.vue";
-import {useVuelidate} from '@vuelidate/core'
-import {minLength, required, requiredIf} from '@/Utils/i18n-validators.js'
 import InputLabel from "@/Components/InputLabel.vue";
-import Checkbox from "@/Components/Checkbox.vue";
-import CustomButton from "@/Components/CustomButton.vue";
-import {reactive, toRefs} from "vue";
+import DialogModal from "@/Components/DialogModal.vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
+import TextInput from "@/Components/TextInput.vue";
+import {required, requiredIf} from "@/Utils/i18n-validators.js";
+import {useVuelidate} from "@vuelidate/core";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import {helper} from "@/Utils/helper.js";
+import {reactive, toRefs} from "vue";
+import CustomButton from "@/Components/CustomButton.vue";
+import {Link} from "@inertiajs/vue3";
 
 const props = defineProps({
-    roles: {
-        type: Array,
-        default: []
-    },
-    permissions: {
+    reports: {
         type: Array,
         default: []
     }
 });
 
 const table = reactive({
-    data: props.roles,
+    data: props.reports,
     columns: [
         'actions',
-        'description',
-        'permissions',
-        'created_at',
+        'name',
         'updated_at'
     ],
     options: {
         headings: {
             actions: '',
-            description: 'NOMBRE',
-            permissions: 'PERMISOS',
-            created_at: 'CREADO EL',
+            name: 'NOMBRE',
             updated_at: 'ACTUALIZADO EL'
         },
         clientSorting: false,
         uniqueKey: 'id',
-        sortable: ['description'],
-        templates: {
-            created_at(h, row) {
-                return helper.formatDate(row.created_at)
-            },
-            updated_at(h, row) {
-                return helper.formatDate(row.updated_at)
-            },
-        }
+        sortable: ['name'],
     }
 });
 
@@ -172,11 +194,13 @@ const modal = reactive({
     form: {
         id: '',
         name: '',
-        permissions: []
+        group_id: '',
+        report_id: '',
+        dataset_id: '',
     }
 });
 
-const rules = {
+const rules = reactive({
     form: {
         id: {
             requiredIf: requiredIf(modal.editMode)
@@ -184,28 +208,35 @@ const rules = {
         name: {
             required
         },
-        permissions: {
+        group_id: {
             required,
-            minLength: minLength(1)
+        },
+        report_id: {
+            required,
+        },
+        dataset_id: {
+            required,
         },
     }
-}
+});
 
 const v$ = useVuelidate(rules, toRefs(modal));
 
 const create = () => {
     modal.open = true
-    modal.title = 'Crear Rol'
+    modal.title = 'Crear Reporte'
 }
 
 const edit = (row) => {
     modal.open = true
     modal.editMode = true
-    modal.title = 'Editar Rol'
+    modal.title = 'Editar Reporte'
     modal.form = {
         id: row.id,
         name: row.name,
-        permissions: row.permissions.map(row => row.name)
+        group_id: row.group_id,
+        report_id: row.report_id,
+        dataset_id: row.dataset_id,
     }
 }
 
@@ -216,7 +247,9 @@ const closeModal = () => {
     modal.form = {
         id: '',
         name: '',
-        permissions: []
+        group_id: '',
+        report_id: '',
+        dataset_id: '',
     }
     v$.value.form.$reset()
 }
@@ -232,7 +265,7 @@ const store = () => {
             confirmButtonText: 'Aceptar'
         });
     } else {
-        axios.post(route('roles.store'), modal.form).then(resp => {
+        axios.post(route('report.store'), modal.form).then(resp => {
             closeModal()
             table.data = resp.data
         }).catch(err => {
@@ -257,7 +290,7 @@ const update = () => {
             confirmButtonText: 'Aceptar'
         });
     } else {
-        axios.put(route('roles.update', modal.form.id), modal.form).then(resp => {
+        axios.put(route('report.update', modal.form.id), modal.form).then(resp => {
             closeModal()
             table.data = resp.data
         }).catch(err => {
@@ -274,13 +307,13 @@ const update = () => {
 const destroy = (id) => {
     Swal.fire({
         icon: 'question',
-        title: '¿Eliminar Rol?',
+        title: '¿Eliminar Reporte?',
         text: "¡Esta acción no es reversible!",
         showCancelButton: true,
         confirmButtonText: '¡Si, Eliminar!'
     }).then((result) => {
         if (result.isConfirmed) {
-            axios.delete(route('roles.destroy', id)).then(resp => {
+            axios.delete(route('report.destroy', id)).then(resp => {
                 table.data = resp.data
             }).catch(err => {
                 Swal.fire({
@@ -293,4 +326,6 @@ const destroy = (id) => {
         }
     })
 }
+
 </script>
+

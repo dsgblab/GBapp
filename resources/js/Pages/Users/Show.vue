@@ -8,22 +8,19 @@
             </div>
         </template>
 
-        <div class="py-12">
-            <div class="max-w-8xl mx-6 sm:px-6 lg:px-8">
+        <template #actions>
+            <Link :href="route('users.index')" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150" >
+                <font-awesome-icon class="mr-2" icon="arrow-left"/>
+                Atrás
+            </Link>
+        </template>
+
+        <div class="py-10">
+            <div class="max-w-8xl mx-10 sm:px-8 lg:px-8">
                 <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div class="py-2 align-middle inline-block min-w-full">
                         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg bg-white p-5">
                             <div class="grid grid-cols-3 gap-5">
-                                <div>
-                                    <InputLabel value="Tipo"/>
-                                    <select class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
-                                            v-model="form.type">
-                                        <option value="" disabled selected>Seleccione…</option>
-                                        <option value="customer">Cliente</option>
-                                        <option value="designer">Diseñador</option>
-                                    </select>
-                                </div>
-
                                 <div>
                                     <InputLabel value="Nombre"/>
                                     <TextInput
@@ -141,7 +138,7 @@
                                         <div class="flex items-center" v-for="role in roles">
                                             <Checkbox v-model:checked="form.roles" :value="role.name"/>
                                             <div class="ml-2">
-                                                {{ role.name }}
+                                                {{ role.description }}
                                             </div>
                                         </div>
                                     </div>
@@ -162,7 +159,7 @@
                                         <div class="flex items-center" v-for="permission in permissions">
                                             <Checkbox v-model:checked="form.permissions" :value="permission.name"/>
                                             <div class="ml-2">
-                                                {{ permission.name }}
+                                                {{ permission.description }}
                                             </div>
                                         </div>
                                     </div>
@@ -219,7 +216,7 @@
                                 </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-                                <tr v-for="report in user.reports">
+                                <tr v-for="report in user.reports" v-if="user.reports.length > 0">
                                     <td class="px-6 py-4 text-center text-sm font-medium">
                                         <div class="flex flex-row">
                                             <CustomButton class="mr-2"
@@ -252,6 +249,11 @@
                                             v-else>
                                             Ningún filtro agregado
                                         </span>
+                                    </td>
+                                </tr>
+                                <tr v-else>
+                                    <td class="px-6 py-4 text-sm font-medium text-center text-red-500" colspan="4">
+                                        Ningún registro agregado…
                                     </td>
                                 </tr>
                                 </tbody>
@@ -326,13 +328,13 @@ import Checkbox from "@/Components/Checkbox.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import {useVuelidate} from "@vuelidate/core";
 import {email, minLength, required, requiredIf, sameAs} from "@/Utils/i18n-validators.js";
-import {Link} from "@inertiajs/vue3";
+import {Link, router} from "@inertiajs/vue3";
 import CustomButton from "@/Components/CustomButton.vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import DialogModal from "@/Components/DialogModal.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import report from "../Report.vue";
+import report from "../Report/Index.vue";
 
 export default {
     computed: {
@@ -483,7 +485,7 @@ export default {
                 });
 
                 this.closeModal()
-                this.$inertia.visit(route('users.show', this.user.id))
+                router.visit(route('users.edit', this.user.id))
             }).catch(err => {
                 this.$swal({
                     icon: 'error',
@@ -517,7 +519,7 @@ export default {
                 });
 
                 this.closeModal()
-                this.$inertia.visit(route('users.show', this.user.id))
+                router.visit(route('users.edit', this.user.id))
             }).catch(err => {
                 this.$swal({
                     icon: 'error',
@@ -549,7 +551,7 @@ export default {
                         timerProgressBar: true,
                     });
 
-                    this.$inertia.visit(route('users.show', this.user.id))
+                    router.visit(route('users.edit', this.user.id))
                 }).catch(err => {
                     this.$swal({
                         icon: 'error',
@@ -577,7 +579,7 @@ export default {
                     timerProgressBar: true,
                 });
 
-                this.$inertia.visit(route('users.show', this.user.id), { preserveScroll: true })
+                router.visit(route('users.edit', this.user.id))
             }).catch(err => {
                 this.$swal({
                     icon: 'error',

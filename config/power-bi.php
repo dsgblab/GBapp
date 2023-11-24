@@ -6,6 +6,6 @@ return [
     'client_secret' => env('POWERBI_CLIENT_SECRET'),
     'client_id' => env('POWERBI_CLIENT_ID'),
     'resource' => env('POWERBI_RESOURCE', 'https://analysis.windows.net/powerbi/api'),
-    'username' => "sistemas@labgenericosdebelleza.com",
-    'password' => "Echejul27*@"
+    'username' => env('POWERBI_USERNAME'),
+    'password' => env('POWERBI_PASSWORD')
 ];

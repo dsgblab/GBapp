@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Report;
 use App\Models\ReportFilter;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,19 +18,11 @@ use Spatie\Permission\Models\Role;
 class UserController extends Controller
 {
     /**
-     * verifies that the user has sufficient permissions to access the methods
+     * @return Response
      */
-    public function __construct()
-    {
-        $this->middleware(['role_or_permission:super-administrador|user.create'])->except('update', 'destroy');
-        $this->middleware(['role_or_permission:super-administrador|user.edit'])->except('store', 'destroy');
-        $this->middleware(['role_or_permission:super-administrador|user.destroy'])->only('update', 'store');
-    }
-
-
     public function index()
     {
-        $users = DB::table('V_USERS')->get();
+        $users = User::with('reports')->get();
         $roles = Role::all();
         $permissions = Permission::all();
         $reports = Report::all();
@@ -58,10 +51,10 @@ class UserController extends Controller
 
             DB::commit();
 
-            $users = DB::table('V_USERS')->get();
+            $users = User::all();
 
             return response()->json($users, 200);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
 
             return response()->json($e->getMessage(), 500);
@@ -95,10 +88,10 @@ class UserController extends Controller
 
             DB::commit();
 
-            $users = DB::table('V_USERS')->get();
+            $users = User::all();
 
             return response()->json($users, 200);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
 
             return response()->json($e->getMessage(), 500);
@@ -116,11 +109,9 @@ class UserController extends Controller
             $user->reports()->sync($request->reports);
 
             DB::commit();
-
             return response()->json('success', 200);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
-
             return response()->json($e->getMessage(), 500);
         }
     }
@@ -138,7 +129,7 @@ class UserController extends Controller
             DB::commit();
 
             return response()->json('success', 200);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
 
             return response()->json($e->getMessage(), 500);
@@ -152,7 +143,7 @@ class UserController extends Controller
     {
         User::destroy($id);
 
-        $users = DB::table('V_USERS')->get();
+        $users = User::all();
 
         return response()->json($users, 200);
     }

@@ -5,154 +5,59 @@
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                     Usuarios del sistema
                 </h2>
-                <PrimaryButton type="button" class="ml-auto" @click="create" v-permission="'user.create'">
-                    <font-awesome-icon icon="plus" class="mr-2"/>
-                    Crear
-                </PrimaryButton>
+
             </div>
         </template>
 
-        <div class="py-12">
-            <div class="max-w-8xl mx-6 sm:px-6 lg:px-8">
-                <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                    <div class="py-2 align-middle inline-block min-w-full">
-                        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
-                                <tr>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Tipo
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Nombre
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Usuario
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Correo Electrónico
-                                    </th>
+        <template #actions>
+            <PrimaryButton v-permission="'user.create'" class="ml-auto" type="button" @click="create">
+                <font-awesome-icon class="mr-2" icon="plus"/>
+                Crear
+            </PrimaryButton>
+        </template>
 
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Roles Asociados
-                                    </th>
+        <div class="py-10">
+            <div class="max-w-8xl sm:px-4 lg:px-6">
+                <v-client-table :columns="table.columns"
+                                :data="table.data"
+                                :options="table.options"
+                                class="overflow-y-auto ">
 
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Permisos Asociados
-                                    </th>
+                    <template v-slot:actions="{row}">
+                        <div class="text-center flex flex-row">
+                            <Link v-permission="'user.edit'"
+                                  :href="route('users.edit', row.id)"
+                                  class="mr-2 inline-flex items-center px-2 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150">
+                                <font-awesome-icon :icon="['far', 'pen-to-square']"/>
+                            </Link>
 
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Reportes asociados
-                                    </th>
-
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Creado el
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Actualizado el
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                <tr v-for="user in records">
-                                    <td class="px-6 py-4 text-center text-sm font-medium">
-                                        <div class="flex flex-row">
-                                            <Link :href="route('users.show', user.id)"
-                                                  v-permission="'user.edit'"
-                                                  class="mr-2 inline-flex items-center px-2 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150">
-                                                <font-awesome-icon :icon="['far', 'pen-to-square']"/>
-                                            </Link>
-
-                                            <CustomButton @click="destroy(user.id)" v-permission="'user.destroy'">
-                                                <font-awesome-icon :icon="['far', 'trash-can']"/>
-                                            </CustomButton>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 text-center text-sm font-medium">
-                                        {{ user.type }}
-                                    </td>
-
-                                    <td class="px-6 py-4 text-left text-sm font-medium">
-                                        {{ user.name }}
-                                    </td>
-
-                                    <td class="px-6 py-4 text-left text-sm font-medium">
-                                        {{ user.username }}
-                                    </td>
-
-                                    <td class="px-6 py-4 text-left text-sm font-medium">
-                                        {{ user.email }}
-                                    </td>
-
-                                    <td class="px-6 py-4 text-left text-sm font-medium">
-                                        <span
-                                            class="text-xs font-semibold inline-block py-1 px-2 rounded text-indigo-600 bg-indigo-200 uppercase last:mr-0 mr-1"
-                                            v-for="role in user.roles.split(', ')"
-                                            v-if="user.roles">
-                                          {{ role }}
-                                        </span>
-
-                                        <span
-                                            class="text-xs font-semibold inline-block py-1 px-2 rounded text-red-600 bg-red-200 uppercase last:mr-0 mr-1"
-                                            v-else>
-                                          sin roles asociados
-                                        </span>
-                                    </td>
-
-                                    <td class="px-6 py-4 text-left text-sm font-medium">
-                                        <span
-                                            class="text-xs font-semibold inline-block py-1 px-2 rounded text-indigo-600 bg-indigo-200 uppercase last:mr-0 mr-1"
-                                            v-for="permission in user.permissions.split(', ')"
-                                            v-if="user.permissions">
-                                          {{ permission }}
-                                        </span>
-
-                                        <span
-                                            class="text-xs font-semibold inline-block py-1 px-2 rounded text-red-600 bg-red-200 uppercase last:mr-0 mr-1"
-                                            v-else>
-                                          sin permisos asociados
-                                        </span>
-                                    </td>
-
-                                    <td class="px-6 py-4 text-left text-sm font-medium">
-                                        <span
-                                            class="text-xs font-semibold inline-block py-1 px-2 rounded text-indigo-600 bg-indigo-200 uppercase last:mr-0 mr-1"
-                                            v-for="report in user.reports.split(', ')"
-                                            v-if="user.reports">
-                                          {{ report }}
-                                        </span>
-
-                                        <span
-                                            class="text-xs font-semibold inline-block py-1 px-2 rounded text-red-600 bg-red-200 uppercase last:mr-0 mr-1"
-                                            v-else>
-                                          sin reportes asociados
-                                        </span>
-                                    </td>
-
-                                    <td class="px-6 py-4 text-left text-sm font-medium">
-                                        {{ user.created_at }}
-                                    </td>
-                                    <td class="px-6 py-4 text-left text-sm font-medium">
-                                        {{ user.updated_at }}
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                            <CustomButton v-permission="'user.destroy'" @click="destroy(row.id)">
+                                <font-awesome-icon :icon="['far', 'trash-can']"/>
+                            </CustomButton>
                         </div>
-                    </div>
-                </div>
+                    </template>
+
+                    <template v-slot:roles="{row}">
+                        <span v-for="role in row.roles"
+                              class="badge badge-success">
+                            {{ role.description }}
+                        </span>
+                    </template>
+
+                    <template v-slot:permissions="{row}">
+                        <span v-for="permission in row.permission_descriptions"
+                              class="badge badge-success">
+                            {{ permission }}
+                        </span>
+                    </template>
+
+                    <template v-slot:reports="{row}">
+                        <span v-for="report in row.reports"
+                              class="badge badge-success">
+                            {{ report.name }}
+                        </span>
+                    </template>
+                </v-client-table>
             </div>
         </div>
 
@@ -165,10 +70,11 @@
 
                 <div class="mt-4">
                     <InputLabel value="Tipo"/>
-                    <select class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
-                            v-model="modal.form.type"
-                            required>
-                        <option value="" disabled selected>Seleccione…</option>
+                    <select
+                        v-model="modal.form.type"
+                        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
+                        required>
+                        <option disabled selected value="">Seleccione…</option>
                         <option value="customer">Cliente</option>
                         <option value="designer">Diseñador</option>
                     </select>
@@ -178,16 +84,16 @@
                     <InputLabel value="Nombre"/>
                     <TextInput
                         v-model="modal.form.name"
-                        type="text"
-                        class="mt-1 block w-full"
-                        :class="{'border-red-500': v$.modal.form.name.$error}"
-                        required
+                        :class="{'border-red-500': v$.form.name.$error}"
                         autocomplete="off"
+                        class="mt-1 block w-full"
+                        required
+                        type="text"
                     />
-                    <template v-if="v$.modal.form.name.$error">
+                    <template v-if="v$.form.name.$error">
                         <ul class="mt-1">
-                            <li class="text-red-500"
-                                v-for="(error, index) of v$.modal.form.name.$errors" :key="index">
+                            <li v-for="(error, index) of v$.form.name.$errors"
+                                :key="index" class="text-red-500">
                                 {{ error.$message }}
                             </li>
                         </ul>
@@ -198,16 +104,16 @@
                     <InputLabel value="Usuario"/>
                     <TextInput
                         v-model="modal.form.username"
-                        type="text"
-                        class="mt-1 block w-full"
-                        :class="{'border-red-500': v$.modal.form.username.$error}"
-                        required
+                        :class="{'border-red-500': v$.form.username.$error}"
                         autocomplete="off"
+                        class="mt-1 block w-full"
+                        required
+                        type="text"
                     />
-                    <template v-if="v$.modal.form.username.$error">
+                    <template v-if="v$.form.username.$error">
                         <ul class="mt-1">
-                            <li class="text-red-500"
-                                v-for="(error, index) of v$.modal.form.username.$errors" :key="index">
+                            <li v-for="(error, index) of v$.form.username.$errors"
+                                :key="index" class="text-red-500">
                                 {{ error.$message }}
                             </li>
                         </ul>
@@ -218,23 +124,23 @@
                     <InputLabel value="Correo electrónico"/>
                     <TextInput
                         v-model="modal.form.email"
-                        type="email"
-                        class="mt-1 block w-full"
-                        :class="{'border-red-500': v$.modal.form.email.$error}"
-                        required
+                        :class="{'border-red-500': v$.form.email.$error}"
                         autocomplete="off"
+                        class="mt-1 block w-full"
+                        required
+                        type="email"
                     />
-                    <template v-if="v$.modal.form.email.$error">
+                    <template v-if="v$.form.email.$error">
                         <ul class="mt-1">
-                            <li class="text-red-500"
-                                v-for="(error, index) of v$.modal.form.email.$errors" :key="index">
+                            <li v-for="(error, index) of v$.form.email.$errors"
+                                :key="index" class="text-red-500">
                                 {{ error.$message }}
                             </li>
                         </ul>
                     </template>
                 </div>
 
-                <div class="block mt-4" v-if="modal.editMode">
+                <div v-if="modal.editMode" class="block mt-4">
                     <label class="flex items-center">
                         <Checkbox v-model:checked="modal.form.change_password" name="change_password"/>
                         <span class="ml-2 text-sm text-gray-600">Cambiar contraseña</span>
@@ -246,16 +152,16 @@
                         <InputLabel value="Contraseña"/>
                         <TextInput
                             v-model="modal.form.password"
-                            type="password"
-                            class="mt-1 block w-full"
-                            :class="{'border-red-500': v$.modal.form.password.$error}"
-                            required
+                            :class="{'border-red-500': v$.form.password.$error}"
                             autocomplete="off"
+                            class="mt-1 block w-full"
+                            required
+                            type="password"
                         />
-                        <template v-if="v$.modal.form.password.$error">
+                        <template v-if="v$.form.password.$error">
                             <ul class="mt-1">
-                                <li class="text-red-500"
-                                    v-for="(error, index) of v$.modal.form.password.$errors" :key="index">
+                                <li v-for="(error, index) of v$.form.password.$errors"
+                                    :key="index" class="text-red-500">
                                     {{ error.$message }}
                                 </li>
                             </ul>
@@ -266,16 +172,16 @@
                         <InputLabel value="Confirmar Contraseña"/>
                         <TextInput
                             v-model="modal.form.confirm_password"
-                            type="password"
-                            class="mt-1 block w-full"
-                            :class="{'border-red-500': v$.modal.form.confirm_password.$error}"
-                            required
+                            :class="{'border-red-500': v$.form.confirm_password.$error}"
                             autocomplete="off"
+                            class="mt-1 block w-full"
+                            required
+                            type="password"
                         />
-                        <template v-if="v$.modal.form.confirm_password.$error">
+                        <template v-if="v$.form.confirm_password.$error">
                             <ul class="mt-1">
-                                <li class="text-red-500"
-                                    v-for="(error, index) of v$.modal.form.confirm_password.$errors" :key="index">
+                                <li v-for="(error, index) of v$.form.confirm_password.$errors"
+                                    :key="index" class="text-red-500">
                                     {{ error.$message }}
                                 </li>
                             </ul>
@@ -286,7 +192,7 @@
                 <div class="mt-4">
                     <InputLabel value="Reportes disponibles"/>
                     <div class="grid grid-cols-3 gap-5 mt-2">
-                        <div class="flex items-center" v-for="report in reports">
+                        <div v-for="report in reports" class="flex items-center">
                             <Checkbox v-model:checked="modal.form.reports" :value="report.id"/>
                             <div class="ml-2">
                                 {{ report.name }}
@@ -294,10 +200,10 @@
                         </div>
                     </div>
 
-                    <template v-if="v$.modal.form.reports.$error">
+                    <template v-if="v$.form.reports.$error">
                         <ul class="mt-1">
-                            <li class="text-red-500"
-                                v-for="(error, index) of v$.modal.form.reports.$errors" :key="index">
+                            <li v-for="(error, index) of v$.form.reports.$errors"
+                                :key="index" class="text-red-500">
                                 {{ error.$message }}
                             </li>
                         </ul>
@@ -307,18 +213,18 @@
                 <div class="mt-4">
                     <InputLabel value="Roles Disponibles"/>
                     <div class="grid grid-cols-3 gap-5 mt-2">
-                        <div class="flex items-center" v-for="role in roles">
+                        <div v-for="role in roles" class="flex items-center">
                             <Checkbox v-model:checked="modal.form.roles" :value="role.name"/>
                             <div class="ml-2">
-                                {{ role.name }}
+                                {{ role.description }}
                             </div>
                         </div>
                     </div>
 
-                    <template v-if="v$.modal.form.roles.$error">
+                    <template v-if="v$.form.roles.$error">
                         <ul class="mt-1">
-                            <li class="text-red-500"
-                                v-for="(error, index) of v$.modal.form.roles.$errors" :key="index">
+                            <li v-for="(error, index) of v$.form.roles.$errors"
+                                :key="index" class="text-red-500">
                                 {{ error.$message }}
                             </li>
                         </ul>
@@ -328,18 +234,18 @@
                 <div class="mt-4">
                     <InputLabel value="Permisos Disponibles"/>
                     <div class="grid grid-cols-3 gap-5 mt-2">
-                        <div class="flex items-center" v-for="permission in permissions">
+                        <div v-for="permission in permissions" class="flex items-center">
                             <Checkbox v-model:checked="modal.form.permissions" :value="permission.name"/>
                             <div class="ml-2">
-                                {{ permission.name }}
+                                {{ permission.description }}
                             </div>
                         </div>
                     </div>
 
-                    <template v-if="v$.modal.form.permissions.$error">
+                    <template v-if="v$.form.permissions.$error">
                         <ul class="mt-1">
-                            <li class="text-red-500"
-                                v-for="(error, index) of v$.modal.form.permissions.$errors" :key="index">
+                            <li v-for="(error, index) of v$.form.permissions.$errors"
+                                :key="index" class="text-red-500">
                                 {{ error.$message }}
                             </li>
                         </ul>
@@ -352,245 +258,208 @@
                     Cancelar
                 </SecondaryButton>
 
-                <PrimaryButton class="ml-3" @click="update" v-if="modal.editMode">
-                    Actualizar
-                </PrimaryButton>
-
-                <PrimaryButton class="ml-3" @click="store" v-else>
+                <PrimaryButton class="ml-3" @click="store">
                     Guardar
                 </PrimaryButton>
             </template>
         </DialogModal>
-
     </AppLayout>
 </template>
 
-<script>
+<script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import DialogModal from '@/Components/DialogModal.vue';
 import TextInput from "@/Components/TextInput.vue";
-import InputError from "@/Components/InputError.vue";
-
 import {useVuelidate} from '@vuelidate/core'
 import {email, minLength, required, requiredIf, sameAs} from '@/Utils/i18n-validators.js'
 import InputLabel from "@/Components/InputLabel.vue";
 import Checkbox from "@/Components/Checkbox.vue";
-import DangerButton from "@/Components/DangerButton.vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import CustomButton from "@/Components/CustomButton.vue";
 import {Link} from "@inertiajs/vue3";
+import {reactive, toRefs} from "vue";
+import {helper} from "@/Utils/helper.js";
 
-export default {
-    setup() {
-        return {v$: useVuelidate()}
+const props = defineProps({
+    users: {
+        type: Array,
+        default: []
     },
-
-    components: {
-        Link,
-        CustomButton,
-        FontAwesomeIcon,
-        DangerButton,
-        Checkbox,
-        InputLabel,
-        InputError, TextInput,
-        PrimaryButton,
-        SecondaryButton,
-        AppLayout,
-        DialogModal
+    roles: {
+        type: Array,
+        default: []
     },
-
-    props: {
-        users: Array,
-        roles: Array,
-        permissions: Array,
-        reports: Array
+    permissions: {
+        type: Array,
+        default: []
     },
-
-    validations() {
-        return {
-            modal: {
-                form: {
-                    id: {
-                        requiredIf: requiredIf(this.modal.editMode)
-                    },
-                    name: {
-                        required
-                    },
-                    username: {
-                        required
-                    },
-                    email: {
-                        required,
-                        email
-                    },
-                    password: {
-                        requiredIf: requiredIf(this.modal.form.change_password || !this.modal.editMode),
-                        minLength: minLength(8)
-                    },
-                    confirm_password: {
-                        requiredIf: requiredIf(this.modal.form.change_password || !this.modal.editMode),
-                        sameAs: sameAs(this.modal.form.password),
-                        minLength: minLength(8)
-                    },
-                    reports: {
-                        minLength: minLength(1)
-                    },
-                    permissions: {
-                        requiredIf: requiredIf(this.modal.form.roles.length < 1),
-                        minLength: minLength(1)
-                    },
-                    roles: {
-                        requiredIf: requiredIf(this.modal.form.permissions.length < 1),
-                        minLength: minLength(1)
-                    },
-                }
-            }
-        }
+    reports: {
+        type: Array,
+        default: []
     },
+});
 
-    data() {
-        return {
-            records: this.users,
-            modal: {
-                title: '',
-                editMode: false,
-                open: false,
-                form: {
-                    id: '',
-                    type: '',
-                    name: '',
-                    username: '',
-                    email: '',
-                    change_password: false,
-                    password: '',
-                    confirm_password: '',
-                    reports: [],
-                    permissions: [],
-                    roles: []
-                },
-            }
-        }
-    },
-
-    methods: {
-        create() {
-            this.modal.open = true
-            this.modal.title = 'Crear Usuario'
+const table = reactive({
+    data: props.users,
+    columns: [
+        'actions',
+        'name',
+        'username',
+        'email',
+        'roles',
+        'permissions',
+        'reports',
+        'created_at',
+        'updated_at'
+    ],
+    options: {
+        headings: {
+            actions: '',
+            name: 'NOMBRE',
+            username: 'USUARIO',
+            email: 'CORREO ELECTRÓNICO',
+            roles: 'ROLES',
+            permissions: 'PERMISOS',
+            reports: 'REPORTES',
+            created_at: 'CREADO EL',
+            updated_at: 'ACTUALIZADO EL'
         },
-
-        edit(row) {
-            this.modal = {
-                title: 'Editar Usuario',
-                editMode: true,
-                open: true,
-                form: {
-                    id: row.id,
-                    type: row.type,
-                    name: row.name,
-                    username: row.username,
-                    email: row.email,
-                    change_password: false,
-                    password: '',
-                    confirm_password: '',
-                    reports: row.reports.map(row => row.id),
-                    permissions: row.permissions.map(row => row.name),
-                    roles: row.roles.map(row => row.name),
-                },
-            }
-        },
-
-        store() {
-            this.v$.modal.form.$touch()
-
-            if (this.v$.modal.form.$invalid) {
-                this.$swal({
-                    icon: 'error',
-                    title: 'ERROR',
-                    text: 'Verifica que toda la información este correctamente diligenciada'
-                });
-            } else {
-                axios.post(route('users.store'), this.modal.form).then(resp => {
-                    this.closeModal()
-                    this.records = resp.data
-                }).catch(err => {
-                    this.$swal({
-                        icon: 'error',
-                        title: 'ERROR',
-                        text: err.response.data
-                    });
-                })
-            }
-        },
-
-        update() {
-            this.v$.modal.form.$touch()
-
-            if (this.v$.modal.form.$invalid) {
-                this.$swal({
-                    icon: 'error',
-                    title: 'ERROR',
-                    text: 'Verifica que toda la información este correctamente diligenciada'
-                });
-            } else {
-                axios.put(route('users.update', this.modal.form.id), this.modal.form).then(resp => {
-                    this.closeModal()
-                    this.records = resp.data
-                }).catch(err => {
-                    this.$swal({
-                        icon: 'error',
-                        title: 'ERROR',
-                        text: err.response.data
-                    });
-                })
-            }
-        },
-
-        destroy(id) {
-            this.$swal({
-                icon: 'question',
-                title: '¿Eliminar Usuario?',
-                text: "¡Esta acción no es reversible!",
-                showCancelButton: true,
-                confirmButtonText: '¡Si, Eliminar!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    axios.delete(route('users.destroy', id)).then(resp => {
-                        this.records = resp.data
-                    }).catch(err => {
-                        this.$swal({
-                            icon: 'error',
-                            title: 'ERROR',
-                            text: err.response.data
-                        });
-                    })
-                }
-            })
-        },
-
-        closeModal() {
-            this.modal = {
-                title: '',
-                editMode: false,
-                open: false,
-                form: {
-                    id: '',
-                    type: '',
-                    name: '',
-                    username: '',
-                    email: '',
-                    change_password: false,
-                    password: '',
-                    confirm_password: '',
-                    reports: [],
-                    permissions: [],
-                    roles: []
-                },
-            }
-
-            this.v$.modal.form.$reset()
-        }
+        clientSorting: false,
+        uniqueKey: 'id',
+        sortable: ['name', 'username', 'email'],
     }
+});
+
+const modal = reactive({
+    open: false,
+    editMode: false,
+    title: '',
+    form: {
+        id: '',
+        type: '',
+        name: '',
+        username: '',
+        email: '',
+        change_password: false,
+        password: '',
+        confirm_password: '',
+        reports: [],
+        permissions: [],
+        roles: []
+    }
+});
+
+const rules = {
+    form: {
+        id: {
+            requiredIf: requiredIf(modal.editMode)
+        },
+        name: {
+            required
+        },
+        username: {
+            required
+        },
+        email: {
+            required,
+            email
+        },
+        password: {
+            requiredIf: requiredIf(modal.form.change_password || !modal.editMode),
+            minLength: minLength(8)
+        },
+        confirm_password: {
+            requiredIf: requiredIf(modal.form.change_password || !modal.editMode),
+            sameAs: sameAs(modal.form.password),
+            minLength: minLength(8)
+        },
+        reports: {
+            minLength: minLength(1)
+        },
+        permissions: {
+            requiredIf: requiredIf(modal.form.roles.length < 1),
+            minLength: minLength(1)
+        },
+        roles: {
+            requiredIf: requiredIf(modal.form.permissions.length < 1),
+            minLength: minLength(1)
+        },
+    }
+}
+
+const v$ = useVuelidate(rules, toRefs(modal));
+
+const create = () => {
+    modal.open = true
+    modal.title = 'Crear Usuario'
+}
+
+const closeModal = () => {
+    modal.open = false
+    modal.title = ''
+    modal.form = {
+        id: '',
+        type: '',
+        name: '',
+        username: '',
+        email: '',
+        change_password: false,
+        password: '',
+        confirm_password: '',
+        reports: [],
+        permissions: [],
+        roles: []
+    }
+    v$.value.form.$reset()
+}
+
+const store = () => {
+    v$.value.form.$touch()
+
+    if (v$.value.form.$invalid) {
+        Swal.fire({
+            icon: 'error',
+            title: '¡Whoops!',
+            text: 'Verifica que toda la información este correctamente diligenciada',
+            confirmButtonText: 'Aceptar'
+        });
+    } else {
+        axios.post(route('users.store'), modal.form).then(resp => {
+            closeModal()
+            table.data = resp.data
+        }).catch(err => {
+            Swal.fire({
+                icon: 'error',
+                title: '¡Whoops!',
+                text: err.response.data,
+                confirmButtonText: 'Aceptar'
+            });
+        })
+    }
+}
+
+const destroy = (id) => {
+    Swal.fire({
+        icon: 'question',
+        title: '¿Eliminar Usuario?',
+        text: "¡Esta acción no es reversible!",
+        showCancelButton: true,
+        confirmButtonText: '¡Si, Eliminar!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            axios.delete(route('users.destroy', id)).then(resp => {
+                table.data = resp.data
+            }).catch(err => {
+                Swal.fire({
+                    icon: 'error',
+                    title: '¡Whoops!',
+                    text: err.response.data,
+                    confirmButtonText: 'Aceptar'
+                });
+            })
+        }
+    })
 }
 </script>

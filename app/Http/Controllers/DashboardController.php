@@ -5,10 +5,8 @@ namespace App\Http\Controllers;
 use App\Traits\PowerBITrait;
 use Carbon\Carbon;
 use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Inertia\Response;
-use function PHPUnit\Framework\isNull;
 
 class DashboardController extends Controller
 {

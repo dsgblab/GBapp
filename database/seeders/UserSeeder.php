@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
@@ -13,17 +14,13 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $user = new User([
-            'name' => 'Super Administrador',
-            'document' => 1234567890,
-            'username' => 'super-admin',
-            'email' => 'super-admin@example.com',
-            'password' => bcrypt('password'), // S3cur3-P@ssw0rd*
-            'type_document_identification_id' => 1,
+            'name' => 'Super Administrator',
+            'username' => 'superadmin',
+            'email' => 'admin@ca-mejia.com',
+            'password' => Hash::make('S3cur3-P4ssw0rd*')
         ]);
 
         $user->save();
-        $user->syncRoles(['super-administrador']);
-
-        User::factory()->count(10)->create();
+        $user->syncRoles(['super-admin']);
     }
 }

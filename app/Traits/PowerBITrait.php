@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Support\Facades\Session;
 
 trait PowerBITrait
 {
@@ -15,6 +14,10 @@ trait PowerBITrait
      */
     protected function getUserAccessToken(): mixed
     {
+        if (config('power-bi.username') === null && config('power-bi.password') === null){
+            return "";
+        }
+
         $client = new Client([
             'base_uri' => "https://login.windows.net/common/oauth2/token",
         ]);
@@ -60,7 +63,7 @@ trait PowerBITrait
      */
     protected function getReportsInGroup($group_id): array
     {
-        $userAccessToken = $this->getUserAccessToken();
+        $userAccessToken = $this->getUserAccessToken()->access_token;
 
         $client = new Client([
             'base_uri' => 'https://api.powerbi.com/v1.0/myorg',

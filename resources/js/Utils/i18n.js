@@ -3,6 +3,7 @@ const messages = {
     es: {
         validations: {
             required: "Campo obligatorio",
+            requiredIf: "Campo obligatorio",
             minLength: "Debes escribir mínimo {min} caracteres",
             maxLength: "Debes escribir máximo {max} caracteres",
             minValue: "El valor mínimo permitido es {min}",
@@ -21,5 +22,4 @@ export const i18n = createI18n({
     fallbackLocale: 'en',
     messages
 })
-
 

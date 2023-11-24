@@ -152,7 +152,7 @@ export default {
                     text: 'Verifica que toda la información este correctamente diligenciada'
                 });
             }else {
-                axios.get(route('import-report.get-reports'), {
+                axios.get(route('report.import.get-reports'), {
                     params: {
                         group_id: this.form.group_id
                     }
@@ -178,7 +178,7 @@ export default {
                     text: 'Verifica que toda la información este correctamente diligenciada'
                 });
             }else {
-                axios.post(route('import-report.store'), this.form).then(resp => {
+                axios.post(route('report.import.store'), this.form).then(resp => {
                     this.$swal({
                         icon: 'success',
                         title: 'Importación exitosa',
