@@ -6,8 +6,6 @@ ENV DEBIAN_FRONTEND noninteractive
 
 ARG XDEBUG
 
-
-
 # Instalacion de PHP v8.2
 RUN apt-get clean && apt-get -y update && apt-get install -y locales wget curl software-properties-common git \
   && locale-gen en_US.UTF-8
@@ -24,20 +22,23 @@ RUN apt-get install -y nano apt-transport-https php8.2-bcmath php8.2-bz2 php8.2-
                 php8.2-iconv php8.2-swoole php8.2-xdebug
 
 
-RUN apt-get update && apt-get install -y mysql-client-8.0 && rm -rf /var/lib/apt
+RUN apt-get update && apt-get install -y mysql-client && rm -rf /var/lib/apt
 
+RUN if [ ${XDEBUG}] ; then \
+    apt-get install -y php-xdebug; \
+fi;
 
 # Prerequisitos para instalar driver OBDC para Microsoft SQL Server
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
 RUN curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
-RUN GNUTLS_CPUID_OVERRIDE=0x1 apt-get update -y
-RUN GNUTLS_CPUID_OVERRIDE=0x1 apt-get upgrade -y
-RUN ACCEPT_EULA=Y GNUTLS_CPUID_OVERRIDE=0x1 apt-get install -y msodbcsql18
-RUN ACCEPT_EULA=Y GNUTLS_CPUID_OVERRIDE=0x1 apt-get install -y mssql-tools
+RUN apt-get update  -y
+RUN apt-get upgrade  -y
+RUN ACCEPT_EULA=Y apt-get install -y msodbcsql18
+RUN ACCEPT_EULA=Y apt-get install -y mssql-tools
 RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile
 RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
 RUN /bin/bash -c "source ~/.bashrc"
-RUN GNUTLS_CPUID_OVERRIDE=0x1 apt-get install -y unixodbc-dev
+RUN apt-get install -y unixodbc-dev
 
 
 # Configuracion de PHP v8.2
@@ -73,15 +74,18 @@ WORKDIR /var/www/html
 
 
 # Instalacion de nodeJS y NPM
-RUN GNUTLS_CPUID_OVERRIDE=0x1 apt-get update
-RUN GNUTLS_CPUID_OVERRIDE=0x1 apt-get -y install curl gnupg
+RUN apt-get update
+RUN apt-get -y install curl gnupg
+RUN curl -sL https://deb.nodesource.com/setup_18.x  | bash -
+RUN apt-get -y install nodejs
 
 
-RUN GNUTLS_CPUID_OVERRIDE=0x1 apt-get update && GNUTLS_CPUID_OVERRIDE=0x1 apt-get install -y supervisor
+RUN apt-get update && apt-get install -y cron supervisor
 
 RUN mkdir -p /var/log/supervisor
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY php.ini /etc/php/8.2/mods-available/xdebug.ini
+
 
 # Como se va a llamar el servicio internamente
 # nota: esto es necesario para poderlo comunicar con ngnix

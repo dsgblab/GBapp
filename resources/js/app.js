@@ -12,7 +12,7 @@ import {fas} from '@fortawesome/free-solid-svg-icons';
 import {far} from '@fortawesome/free-regular-svg-icons';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
-import {ClientTable} from '@dcorrea-estrav/v-tables-3';
+import {ClientTable} from '@dcorrea-estrav/vue3-datatables';
 import SortControl from "@/Components/Datatables/SortControl.vue";
 import GenericFilter from "@/Components/Datatables/GenericFilter.vue";
 import PerPageSelector from "@/Components/Datatables/PerPageSelector.vue";
@@ -55,6 +55,9 @@ createInertiaApp({
             .mount(el);
     },
     progress: {
-        color: '#4B5563',
+        delay: 250,
+        color: '#29d',
+        includeCSS: true,
+        showSpinner: true,
     },
 });

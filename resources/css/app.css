@@ -1,4 +1,5 @@
 @import "_tailwind.css";
+@import "components/_litepicker.css";
 @import "components/_form-select.css";
 @import "components/_form-control.css";
 @import "components/_form-check.css";
