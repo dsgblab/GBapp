@@ -138,7 +138,7 @@
                                         <div class="flex items-center" v-for="role in roles">
                                             <Checkbox v-model:checked="form.roles" :value="role.name"/>
                                             <div class="ml-2">
-                                                {{ role.description }}
+                                                {{ role.name }}
                                             </div>
                                         </div>
                                     </div>
@@ -159,7 +159,7 @@
                                         <div class="flex items-center" v-for="permission in permissions">
                                             <Checkbox v-model:checked="form.permissions" :value="permission.name"/>
                                             <div class="ml-2">
-                                                {{ permission.description }}
+                                                {{ permission.name }}
                                             </div>
                                         </div>
                                     </div>

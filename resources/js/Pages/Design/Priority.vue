@@ -5,12 +5,14 @@
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                     Diseño - Prioridades
                 </h2>
-
-                <PrimaryButton type="button" class="ml-auto" @click="modal.open = true" v-permission="'design.priority.create'">
-                    <font-awesome-icon icon="plus" class="mr-2"/>
-                    Nuevo
-                </PrimaryButton>
             </div>
+        </template>
+
+        <template #actions>
+            <PrimaryButton type="button" class="ml-auto" @click="modal.open = true" v-permission="'design.priority.create'">
+                <font-awesome-icon icon="plus" class="mr-2"/>
+                Nuevo
+            </PrimaryButton>
         </template>
 
         <div class="py-12">

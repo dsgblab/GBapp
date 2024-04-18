@@ -5,14 +5,15 @@
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                     Diseño - Solicitudes
                 </h2>
-
-                <PrimaryButton type="button" class="ml-auto" @click="modal.open = true">
-                    <font-awesome-icon icon="plus" class="mr-2"/>
-                    Nuevo
-                </PrimaryButton>
             </div>
         </template>
 
+        <template #actions>
+            <PrimaryButton type="button" class="ml-auto" @click="modal.open = true">
+                <font-awesome-icon icon="plus" class="mr-2"/>
+                Nuevo
+            </PrimaryButton>
+        </template>
 
         <div class="py-12">
             <div class="max-w-8xl mx-6 sm:px-6 lg:px-8">
