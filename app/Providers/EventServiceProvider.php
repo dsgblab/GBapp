@@ -8,14 +8,12 @@ use App\Models\DesignState;
 use App\Models\DesignTask;
 use App\Models\DesignTimeState;
 use App\Models\Report;
-use App\Models\TypeDocumentIdentification;
 use App\Observers\DesignPriorityObserver;
 use App\Observers\DesignRequestObserver;
 use App\Observers\DesignStateObserver;
 use App\Observers\DesignTaskObserver;
 use App\Observers\DesignTimeStateObserver;
 use App\Observers\ReportObserver;
-use App\Observers\TypeDocumentIdentificationObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -44,7 +42,6 @@ class EventServiceProvider extends ServiceProvider
         DesignTask::observe(DesignTaskObserver::class);
         DesignTimeState::observe(DesignTimeStateObserver::class);
         Report::observe(ReportObserver::class);
-        TypeDocumentIdentification::observe(TypeDocumentIdentificationObserver::class);
     }
 
     /**

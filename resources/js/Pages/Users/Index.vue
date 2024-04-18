@@ -40,12 +40,12 @@
                     <template v-slot:roles="{row}">
                         <span v-for="role in row.roles"
                               class="badge badge-success">
-                            {{ role.description }}
+                            {{ role.name }}
                         </span>
                     </template>
 
                     <template v-slot:permissions="{row}">
-                        <span v-for="permission in row.permission_descriptions"
+                        <span v-for="permission in row.permission_names"
                               class="badge badge-success">
                             {{ permission }}
                         </span>
@@ -216,7 +216,7 @@
                         <div v-for="role in roles" class="flex items-center">
                             <Checkbox v-model:checked="modal.form.roles" :value="role.name"/>
                             <div class="ml-2">
-                                {{ role.description }}
+                                {{ role.name }}
                             </div>
                         </div>
                     </div>
@@ -237,7 +237,7 @@
                         <div v-for="permission in permissions" class="flex items-center">
                             <Checkbox v-model:checked="modal.form.permissions" :value="permission.name"/>
                             <div class="ml-2">
-                                {{ permission.description }}
+                                {{ permission.name }}
                             </div>
                         </div>
                     </div>

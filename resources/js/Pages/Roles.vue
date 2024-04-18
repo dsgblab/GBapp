@@ -36,7 +36,7 @@
                     <template v-slot:permissions="{row}">
                                 <span v-for="(permission, index) in row.permissions"
                                       class="badge badge-success">
-                                    {{ permission.description }}
+                                    {{ permission.name }}
                                 </span>
                     </template>
                 </v-client-table>
@@ -75,7 +75,7 @@
                         <div v-for="permission in permissions" class="flex items-center">
                             <Checkbox v-model:checked="modal.form.permissions" :value="permission.name"/>
                             <div class="ml-2">
-                                {{ permission.description }}
+                                {{ permission.name }}
                             </div>
                         </div>
                     </div>
@@ -138,7 +138,7 @@ const table = reactive({
     data: props.roles,
     columns: [
         'actions',
-        'description',
+        'name',
         'permissions',
         'created_at',
         'updated_at'
@@ -146,7 +146,7 @@ const table = reactive({
     options: {
         headings: {
             actions: '',
-            description: 'NOMBRE',
+            name: 'NOMBRE',
             permissions: 'PERMISOS',
             created_at: 'CREADO EL',
             updated_at: 'ACTUALIZADO EL'

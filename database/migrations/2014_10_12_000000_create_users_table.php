@@ -14,8 +14,6 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('document')->unique();
-            $table->foreignId('type_document_identification_id')->constrained('type_document_identifications')->onDelete('cascade');
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

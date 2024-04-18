@@ -7,12 +7,10 @@ use App\Http\Controllers\DesignStateController;
 use App\Http\Controllers\DesignTaskController;
 use App\Http\Controllers\DesignTimeStateController;
 use App\Http\Controllers\ImportReportController;
-use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReportFilterController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierDeliveryController;
-use App\Http\Controllers\TypeDocumentIdentificationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -161,8 +159,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         });
     });
 
-
-    Route::resource('type-document-identification', TypeDocumentIdentificationController::class)->only('index', 'store', 'update', 'destroy');
 
     Route::prefix('design')->group(function () {
         Route::resource('request', DesignRequestController::class)->only('index', 'store', 'update', 'destroy', 'show');

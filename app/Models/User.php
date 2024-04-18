@@ -36,7 +36,6 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'document',
         'username',
         'email',
         'password',
@@ -49,7 +48,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'type_document_identification_id',
         'password',
         'remember_token',
         'two_factor_recovery_codes',
@@ -82,11 +80,6 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Report::class, 'user_reports')
             ->withPivot('user_id', 'report_id');
-    }
-
-    public function type_identification(): HasOne
-    {
-        return $this->hasOne(TypeDocumentIdentification::class, 'id', 'type_document_identification_id');
     }
 
     public function getRoleNamesAttribute(): Collection
