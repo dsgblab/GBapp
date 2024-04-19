@@ -9,7 +9,7 @@
         </template>
 
         <template #actions>
-            <PrimaryButton v-permission="'report.store'" class="ml-auto" type="button" @click="create">
+            <PrimaryButton v-permission="'report.create'" class="ml-auto" type="button" @click="create">
                 <font-awesome-icon class="mr-2" icon="plus"/>
                 Crear
             </PrimaryButton>
@@ -28,7 +28,7 @@
                                   class="mr-2 inline-flex items-center px-2 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150">
                                 <font-awesome-icon :icon="['fas', 'arrow-up-right-from-square']"/>
                             </Link>
-                            <CustomButton v-permission="'report.view'"
+                            <CustomButton v-permission="'report.edit'"
                                           class="mr-2"
                                           @click="edit(row)">
                                 <font-awesome-icon :icon="['far', 'pen-to-square']"/>

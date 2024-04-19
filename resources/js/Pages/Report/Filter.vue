@@ -9,7 +9,7 @@
         </template>
 
         <template #actions>
-            <PrimaryButton type="button" class="ml-auto" @click="create" v-permission="'report.filter.store'">
+            <PrimaryButton type="button" class="ml-auto" @click="create" v-permission="'report.filter.create'">
                 <font-awesome-icon icon="plus" class="mr-2"/>
                 Crear
             </PrimaryButton>

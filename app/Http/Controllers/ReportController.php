@@ -37,7 +37,7 @@ class ReportController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->can('super-administrador')) {
+        if (auth()->user()->can('super-admin')) {
             $reports = Report::all();
         } else {
             $reports = auth()->user()->reports;
@@ -56,7 +56,7 @@ class ReportController extends Controller
      */
     public function view($groupId, $reportId)
     {
-        if (auth()->user()->can('super-administrador')) {
+        if (auth()->user()->can('super-admin')) {
             $report = Report::with('user', 'created_by', 'filters')
                 ->where('group_id', '=', $groupId)
                 ->where('report_id', '=', $reportId)
@@ -108,7 +108,7 @@ class ReportController extends Controller
         $report->user_id = Auth::id();
         $report->save();
 
-        if (auth()->user()->can('super-administrador')) {
+        if (auth()->user()->can('super-admin')) {
             $reports = Report::with('user', 'created_by', 'filters')->get();
         } else {
             $reports = auth()->user()->reports;
@@ -126,7 +126,7 @@ class ReportController extends Controller
         $report->update($request->all());
         $report->save();
 
-        if (auth()->user()->can('super-administrador')) {
+        if (auth()->user()->can('super-admin')) {
             $reports = Report::with('user', 'created_by', 'filters')->get();
         } else {
             $reports = auth()->user()->reports;
@@ -143,7 +143,7 @@ class ReportController extends Controller
     {
         Report::destroy($id);
 
-        if (auth()->user()->can('super-administrador')) {
+        if (auth()->user()->can('super-admin')) {
             $reports = Report::with('user')->get();
         } else {
             $reports = auth()->user()->reports;

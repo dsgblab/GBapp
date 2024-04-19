@@ -101,40 +101,37 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::prefix('reports')->group(function () {
         Route::get('', [ReportController::class, 'index'])
             ->name('report.index')
-            ->middleware('role_or_permission:super-admin|report.index|report.create|report.update|report.destroy|report.view');
+            ->middleware('role_or_permission:super-admin|report.create|report.edit|report.destroy');
 
         Route::post('', [ReportController::class, 'store'])
             ->name('report.store')
-            ->middleware('role_or_permission:super-admin|report.index|report.create');
+            ->middleware('role_or_permission:super-admin|report.create|report.edit');
 
         Route::delete('{id}', [ReportController::class, 'destroy'])
             ->name('report.destroy')
-            ->middleware('role_or_permission:super-admin|report.index|report.destroy');
+            ->middleware('role_or_permission:super-admin|report.create|report.destroy');
 
         Route::put('{id}', [ReportController::class, 'update'])
             ->name('report.update')
-            ->middleware('role_or_permission:super-admin|report.index|report.update');
+            ->middleware('role_or_permission:super-admin|report.create|report.edit');
 
         Route::get('{groupId}/{reportId}/view', [ReportController::class, 'view'])
-            ->name('report.view')
-            ->middleware('role_or_permission:super-admin|report.index|report.view');
-
-
+            ->name('report.view');
         /**
          * Import reports
          */
         Route::prefix('import')->group(function () {
             Route::get('', [ImportReportController::class, 'index'])
                 ->name('report.import.index')
-                ->middleware('role_or_permission:super-admin|report.import.index|report.import.create|report.import.update|report.import.destroy');
+                ->middleware('role_or_permission:super-admin|import-report');
 
             Route::post('', [ImportReportController::class, 'store'])
                 ->name('report.import.store')
-                ->middleware('role_or_permission:super-admin|report.import.index|report.import.create');
+                ->middleware('role_or_permission:super-admin|import-report');
 
             Route::get('get-reports', [ImportReportController::class, 'get_reports'])
                 ->name('report.import.get-reports')
-                ->middleware('role_or_permission:super-admin|report.import.index|report.import.get-reports');
+                ->middleware('role_or_permission:super-admin|import-report');
         });
 
         /**

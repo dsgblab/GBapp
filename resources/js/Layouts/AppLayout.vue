@@ -57,7 +57,7 @@ const logout = () => {
 
                                 <NavLink :href="route('report.index')"
                                          :active="route().current('report.index')"
-                                         v-permission:any="'report.index|report.store|report.update|report.destroy|report.view'">
+                                         v-permission:any="'report.create|report.edit|report.destroy'">
                                     <font-awesome-icon icon="chart-simple" class="mr-2"/>
                                     Reportes
                                 </NavLink>
@@ -100,7 +100,7 @@ const logout = () => {
                                 </div>
 
                                 <div class="relative inline-flex items-center px-1 pt-1 border-b-2 border-transparent"
-                                     v-permission:any="'user.create|user.edit|user.destroy|role.create|role.edit|role.destroy|permission.create|permission.edit|permission.destroy|import-report|report.filter.update|report.filter.store|report.filter.destroy'">
+                                     v-permission:any="'user.create|user.edit|user.destroy|role.create|role.edit|role.destroy|permission.create|permission.edit|permission.destroy|import-report|report.filter.index|report.filter.edit|report.filter.create|report.filter.destroy'">
                                     <Dropdown align="left" width="60">
                                         <template #trigger>
                                             <a href="javascript:void(0)"
