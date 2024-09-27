@@ -24,10 +24,10 @@ Si se va a usar un entorno de produccion en Docker:
 
 * Descargar y descomprimir el proyecto
 * Copiar el archivo .env.example (Variables de entorno) `cp .env.example .env`
-* Construir el contenedor `docker-compose build`
-* Iniciar el contenedor `docker-compose up -d`
-* Instalar dependencias de PHP `docker-compose exec app composer install`
-* Instalar dependencias de NodeJS `docker-compose exec app npm i`
+* Construir el contenedor `docker compose build`
+* Iniciar el contenedor `docker compose up -d`
+* Instalar dependencias de PHP `docker compose exec app composer install`
+* Instalar dependencias de NodeJS `docker compose exec app npm install`
 * Se debe modificar el archivo `.env` teniendo en cuenta los siguientes parámetros:
   ````
     DB_CONNECTION=mysql       (tipo de base de datos mysql o sqlsrv)
@@ -43,18 +43,16 @@ Si se va a usar un entorno de produccion en Docker:
     POWERBI_GRANT_TYPE=    (Tipo de autenticacion por defecto usar: client_credentials)
     POWERBI_CLIENT_SECRET= (Token de acceso, generado en Azure AD)
     POWERBI_CLIENT_ID=     (ID Del cliente, se obtiene en Azure AD en la aplicacion registrada)
-    POWERBI_RESOURCE=      (Punto de acceso para nuestra conexion con la API de PowerBI
+    POWERBI_RESOURCE=      (Punto de acceso para nuestra conexion con la API de PowerBI)
   ````
-* Eliminar cache de la aplicación: `docker-compose exec app php artisan optimize`(este paso se debe hacer cada vez
+* Eliminar cache de la aplicación: `docker compose exec app php artisan optimize`(este paso se debe hacer cada vez
   que se modifique algun valor en el archivo `.env`)
 * Crear la base de datos y el usuario super administrador
-  principal: `docker-compose exec app php artisan migrate --seed`
-* Compilar archivos JS: `docker-compose exec app npm run prod`
+  principal: `docker compose exec app php artisan migrate --seed`
+* Compilar archivos JS: `docker compose exec app npm run prod`
 
 ### Accesos
 
 * El contenedor sirve por el puerto `9300`pero puede ser modificado por uno de su preferencia en el
   archivo `docker-compose.yml`
 * Acceso a la aplicación `http://{IP_SERVIDOR|LOCALHOST}:{PUERTO}`
-
-

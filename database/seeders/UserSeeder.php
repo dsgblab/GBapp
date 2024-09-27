@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
             'name' => 'Super Administrator',
             'username' => 'superadmin',
             'email' => 'admin@ca-mejia.com',
-            'password' => Hash::make('S3cur3-P4ssw0rd*')
+            'password' => Hash::make('As142536*')
         ]);
 
         $user->save();
