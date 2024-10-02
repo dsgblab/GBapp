@@ -1,5 +1,18 @@
 
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<p align="center">
+  <a href="https://laravel.com" target="_blank">
+    <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="200" alt="Laravel Logo">
+  </a>
+  <a href="https://vuejs.org/" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Vue.js_Logo_2.svg" width="80" alt="VueJS Logo">
+  </a>
+  <a href="https://nodejs.org/" target="_blank">
+    <img src="https://nodejs.org/static/images/logo.svg" width="100" alt="Node.js Logo">
+  </a>
+  <a href="https://www.javascript.com/" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" width="70" alt="JavaScript Logo">
+  </a>
+</p>
 
 # GB App
 
