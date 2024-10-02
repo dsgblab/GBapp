@@ -59,7 +59,7 @@
    docker compose exec app npm install
    ```
    
-10. Modify the `.env` file with your environment-specific settings:
+9. Modify the `.env` file with your environment-specific settings:
     
    ```bash
    DB_CONNECTION=mysql       # mysql or sqlsrv
@@ -78,19 +78,19 @@
    POWERBI_RESOURCE=         # Power BI API endpoint
    ```
 
-11. Clear the application cache (run this each time after modifying the `.env` file):
+10. Clear the application cache (run this each time after modifying the `.env` file):
     
    ```bash
    docker compose exec app php artisan optimize
    ```
 
-12. Run migrations and seed the database (to create the super admin):
+11. Run migrations and seed the database (to create the super admin):
       
    ```bash
    docker compose exec app php artisan migrate --seed
    ```
 
-13. Build the JavaScript files:
+12. Build the JavaScript files:
       
    ```bash
    docker compose exec app npm run build
