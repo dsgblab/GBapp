@@ -10,7 +10,7 @@
     <img src="https://user-images.githubusercontent.com/25181517/183568594-85e280a7-0d7e-4d1a-9028-c8c2209e073c.png" width="100" alt="Node.js Logo">
   </a>
   <a href="https://www.javascript.com/" target="_blank">
-    <img src="https://user-images.githubusercontent.com/25181517/117447155-6a868a00-af3d-11eb-9cfe-245df15c9f3f.png)" width="70" alt="JavaScript Logo">
+    <img src="https://user-images.githubusercontent.com/25181517/117447155-6a868a00-af3d-11eb-9cfe-245df15c9f3f.png" width="70" alt="JavaScript Logo">
   </a>
 </p>
 
