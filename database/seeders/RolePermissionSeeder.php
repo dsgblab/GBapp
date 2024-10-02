@@ -71,11 +71,11 @@ class RolePermissionSeeder extends Seeder
                 "guard_name" => "sanctum"
             ],
             [
-                "name" => "report.store",
+                "name" => "report.create",
                 "guard_name" => "sanctum"
             ],
             [
-                "name" => "report.update",
+                "name" => "report.edit",
                 "guard_name" => "sanctum"
             ],
             [
