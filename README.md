@@ -46,16 +46,21 @@
    docker compose exec app chown -R www-data:www-data /var/www/html/storage
    docker compose exec app chown -R www-data:www-data /var/www/html/bootstrap/cache
    ```
-6. Install PHP dependencies:  
+   
+6. Install PHP dependencies:
+     
    ```bash
    docker compose exec app composer install
    ```
-7. Install Node.js dependencies:  
+   
+8. Install Node.js dependencies:
+     
    ```bash
    docker compose exec app npm install
    ```
-
-8. Modify the `.env` file with your environment-specific settings:
+   
+10. Modify the `.env` file with your environment-specific settings:
+    
    ```bash
    DB_CONNECTION=mysql       # mysql or sqlsrv
    DB_HOST=0.0.0.0           # Database server IP
@@ -72,15 +77,21 @@
    POWERBI_CLIENT_ID=        # Azure AD Client ID
    POWERBI_RESOURCE=         # Power BI API endpoint
    ```
-9. Clear the application cache (run this each time after modifying the `.env` file):  
+
+11. Clear the application cache (run this each time after modifying the `.env` file):
+    
    ```bash
    docker compose exec app php artisan optimize
    ```
-10. Run migrations and seed the database (to create the super admin):  
+
+12. Run migrations and seed the database (to create the super admin):
+      
    ```bash
    docker compose exec app php artisan migrate --seed
    ```
-11. Build the JavaScript files:  
+
+13. Build the JavaScript files:
+      
    ```bash
    docker compose exec app npm run build
    ```
@@ -95,7 +106,7 @@
 
 ### Troubleshooting
 
-If you encounter errors during `apt-get update` after adding a repository, try the following commands:
+If you encounter errors while building the container during `apt-get update` after adding a repository, try adding the following commands to the dockerfile:
 
 ```bash
 sudo GNUTLS_CPUID_OVERRIDE=0x1 apt-get update
