@@ -13,6 +13,7 @@ Algunas de las características de la aplicación son:
 * Autenticación de 2 factores
 
 Tecnologías usadas: 
+* Ubuntu 22.04
 * PHP v8.2
 * Laravel Framework v10.14
 * NodeJS v18.16 LTS
@@ -45,14 +46,21 @@ Si se va a usar un entorno de produccion en Docker:
     POWERBI_CLIENT_ID=     (ID Del cliente, se obtiene en Azure AD en la aplicacion registrada)
     POWERBI_RESOURCE=      (Punto de acceso para nuestra conexion con la API de PowerBI)
   ````
-* Eliminar cache de la aplicación: `docker compose exec app php artisan optimize`(este paso se debe hacer cada vez
-  que se modifique algun valor en el archivo `.env`)
-* Crear la base de datos y el usuario super administrador
-  principal: `docker compose exec app php artisan migrate --seed`
-* Compilar archivos JS: `docker compose exec app npm run prod`
+* Eliminar cache de la aplicación: `docker compose exec app php artisan optimize`(este paso se debe hacer cada vez que se modifique algun valor en el archivo `.env`)
+* Crear la base de datos y el usuario super administrador principal: `docker compose exec app php artisan migrate --seed`
+* Compilar archivos JS: `docker compose exec app npm run build`
 
 ### Accesos
 
-* El contenedor sirve por el puerto `9300`pero puede ser modificado por uno de su preferencia en el
+* El contenedor sirve por el puerto `80`pero puede ser modificado por uno de su preferencia en el
   archivo `docker-compose.yml`
 * Acceso a la aplicación `http://{IP_SERVIDOR|LOCALHOST}:{PUERTO}`
+* Obtener Acceso Nesesario de las Carpetas Y archivos Necesarios docker compose exec app chmod -R 775 /var/www/html/storage
+                                                                 docker compose exec app chmod -R 775 /var/www/html/bootstrap/cache
+                                                                 docker compose exec app chown -R www-data:www-data /var/www/html/storage
+                                                                 docker compose exec app chown -R www-data:www-data /var/www/html/bootstrap/cache
+* docker compose exec app php -m
+* integrar estos Comandos en el Docker File por si Ocurren Errores a la hora del hacer apt-get update luego de añadir un repositorio
+      sudo GNUTLS_CPUID_OVERRIDE=0x1 apt-get update 
+      export  GNUTLS_CPUID_OVERRIDE=0x1
+* link to check the free LEFT embed tokenks https://learn.microsoft.com/en-us/rest/api/power-bi/available-features/get-available-feature-by-name#code-try-0
