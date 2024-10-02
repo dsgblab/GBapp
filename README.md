@@ -1,66 +1,109 @@
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-### Acerca de GB App
+# GB App
 
-La aplicación busca poder visualizar reportes de PowerBI de una manera más óptima y
-gestionable por medio la API de Microsoft
+**GB App** is designed to provide a more efficient and manageable way to visualize Power BI reports using Microsoft's API. This application offers the following features:
 
-Algunas de las características de la aplicación son:
+- User, role, and permission management
+- Report creation, management, and assignment
+- Password recovery
+- Two-factor authentication
 
-* Creación y administración de usuarios, roles y permisos
-* Creación, administración y asignación de reportes
-* Recuperación de contraseñas
-* Autenticación de 2 factores
+### Technologies Used
 
-Tecnologías usadas: 
-* Ubuntu 22.04
-* PHP v8.2
-* Laravel Framework v10.14
-* NodeJS v18.16 LTS
-* VueJS v3.2
+- Ubuntu 22.04
+- PHP v8.2
+- Laravel Framework v10.14
+- Node.js v18.16 LTS
+- Vue.js v3.2
 
-### Instalación
+---
 
-Si se va a usar un entorno de produccion en Docker:
+## Installation
 
-* Descargar y descomprimir el proyecto
-* Copiar el archivo .env.example (Variables de entorno) `cp .env.example .env`
-* Construir el contenedor `docker compose build`
-* Iniciar el contenedor `docker compose up -d`
-* Instalar dependencias de PHP `docker compose exec app composer install`
-* Instalar dependencias de NodeJS `docker compose exec app npm install`
-* Se debe modificar el archivo `.env` teniendo en cuenta los siguientes parámetros:
-  ````
-    DB_CONNECTION=mysql       (tipo de base de datos mysql o sqlsrv)
-    DB_HOST=0.0.0.0           (IP del servidor de base de datos)
-    DB_PORT=3306              (Puerto del servidor de base de datos)
-    DB_DATABASE=gb-app        (Nombre de la base de datos)
-    DB_USERNAME=root          (Usuario de base de datos)
-    DB_PASSWORD=password      (Contraseña de base de datos)
-  ````
+### Using Docker in Production
 
-  ````
-    POWERBI_USER_ID=       (ID de la aplicacion de Azure AD)
-    POWERBI_GRANT_TYPE=    (Tipo de autenticacion por defecto usar: client_credentials)
-    POWERBI_CLIENT_SECRET= (Token de acceso, generado en Azure AD)
-    POWERBI_CLIENT_ID=     (ID Del cliente, se obtiene en Azure AD en la aplicacion registrada)
-    POWERBI_RESOURCE=      (Punto de acceso para nuestra conexion con la API de PowerBI)
-  ````
-* Eliminar cache de la aplicación: `docker compose exec app php artisan optimize`(este paso se debe hacer cada vez que se modifique algun valor en el archivo `.env`)
-* Crear la base de datos y el usuario super administrador principal: `docker compose exec app php artisan migrate --seed`
-* Compilar archivos JS: `docker compose exec app npm run build`
+1. Download and unzip the project.
+2. Copy the environment variables file:  
+   ```bash
+   cp .env.example .env
+   ```
+3. Build the Docker container:  
+   ```bash
+   docker compose build
+   ```
+4. Start the container:  
+   ```bash
+   docker compose up -d
+   ```
+5. Permissions and Ownership
+   Ensure the following permissions and ownership settings are applied:
+    
+   ```bash
+   docker compose exec app chmod -R 775 /var/www/html/storage
+   docker compose exec app chmod -R 775 /var/www/html/bootstrap/cache
+   docker compose exec app chown -R www-data:www-data /var/www/html/storage
+   docker compose exec app chown -R www-data:www-data /var/www/html/bootstrap/cache
+   ```
+6. Install PHP dependencies:  
+   ```bash
+   docker compose exec app composer install
+   ```
+7. Install Node.js dependencies:  
+   ```bash
+   docker compose exec app npm install
+   ```
 
-### Accesos
+8. Modify the `.env` file with your environment-specific settings:
+   ```bash
+   DB_CONNECTION=mysql       # mysql or sqlsrv
+   DB_HOST=0.0.0.0           # Database server IP
+   DB_PORT=3306              # Database server port
+   DB_DATABASE=gb-app        # Database name
+   DB_USERNAME=root          # Database user
+   DB_PASSWORD=password      # Database password
+   ```
 
-* El contenedor sirve por el puerto `80`pero puede ser modificado por uno de su preferencia en el
-  archivo `docker-compose.yml`
-* Acceso a la aplicación `http://{IP_SERVIDOR|LOCALHOST}:{PUERTO}`
-* Obtener Acceso Nesesario de las Carpetas Y archivos Necesarios docker compose exec app chmod -R 775 /var/www/html/storage
-                                                                 docker compose exec app chmod -R 775 /var/www/html/bootstrap/cache
-                                                                 docker compose exec app chown -R www-data:www-data /var/www/html/storage
-                                                                 docker compose exec app chown -R www-data:www-data /var/www/html/bootstrap/cache
-* docker compose exec app php -m
-* integrar estos Comandos en el Docker File por si Ocurren Errores a la hora del hacer apt-get update luego de añadir un repositorio
-      sudo GNUTLS_CPUID_OVERRIDE=0x1 apt-get update 
-      export  GNUTLS_CPUID_OVERRIDE=0x1
-* link to check the free LEFT embed tokenks https://learn.microsoft.com/en-us/rest/api/power-bi/available-features/get-available-feature-by-name#code-try-0
+   ```bash
+   POWERBI_USER_ID=          # Azure AD Application ID
+   POWERBI_GRANT_TYPE=       # Default: client_credentials
+   POWERBI_CLIENT_SECRET=    # Azure AD Client Secret
+   POWERBI_CLIENT_ID=        # Azure AD Client ID
+   POWERBI_RESOURCE=         # Power BI API endpoint
+   ```
+
+9. Clear the application cache (run this each time after modifying the `.env` file):  
+   ```bash
+   docker compose exec app php artisan optimize
+   ```
+10. Run migrations and seed the database (to create the super admin):  
+   ```bash
+   docker compose exec app php artisan migrate --seed
+   ```
+11. Build the JavaScript files:  
+   ```bash
+   docker compose exec app npm run build
+   ```
+
+---
+
+### Access
+
+- The application is served on port `80`, but you can modify this in the `docker-compose.yml` file.
+- Access the application at `http://{SERVER_IP|LOCALHOST}:{PORT}`.
+
+
+### Troubleshooting
+
+If you encounter errors during `apt-get update` after adding a repository, try the following commands:
+
+```bash
+sudo GNUTLS_CPUID_OVERRIDE=0x1 apt-get update
+export GNUTLS_CPUID_OVERRIDE=0x1
+```
+
+### Power BI Token Information
+
+Check the available free embed tokens for Power BI using this link:  
+[Power BI Available Feature](https://learn.microsoft.com/en-us/rest/api/power-bi/available-features/get-available-feature-by-name#code-try-0)
