@@ -15,8 +15,8 @@ class UserSeeder extends Seeder
     {
         $user = new User([
             'name' => 'Super Administrator',
-            'username' => 'superadmin',
-            'email' => 'admin@ca-mejia.com',
+            'username' => 'sa',
+            'email' => 'sa@example.com',
             'password' => Hash::make('As142536*')
         ]);
 
