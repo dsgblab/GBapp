@@ -72,7 +72,6 @@
    POWERBI_CLIENT_ID=        # Azure AD Client ID
    POWERBI_RESOURCE=         # Power BI API endpoint
    ```
-
 9. Clear the application cache (run this each time after modifying the `.env` file):  
    ```bash
    docker compose exec app php artisan optimize
